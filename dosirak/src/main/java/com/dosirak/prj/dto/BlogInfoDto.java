@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class BlogInfoDto {
-	private int blogNo;
-	private String blogContents, blogImgPath;
-	private UserDto user;
+  private int blogNo;
+  private String blogContents, blogImgPath;
+  private UserDto user;
 }
