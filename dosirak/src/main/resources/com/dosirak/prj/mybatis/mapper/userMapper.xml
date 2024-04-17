@@ -5,5 +5,28 @@
 
 <mapper namespace="com.dosirak.prj.mapper.UserMapper">
 
-
+  <insert id="insertUser"
+          parameterType="UserDto">
+    INSERT INTO USER_T (
+       USER_NO
+     , EMAIL
+     , PW
+     , NAME
+     , MOBILE
+     , SIGNUP_KIND
+     , GENDER
+     , SIGUNUP_DT
+     , PW_MODIFY_DT 
+    ) VALUES (
+        USER_SEQ.NEXTVAL
+      , #{email}
+      , #{pw}
+      , #{name}  
+      , #{mobile}  
+      , 0  
+      , #{gender}  
+      , CURRENT_DATE  
+      , CURRENT_DATE  
+    )  
+  </insert>
 </mapper>

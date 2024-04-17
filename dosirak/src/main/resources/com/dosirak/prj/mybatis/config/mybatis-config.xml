@@ -12,7 +12,7 @@
   
   <!-- typeAliases -->
   <typeAliases>
-   
+    <typeAlias alias="UserDto"    type="com.dosirak.prj.dto.UserDto"/>
   </typeAliases>
   
 </configuration>
