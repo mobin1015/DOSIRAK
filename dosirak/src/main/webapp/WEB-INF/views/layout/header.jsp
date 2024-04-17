@@ -124,32 +124,3 @@
     
     </script>
     
-    <!--
-    <div class="logo"></div>
-
-    <div class="user-wrap">
-     
-      <c:if test="${sessionScope.user == null}">  
-        <a href="${contextPath}/user/signin.page"><i class="fa-solid fa-arrow-right-to-bracket"></i>Sign In</a>
-        <a href="${contextPath}/user/signup.page"><i class="fa-solid fa-user-plus"></i>Sign Up</a>
-      </c:if>
-     
-      <c:if test="${sessionScope.user != null}">
-        ${sessionScope.user.name}님 반갑습니다
-        <a href="${contextPath}/user/signout.do">로그아웃</a>
-        <a href="${contextPath}/user/leave.do">회원탈퇴</a>
-      </c:if>
-    </div>
-    
-    <div class="gnb-wrap">
-      <ul class="gnb">
-        <li><a href="${contextPath}/bbs/list.do">계층형게시판</a></li>
-        <li><a href="${contextPath}/blog/list.page">댓글형게시판</a></li>
-        <li><a href="${contextPath}/upload/list.do">첨부형게시판</a></li>
-      </ul>
-    </div>
-
-  </div>
-
-  <div class="main-wrap">
-  -->
