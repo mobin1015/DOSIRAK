@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.section {max-width: 960px; margin: 0 auto 40px;}
+.main-title {letter-spacing: -.05em; text-align: left;}
+.main-title h1 {color: #1a1a1a; font-size: 40px; font-weight: 400; }
+.main-title p {padding-bottom: 16px; margin-top: -3px; color: #cacaca;font-size: 32px; line-height: 46px;}
+.main-title span {color: #dedede;}
+
+
+.s-title {text-align: center; margin-bottom: 50px;}
+.s-title h3 {color: #000; letter-spacing: 9px; font-size: 13px; font-weight: 900; margin-bottom: 8px;}
+.s-title p {color: #333; font-size: 12px; color: #838383;}
+
+.keyword-wrap {text-align: center;}
+.keyword-wrap ul {overflow: hidden;}
+.keyword-wrap ul li {float: left; width: 16.66%; border: 1px solid #eee; border-right: 0; height: 160px;}
+.keyword-wrap ul li:last-child {border-right: 1px solid #eee;}
+.keyword-wrap ul li a {height: 100%; width: 100%; position: relative;}
+.keyword-wrap ul li a span {position: absolute; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0);}
+
+
+

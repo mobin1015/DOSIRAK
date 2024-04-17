@@ -7,7 +7,7 @@ html, body{width:100%; overflow-x: hidden;
 	-ms-text-size-adjust : none;  /* IE */
 	-moz-text-size-adjust : none;  /* 파이어폭스 */
 	-o-text-size-adjust : none;  /* 오페라 구버전 */}
-.nanum {font-family: 'Noto Sans KR', 'Sans-serif', sans-serif;}
+.nanum {font-family: 'Nanum Myeongjo', 'Sans-serif', sans-serif;}
 * {margin: 0; padding: 0; box-sizing: border-box;}
 body{background:#fff; color: #333; font-size: 15px; text-align:left; font-weight: 400; font-family: 'Noto Sans KR', 'Sans-serif', sans-serif; word-break: keep-all; -ms-word-break: keep-all;}
 img,fieldset,iframe{border:0 none}
