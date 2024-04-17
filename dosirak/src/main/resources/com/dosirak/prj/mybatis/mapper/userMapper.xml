@@ -23,6 +23,7 @@
       , #{pw}
       , #{name}  
       , #{mobile}  
+      , {eventAgree}
       , 0  
       , #{gender}  
       , CURRENT_DATE  
