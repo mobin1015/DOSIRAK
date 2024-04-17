@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+.section {margin: 0 auto 80px;}
+
+/* main 고정 타이틀 */
+.main-title {max-width: 960px; letter-spacing: -.05em; text-align: left; margin: 0 auto 40px;}
+.main-title h1 {color: #1a1a1a; font-size: 40px; font-weight: 400; margin-bottom: 10px;}
+.main-title p {padding-bottom: 16px; margin-top: -3px; color: #cacaca;font-size: 32px; line-height: 46px;}
+.main-title span {color: #dedede;}
+
+/* main-slide */
+.main-slide .slick-slide {}
+.main-slide .img-wrap {background: url(../images/uki1.jpg) center center no-repeat; background-size: cover; min-height: 400px;}
+.main-slide .text-wrap {color: #fff; position: relative; bottom: 130px; padding: 0 10px;}
+.main-slide .text-wrap .slide-title {font-size: 30px;}
+.main-slide .text-wrap .slide-contents {margin: 5px 0;}
+
+/* main-slide dots-custom */
+.bn-controller {text-align: center; margin-top: -50px; z-index: 99; position: relative;}
+.bn-controller li {display: inline-block; font-size: 12px; color: #888; margin-right: 15px; cursor: pointer;}
+.bn-controller li.slick-active {font-weight: 900; color: #222; border-bottom: 1px solid #222;}
+
+/* keyword */
+.s-title {text-align: center; margin-bottom: 50px;}
+.s-title h3 {color: #000; letter-spacing: 9px; font-size: 13px; font-weight: 900; margin-bottom: 8px;}
+.s-title p {color: #333; font-size: 12px; color: #838383;}
+.keyword-wrap {text-align: center; max-width: 960px; margin: 0 auto;}
+.keyword-wrap ul {overflow: hidden;}
+.keyword-wrap ul li {float: left; width: 16.66%; border: 1px solid #eee; border-right: 0; height: 160px;}
+.keyword-wrap ul li:last-child {border-right: 1px solid #eee;}
+.keyword-wrap ul li a {height: 100%; width: 100%; position: relative;}
+.keyword-wrap ul li a span {position: absolute; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0);}
+
+
+
