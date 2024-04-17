@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Noto+Sans+KR:wght@100..900&display=swap');
+
+
+html, body{width:100%; overflow-x: hidden; 
+	-webkit-text-size-adjust : none;  /* 크롬, 사파리, 오페라 신버전 */
+	-ms-text-size-adjust : none;  /* IE */
+	-moz-text-size-adjust : none;  /* 파이어폭스 */
+	-o-text-size-adjust : none;  /* 오페라 구버전 */}
+.nanum {font-family: 'Noto Sans KR', 'Sans-serif', sans-serif;}
+* {margin: 0; padding: 0; box-sizing: border-box;}
+body{background:#fff; color: #333; font-size: 15px; text-align:left; font-weight: 400; font-family: 'Noto Sans KR', 'Sans-serif', sans-serif; word-break: keep-all; -ms-word-break: keep-all;}
+img,fieldset,iframe{border:0 none}
+img {max-width: 100%; vertical-align: middle;}
+ul, li {list-style: none; outline: none;}
+input,textarea,select,button{color: #666; border: 0; font-size: inherit; font-family: inherit; font-size: inherit; resize: none; font-weight: 400;}
+i,em,address{font-style:normal}
+label,button{cursor:pointer}
+button{margin:0;padding:0; border:0;}
+button * {position:relative; overflow:hidden;}
+hr{visibility: hidden;}
+legend *{width:0;}
+a {color: inherit;}
+table{border-collapse:collapse;border-spacing:0}
+/* HTML5 Reset */
+section,nav,menu,article,aside,footer,header,figure,figcaption,details,address  {display:block;}
+select, option {-webkit-appearance: none; -moz-appearance: none; -o-appearance: none; appearance: none;}
+input:focus, textarea:focus, select:focus {outline: none;}
+input, textarea {border: 0; font-size: inherit; font-family: inherit; font-size: inherit; resize: none;}
+ul, li {list-style: none; outline: none;}
+a {border: 0; text-decoration:none}
+a, span {display: inline-block;}
+h1, h2, h3, h4, h5 {font-weight: 300;}
+/*small {font-size: 14px; margin-top: 10px; display: inline-block;}*/
+textarea {width:100%; padding: 5px 10px; resize: none; vertical-align: top; outline: none;}
