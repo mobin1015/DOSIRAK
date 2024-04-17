@@ -21,7 +21,6 @@
 
 <!-- include libraries(jquery, bootstrap) -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
 <!-- include moment.js -->
 <script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script>
@@ -32,8 +31,8 @@
 <script src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
 
 <!-- include custom css/js -->
-<link rel="stylesheet" href="${contextPath}/resources/css/init.css?dt=${dt}">
-<link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/default.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}">
 
 </head>
 <body>
