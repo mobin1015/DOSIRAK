@@ -8,7 +8,7 @@ public class MvcController {
 
   @GetMapping(value={"/", "/main.page"})
   public String welcome() {
-    return "index"; // mvc
+    return "index";
   }
 
 }
