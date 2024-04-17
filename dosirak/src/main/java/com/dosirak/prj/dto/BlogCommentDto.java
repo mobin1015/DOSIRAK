@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class BlogCommentDto {
-	private int commentNo, blogListNo, state, depth, groupNo;
-	private String contents;
-	private Date createDt;
-	private UserDto user;
+  private int commentNo, blogListNo, state, depth, groupNo;
+  private String contents;
+  private Date createDt;
+  private UserDto user;
 }
