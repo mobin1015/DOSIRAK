@@ -12,8 +12,8 @@
    <result property="contents"   column="CONTENTS"/>
    <result property="createDt"   column="CREATE_DT"/>
    <result property="modifyDt"   column="MODIFY_DT"/>
-   <association property="blogInfo"  javaType="BlogInfoDto">
-     <id   property="blogNo"  column="BLOG_NO"/>
+   <association property="user"  javaType="UserDto">
+     <id     property="userNo"  column="USER_NO"/>
    </association>
  </resultMap>-->
 
@@ -21,7 +21,7 @@
           parameterType="BlogDetailDto">
     INSERT INTO BLOG_DETAIL_T (
         BLOG_LIST_NO
-      , BLOG_NO
+      , USER_NO
       , KEYWORD_NO
       , TITLE
       , CONTENTS
@@ -29,7 +29,7 @@
       , MODIFY_DT
     ) VALUES (
         BLOG_LIST_SEQ.NEXTVAL
-      , 1
+      , #{user.userNo}
       , #{keywordNo}
       , #{title}
       , #{contents}
