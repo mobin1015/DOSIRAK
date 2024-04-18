@@ -11,9 +11,14 @@
   </settings>
   
   <!-- typeAliases -->
-  <typeAliases>
-    <typeAlias alias="UserDto"    type="com.dosirak.prj.dto.UserDto"/>
-    <typeAlias alias="BlogDetailDto"  type="com.dosirak.prj.dto.BlogDetailDto"/>
+  <typeAliases> 
+    <typeAlias alias="AccessHistoryDto" type="com.gdu.myapp.dto.AccessHistoryDto"/>
+    <typeAlias alias="BlogCommentDto"     type="com.gdu.myapp.dto.LeaveUserDto"/>
+    <typeAlias alias="BlogDetailDto"          type="com.gdu.myapp.dto.UserDto"/>
+    <typeAlias alias="ImageDto"           type="com.gdu.myapp.dto.BbsDto"/>
+    <typeAlias alias="LeaveUserDto"          type="com.gdu.myapp.dto.BlogDto"/>
+    <typeAlias alias="LikeDto"        type="com.gdu.myapp.dto.UploadDto"/>
+    <typeAlias alias="UserDto"        type="com.gdu.myapp.dto.AttachDto"/>
   </typeAliases>
   
 </configuration>
