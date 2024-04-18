@@ -8,9 +8,6 @@
 
 <jsp:include page="./layout/header.jsp" />
 
-
-  
-    
     <div class="main-title nanum">
       <h1>작품이 되는 이야기, 브런치스토리</h1>
       <p>브런치스토리에 담긴 아름다운 작품을 감상해 보세요.<br/>
