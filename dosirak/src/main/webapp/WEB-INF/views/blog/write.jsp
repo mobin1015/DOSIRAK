@@ -9,30 +9,58 @@
   <jsp:param value="블로그 작성" name="title"/>
 </jsp:include>
 
+<style>
+  .editor{
+    display: flex;
+    margin: 0 auto;
+    width: 700px;
+    font-size: 20px;
+
+  }
+  .summernote{
+    margin: 0 auto;
+    width: 700px;
+  }
+  .keyword{
+    display: inline-block;
+    margin-right: 30px;
+  }
+  #title{
+    width: 650px;
+
+  }
+  .editor#btn-wrap{
+     justify-contents: center;
+  }
+
+</style>
+
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<h1 class="title">블로그 작성화면</h1>
 
 <form id="frm-blog-register"
       method="POST"
       action="${contextPath}/blog/register.do">
-
-  <div>
-    <span>작성자</span>
-    <span>${sessionScope.user.email}</span>
+  
+  <div class="editor">
+    <select name="keyword" class="keyword">
+      <option value="KEYWORD">키워드</option>
+      <option value="TRAVEL">여행</option>
+      <option value="WEBTOON">웹툰</option>
+      <option value="IT">IT</option>
+      <option value="PHOTO">사진</option>
+      <option value="MOVIE">영화</option>
+      <option value="BOOK">책</option>
+    </select>
+    <input type="text" name="title" id="title" placeholder="제목을 입력하세요">
   </div>
   
-  <div>
-    <label for="title">제목</label>
-    <input type="text" name="title" id="title">
-  </div>
-  
-  <div>
+  <div class="summernote">
     <textarea id="contents" name="contents" placeholder="내용을 입력하세요"></textarea>
   </div>
   
-  <div>
+  <div class="editor" id="btn-wrap">
     <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
     <button type="submit">작성완료</button>
     <a href="${contextPath}/blog/list.page"><button type="button">작성취소</button></a>
@@ -43,9 +71,22 @@
 <script>
 
   const fnSummernoteEditor = () => {
+
     $('#contents').summernote({
-      width: 1024,
-      height: 500,
+    	width: 700,
+    	height: 700,
+    	toolbar: [
+            // [groupName, [list of button]]
+            ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
+            ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+            ['color', ['forecolor','color']],
+            ['para', ['paragraph']],
+            ['insert',['picture','link','video']],
+            ['view', ['help']]
+          ],
+        fontNames: ['맑은 고딕','궁서','굴림체','굴림','돋움체','바탕체', 'Nanum Myeongjo', 'Noto Sans KR'],
+        fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
       lang: 'ko-KR',
       callbacks: {
         onImageUpload: (images)=>{

@@ -31,12 +31,18 @@
 <script src="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.js"></script>
 <script src="${contextPath}/resources/summernote-0.8.18-dist/lang/summernote-ko-KR.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js" integrity="sha512-HGOnQO9+SP1V92SrtZfjqxxtLmVzqZpjFFekvzZVWoiASSQgSr4cw9Kqd2+l8Llp4Gm0G8GIFJ4ddwZilcdb8A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" integrity="sha512-6lLUdeQ5uheMFbWm3CP271l14RsX1xtx+J5x2yeIDkkiBpeVTNhTqijME7GgRKKi6hCqovwCoBTlRBEC20M8Mg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" integrity="sha512-yHknP1/AwR+yx26cB1y0cjvQUMvEa2PFzt1c9LlS4pRQ5NOTZFWbhBig+X9G9eYW/8m0/4OXNx8pxJ6z57x0dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <!-- include custom css/js -->
-<link rel="stylesheet" href="${contextPath}/resources/css/init.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/default.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}">
 
 </head>
 <body>
+
 
   <div class="header-wrap">
     <div class="header-in">
@@ -73,6 +79,7 @@
               </p>
               <p class="slogan-writer">C.S.Lewis</p>
               <div class="btn-request logout">브런치스토리 시작하기</div>
+              <!-- <div type="button" class="nav-btn" id="btn-write" >글쓰기</div> -->
             </div>
            </div>
         </c:if>
@@ -98,9 +105,18 @@
 
     </div>
     
+    <div class="wrap">
+    
     
     
     <script>
+    const fnBlogWrite = ()=>{
+    	$('#btn-write').on('click', (evt)=>{
+    		location.href = "${contextPath}/blog/write.page";
+    	})
+    }
+    fnBlogWrite();
+    
     var aa=true;
     $(".menu-btn").click(function(){
       if(aa){
