@@ -1,4 +1,6 @@
-/************************* ?SEQUNECE *************************/
+
+/************************* SEQUNECE *************************/
+
 DROP SEQUENCE USER_SEQ;
 DROP SEQUENCE BLOG_SEQ;
 DROP SEQUENCE ACCESS_HISTORY_SEQ;
@@ -17,8 +19,7 @@ CREATE SEQUENCE LIKE_SEQ NOCACHE;
 CREATE SEQUENCE COMMENT_SEQ NOCACHE;
 CREATE SEQUENCE IMAGE_SEQ NOCACHE;
 
-
-/************************* ?TABILE *************************/
+/************************* TABILE *************************/
 DROP TABLE  IMAGE_T;
 DROP TABLE  COMMENT_T;
 DROP TABLE  LIKE_T;
@@ -29,21 +30,21 @@ DROP TABLE  ACCESS_HISTORY_T;
 DROP TABLE  BLOG_INFO_T;
 DROP TABLE  USER_T;
 
--- ����� ���̺�
+-- 사용자 테이블
 CREATE TABLE USER_T (
 	USER_NO	        NUMBER	            NOT NULL,
 	EMAIL	        VARCHAR2(100 BYTE)	NOT NULL UNIQUE,
 	PW	            VARCHAR2(64 BYTE)	NULL,
 	NAME	        VARCHAR2(100 BYTE)	NULL,
 	MOBILE	        VARCHAR2(20 BYTE)	NULL,
-	SIGNUP_KIND	    NUMBER	            NULL,  -- ��������(0:����, 1:���̹�)
+	SIGNUP_KIND	    NUMBER	            NULL,  -- 가입형태(0:직접, 1:네이버)
 	GENDER	        VARCHAR2(10 BYTE)   NULL,
 	SIGUNUP_DT	    DATE	            NULL,
 	PW_MODIFY_DT	DATE	            NULL,
     CONSTRAINT PK_USER PRIMARY KEY (USER_NO)
 );
 
--- ��α� ���� ���̺�
+-- 블로그 정보 테이블
 CREATE TABLE BLOG_INFO_T (
 	BLOG_NO	        NUMBER	            NOT NULL,
 	USER_NO	        NUMBER	            NOT NULL,
@@ -55,7 +56,7 @@ CREATE TABLE BLOG_INFO_T (
         REFERENCES USER_T (USER_NO)
 );
 
--- ���� �����丮 ���̺�
+-- 접속 히스토리 테이블
 CREATE TABLE ACCESS_HISTORY_T (
 	ACCESS_HISTORY_NO	NUMBER	            NOT NULL,
 	USER_NO	            NUMBER	            NOT NULL,
@@ -69,7 +70,7 @@ CREATE TABLE ACCESS_HISTORY_T (
         REFERENCES USER_T (USER_NO)
 );
 
--- Ű���� ���̺�
+-- 키워드 테이블
 CREATE TABLE KEYWORD_T (
 	KEYWORD_NO	    NUMBER	            NOT NULL,
 	KEYWORD_NAME	VARCHAR2(100 BYTE)	NULL,
@@ -77,23 +78,23 @@ CREATE TABLE KEYWORD_T (
 );
 
 
--- ��α� �Խù� ���̺�
+-- 블로그 게시물 테이블
 CREATE TABLE BLOG_DETAIL_T (
 	BLOG_LIST_NO	NUMBER	             NOT NULL,
-	BLOG_NO	        NUMBER	             NOT NULL,
+	USER_NO	        NUMBER	             NOT NULL,
 	KEYWORD_NO	    NUMBER	             NOT NULL,
 	TITLE	        VARCHAR2(1000 BYTE) NOT NULL,
 	CONTENTS	    CLOB	             NULL,
 	CREATE_DT	    DATE	             NULL,
 	MODIFY_DT	    DATE	             NULL,
     CONSTRAINT PK_BLOG_DETAIL PRIMARY KEY (BLOG_LIST_NO),
-    CONSTRAINT FK_BLOG_DETAIL_BLOG_INFO FOREIGN KEY (BLOG_NO)
-        REFERENCES BLOG_INFO_T (BLOG_NO),
+    CONSTRAINT FK_BLOG_DETAIL_USER FOREIGN KEY (USER_NO)
+        REFERENCES USER_T (USER_NO),
     CONSTRAINT FK_BLOG_DETAIL_KEYWORD FOREIGN KEY (KEYWORD_NO)
         REFERENCES KEYWORD_T (KEYWORD_NO)
 );
 
--- Ż�� ȸ�� ���̺�
+-- 탈퇴 회원 테이블
 CREATE TABLE LEAVE_USER_T (
 	LEAVE_USER_NO	NUMBER	            NOT NULL,
 	EMAIL	        VARCHAR2(100 BYTE)	NOT NULL UNIQUE,
@@ -101,7 +102,7 @@ CREATE TABLE LEAVE_USER_T (
     CONSTRAINT PK_LEAVE_USER PRIMARY KEY (LEAVE_USER_NO)
 );
 
--- ���ƿ� ���̺�
+-- 좋아요 테이블
 CREATE TABLE LIKE_T (
 	LIKE_NO	        NUMBER	NOT NULL,
 	BLOG_LIST_NO	NUMBER	NOT NULL,
@@ -111,16 +112,16 @@ CREATE TABLE LIKE_T (
         REFERENCES BLOG_DETAIL_T (BLOG_LIST_NO)
 );
 
--- ��α� ��� ���̺�
+-- 블로그 댓글 테이블
 CREATE TABLE COMMENT_T (
 	COMMENT_NO	    NUMBER	            NOT NULL,
 	BLOG_LIST_NO	NUMBER	            NOT NULL,
 	USER_NO	        NUMBER	            NULL,
 	CONTENTS	    VARCHAR2(4000 BYTE)	NOT NULL,
 	CREATE_DT	    DATE	            NULL,
-	STATE	        NUMBER	            NULL,  -- 0:����, 1:����
-	DEPTH	        NUMBER	            NULL,  -- 0:����, 1:���, 2:����, ...
-	GROUP_NO	    NUMBER	            NULL,  -- ���� GROUP_NO ���ο��� ǥ���� ����
+	STATE	        NUMBER	            NULL,  -- 0:삭제, 1:정상
+	DEPTH	        NUMBER	            NULL,  -- 0:원글, 1:답글, 2:답답글, ...
+	GROUP_NO	    NUMBER	            NULL,  -- 같은 GROUP_NO 내부에서 표시할 순서
     CONSTRAINT PK_COMMENT PRIMARY KEY (COMMENT_NO),
     CONSTRAINT FK_COMMENT_BLOG_DETAIL FOREIGN KEY (BLOG_LIST_NO)
         REFERENCES BLOG_DETAIL_T (BLOG_LIST_NO),
@@ -128,7 +129,7 @@ CREATE TABLE COMMENT_T (
         REFERENCES USER_T (USER_NO)
 );
 
--- �̹��� ���̺�
+-- 이미지 테이블
 CREATE TABLE IMAGE_T (
 	IMAGE_NO	    NUMBER	            NOT NULL,
 	BLOG_LIST_NO	NUMBER	            NOT NULL,
@@ -140,8 +141,8 @@ CREATE TABLE IMAGE_T (
 );
 
 
--- ������ ���� ����
-INSERT INTO USER_T VALUES(USER_SEQ.NEXTVAL, 'admin@example.com', STANDARD_HASH('admin', 'SHA256'), '������', '010-1111-1111', '0', 'man', CURRENT_DATE, CURRENT_DATE);
+-- 관리자 계정 삽입
+INSERT INTO USER_T VALUES(USER_SEQ.NEXTVAL, 'admin@example.com', STANDARD_HASH('admin', 'SHA256'), '관리자', '010-1111-1111', '0', 'man', CURRENT_DATE, CURRENT_DATE);
 
 INSERT INTO KEYWORD_T VALUES(1, 'TRAVEL');
 INSERT INTO KEYWORD_T VALUES(2, 'WEBTOON');
@@ -151,11 +152,11 @@ INSERT INTO KEYWORD_T VALUES(5, 'MOVIE');
 INSERT INTO KEYWORD_T VALUES(6, 'BOOK');
 
 
-/************************* Ʈ���� *************************/
+/************************* 트리거 *************************/
 
 /*
-  USER_T ���̺��� ������ ȸ�������� LEAVE_USER_T ���̺� �ڵ����� �����ϴ�
-  LEAVE_TRIGGER Ʈ���� �����ϱ�
+  USER_T 테이블에서 삭제된 회원정보를 LEAVE_USER_T 테이블에 자동으로 삽입하는
+  LEAVE_TRIGGER 트리거 생성하기
 */
 CREATE OR REPLACE TRIGGER LEAVE_TRIGGER
   AFTER
@@ -172,5 +173,5 @@ BEGIN
     , :OLD.EMAIL
     , CURRENT_DATE
   );
-  -- COMMIT;  Ʈ���� �������� ������ ������ ROLLBACK, ������ COMMIT �ڵ� ó��
+  -- COMMIT;  트리거 내에서는 오류가 있으면 ROLLBACK, 없으면 COMMIT 자동 처리
 END;
