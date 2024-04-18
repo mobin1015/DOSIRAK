@@ -29,21 +29,21 @@ DROP TABLE  ACCESS_HISTORY_T;
 DROP TABLE  BLOG_INFO_T;
 DROP TABLE  USER_T;
 
--- »ç¿ëÀÚ Å×ÀÌºí
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE USER_T (
 	USER_NO	        NUMBER	            NOT NULL,
 	EMAIL	        VARCHAR2(100 BYTE)	NOT NULL UNIQUE,
 	PW	            VARCHAR2(64 BYTE)	NULL,
 	NAME	        VARCHAR2(100 BYTE)	NULL,
 	MOBILE	        VARCHAR2(20 BYTE)	NULL,
-	SIGNUP_KIND	    NUMBER	            NULL,  -- °¡ÀÔÇüÅÂ(0:Á÷Á¢, 1:³×ÀÌ¹ö)
+	SIGNUP_KIND	    NUMBER	            NULL,  -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(0:ï¿½ï¿½ï¿½ï¿½, 1:ï¿½ï¿½ï¿½Ì¹ï¿½)
 	GENDER	        VARCHAR2(10 BYTE)   NULL,
 	SIGUNUP_DT	    DATE	            NULL,
 	PW_MODIFY_DT	DATE	            NULL,
     CONSTRAINT PK_USER PRIMARY KEY (USER_NO)
 );
 
--- ºí·Î±× Á¤º¸ Å×ÀÌºí
+-- ï¿½ï¿½Î±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE BLOG_INFO_T (
 	BLOG_NO	        NUMBER	            NOT NULL,
 	USER_NO	        NUMBER	            NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE BLOG_INFO_T (
         REFERENCES USER_T (USER_NO)
 );
 
--- Á¢¼Ó È÷½ºÅä¸® Å×ÀÌºí
+-- ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ä¸® ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE ACCESS_HISTORY_T (
 	ACCESS_HISTORY_NO	NUMBER	            NOT NULL,
 	USER_NO	            NUMBER	            NOT NULL,
@@ -69,7 +69,7 @@ CREATE TABLE ACCESS_HISTORY_T (
         REFERENCES USER_T (USER_NO)
 );
 
--- Å°¿öµå Å×ÀÌºí
+-- Å°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE KEYWORD_T (
 	KEYWORD_NO	    NUMBER	            NOT NULL,
 	KEYWORD_NAME	VARCHAR2(100 BYTE)	NULL,
@@ -77,7 +77,7 @@ CREATE TABLE KEYWORD_T (
 );
 
 
--- ºí·Î±× °Ô½Ã¹° Å×ÀÌºí
+-- ï¿½ï¿½Î±ï¿½ ï¿½Ô½Ã¹ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE BLOG_DETAIL_T (
 	BLOG_LIST_NO	NUMBER	             NOT NULL,
 	BLOG_NO	        NUMBER	             NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE BLOG_DETAIL_T (
         REFERENCES KEYWORD_T (KEYWORD_NO)
 );
 
--- Å»Åð È¸¿ø Å×ÀÌºí
+-- Å»ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE LEAVE_USER_T (
 	LEAVE_USER_NO	NUMBER	            NOT NULL,
 	EMAIL	        VARCHAR2(100 BYTE)	NOT NULL UNIQUE,
@@ -101,7 +101,7 @@ CREATE TABLE LEAVE_USER_T (
     CONSTRAINT PK_LEAVE_USER PRIMARY KEY (LEAVE_USER_NO)
 );
 
--- ÁÁ¾Æ¿ä Å×ÀÌºí
+-- ï¿½ï¿½ï¿½Æ¿ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE LIKE_T (
 	LIKE_NO	        NUMBER	NOT NULL,
 	BLOG_LIST_NO	NUMBER	NOT NULL,
@@ -111,16 +111,16 @@ CREATE TABLE LIKE_T (
         REFERENCES BLOG_DETAIL_T (BLOG_LIST_NO)
 );
 
--- ºí·Î±× ´ñ±Û Å×ÀÌºí
+-- ï¿½ï¿½Î±ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE COMMENT_T (
 	COMMENT_NO	    NUMBER	            NOT NULL,
 	BLOG_LIST_NO	NUMBER	            NOT NULL,
 	USER_NO	        NUMBER	            NULL,
 	CONTENTS	    VARCHAR2(4000 BYTE)	NOT NULL,
 	CREATE_DT	    DATE	            NULL,
-	STATE	        NUMBER	            NULL,  -- 0:»èÁ¦, 1:Á¤»ó
-	DEPTH	        NUMBER	            NULL,  -- 0:¿ø±Û, 1:´ä±Û, 2:´ä´ä±Û, ...
-	GROUP_NO	    NUMBER	            NULL,  -- °°Àº GROUP_NO ³»ºÎ¿¡¼­ Ç¥½ÃÇÒ ¼ø¼­
+	STATE	        NUMBER	            NULL,  -- 0:ï¿½ï¿½ï¿½ï¿½, 1:ï¿½ï¿½ï¿½ï¿½
+	DEPTH	        NUMBER	            NULL,  -- 0:ï¿½ï¿½ï¿½ï¿½, 1:ï¿½ï¿½ï¿½, 2:ï¿½ï¿½ï¿½ï¿½, ...
+	GROUP_NO	    NUMBER	            NULL,  -- ï¿½ï¿½ï¿½ï¿½ GROUP_NO ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     CONSTRAINT PK_COMMENT PRIMARY KEY (COMMENT_NO),
     CONSTRAINT FK_COMMENT_BLOG_DETAIL FOREIGN KEY (BLOG_LIST_NO)
         REFERENCES BLOG_DETAIL_T (BLOG_LIST_NO),
@@ -128,7 +128,7 @@ CREATE TABLE COMMENT_T (
         REFERENCES USER_T (USER_NO)
 );
 
--- ÀÌ¹ÌÁö Å×ÀÌºí
+-- ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½
 CREATE TABLE IMAGE_T (
 	IMAGE_NO	    NUMBER	            NOT NULL,
 	BLOG_LIST_NO	NUMBER	            NOT NULL,
@@ -140,8 +140,8 @@ CREATE TABLE IMAGE_T (
 );
 
 
--- °ü¸®ÀÚ °èÁ¤ »ðÀÔ
-INSERT INTO USER_T VALUES(USER_SEQ.NEXTVAL, 'admin@example.com', STANDARD_HASH('admin', 'SHA256'), '°ü¸®ÀÚ', '010-1111-1111', '0', 'man', CURRENT_DATE, CURRENT_DATE);
+-- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+INSERT INTO USER_T VALUES(USER_SEQ.NEXTVAL, 'admin@example.com', STANDARD_HASH('admin', 'SHA256'), 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', '010-1111-1111', '0', 'man', CURRENT_DATE, CURRENT_DATE);
 
 INSERT INTO KEYWORD_T VALUES(1, 'TRAVEL');
 INSERT INTO KEYWORD_T VALUES(2, 'WEBTOON');
@@ -151,11 +151,11 @@ INSERT INTO KEYWORD_T VALUES(5, 'MOVIE');
 INSERT INTO KEYWORD_T VALUES(6, 'BOOK');
 
 
-/************************* Æ®¸®°Å *************************/
+/************************* Æ®ï¿½ï¿½ï¿½ï¿½ *************************/
 
 /*
-  USER_T Å×ÀÌºí¿¡¼­ »èÁ¦µÈ È¸¿øÁ¤º¸¸¦ LEAVE_USER_T Å×ÀÌºí¿¡ ÀÚµ¿À¸·Î »ðÀÔÇÏ´Â
-  LEAVE_TRIGGER Æ®¸®°Å »ý¼ºÇÏ±â
+  USER_T ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ LEAVE_USER_T ï¿½ï¿½ï¿½Ìºï¿½ ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½
+  LEAVE_TRIGGER Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½
 */
 CREATE OR REPLACE TRIGGER LEAVE_TRIGGER
   AFTER
@@ -172,5 +172,5 @@ BEGIN
     , :OLD.EMAIL
     , CURRENT_DATE
   );
-  -- COMMIT;  Æ®¸®°Å ³»¿¡¼­´Â ¿À·ù°¡ ÀÖÀ¸¸é ROLLBACK, ¾øÀ¸¸é COMMIT ÀÚµ¿ Ã³¸®
+  -- COMMIT;  Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ROLLBACK, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ COMMIT ï¿½Úµï¿½ Ã³ï¿½ï¿½
 END;
