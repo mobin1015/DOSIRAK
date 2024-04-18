@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MvcController {
 
-	@GetMapping(value = { "/", "/main.page" })
-	public String welcome() {
-		return "index";
-	}
+  @GetMapping(value={"/", "/main.page"})
+  public String welcome() {
+    return "index";
+  }
 
 }
