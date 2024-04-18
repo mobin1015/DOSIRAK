@@ -12,7 +12,11 @@
   
   <!-- typeAliases -->
   <typeAliases>
+<<<<<<< HEAD
     <typeAlias alias="UserDto"    type="com.dosirak.prj.dto.UserDto"/>
+=======
+    <typeAlias alias="BlogDetailDto"  type="com.dosirak.prj.dto.BlogDetailDto"/>
+>>>>>>> f7224d81fcaa7dddfd8d5015f5f22f2dc1feacf2
   </typeAliases>
   
 </configuration>
