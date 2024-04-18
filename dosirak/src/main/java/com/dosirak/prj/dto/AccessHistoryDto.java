@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class AccessHistoryDto {
   private int accessHistoryNo;
-	private String email, ip, userAgent, sessionId, signinDt;
+  private String email, ip, userAgent, sessionId, signinDt;
 }

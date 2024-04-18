@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class UserDto {
-	  private int userNo, signupKind;
-	  private String email, pw, name, gender, mobile;
-	  private Date pwModifyDt, signupDt;
+  private int userNo, signupKind;
+  private String email, pw, name, gender, mobile;
+  private Date pwModifyDt, signupDt;
 }
