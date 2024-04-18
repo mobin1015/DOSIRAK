@@ -30,7 +30,7 @@
     ) VALUES (
         BLOG_LIST_SEQ.NEXTVAL
       , 1
-      , 1
+      , #{keywordNo}
       , #{title}
       , #{contents}
       , CURRENT_TIMESTAMP

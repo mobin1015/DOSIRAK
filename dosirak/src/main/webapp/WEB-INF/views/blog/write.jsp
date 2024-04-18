@@ -45,13 +45,13 @@
   
   <div class="editor">
     <select name="keyword" class="keyword">
-      <option value="KEYWORD">키워드</option>
-      <option value="TRAVEL">여행</option>
-      <option value="WEBTOON">웹툰</option>
-      <option value="IT">IT</option>
-      <option value="PHOTO">사진</option>
-      <option value="MOVIE">영화</option>
-      <option value="BOOK">책</option>
+      <option value="0">키워드</option>
+      <option value="1">여행</option>
+      <option value="2">웹툰</option>
+      <option value="3">IT</option>
+      <option value="4">사진</option>
+      <option value="5">영화</option>
+      <option value="6">책</option>
     </select>
     <input type="text" name="title" id="title" placeholder="제목을 입력하세요">
   </div>
@@ -74,7 +74,7 @@
 
     $('#contents').summernote({
     	width: 700,
-    	height: 700,
+    	height: 400,
     	toolbar: [
             // [groupName, [list of button]]
             ['fontname', ['fontname']],
