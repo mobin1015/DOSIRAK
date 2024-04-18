@@ -12,6 +12,7 @@
   
   <!-- typeAliases -->
   <typeAliases>
+    <typeAlias alias="UserDto"    type="com.dosirak.prj.dto.UserDto"/>
     <typeAlias alias="BlogDetailDto"  type="com.dosirak.prj.dto.BlogDetailDto"/>
   </typeAliases>
   
