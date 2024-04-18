@@ -79,7 +79,8 @@
               </p>
               <p class="slogan-writer">C.S.Lewis</p>
               <div class="btn-request logout">브런치스토리 시작하기</div>
-              <div type="button" class="nav-btn" id="btn-write" >글쓰기</div>
+
+              <!-- <div type="button" class="nav-btn" id="btn-write" >글쓰기</div> -->
             </div>
            </div>
         </c:if>

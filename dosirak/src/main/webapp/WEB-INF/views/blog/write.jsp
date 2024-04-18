@@ -52,6 +52,7 @@
       <option value="4">사진</option>
       <option value="5">영화</option>
       <option value="6">책</option>
+
     </select>
     <input type="text" name="title" id="title" placeholder="제목을 입력하세요">
   </div>
