@@ -25,8 +25,13 @@
           <div class="form_item user error3">
           <button type="button" id="code" class="primary">인증코드받기</button>
           </div>
-        </div>  
-      </div>
+       </div>
+       
+       <div class="form-list">
+        <label for= 
+       </div>
+         
+     </div>
     </div>
   </div>
   
