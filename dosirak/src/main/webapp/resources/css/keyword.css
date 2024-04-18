@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+.keyword-title {border-bottom: 1px solid #ddd;}
+.keyword-title h3 {font-size: 30px; text-align: center; padding: 0 0 40px;}
+
+.keyword-wrap {max-width: 940px; margin: 0 auto;}

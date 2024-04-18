@@ -151,7 +151,6 @@ INSERT INTO KEYWORD_T VALUES(4, 'PHOTO');
 INSERT INTO KEYWORD_T VALUES(5, 'MOVIE');
 INSERT INTO KEYWORD_T VALUES(6, 'BOOK');
 
-
 /************************* 트리거 *************************/
 
 /*

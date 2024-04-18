@@ -67,7 +67,7 @@
       </div>
       <div class="keyword-wrap">
         <ul>
-          <li><a href=""><span>지구한바퀴<br/>세계여행</span></a></li>
+          <li><a href="${contextPath}/blog/keyword.page"><span>지구한바퀴<br/>세계여행</span></a></li>
           <li><a href=""><span>그림·웹툰</span></a></li>
           <li><a href=""><span>IT<br/>트렌드</span></a></li>
           <li><a href=""><span>사진·촬영</span></a></li>
