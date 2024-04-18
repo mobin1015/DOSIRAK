@@ -8,26 +8,26 @@
   <insert id="insertUser"
           parameterType="UserDto">
     INSERT INTO USER_T (
-       USER_NO
-     , EMAIL
-     , PW
-     , NAME
-     , MOBILE
-     , SIGNUP_KIND
-     , GENDER
-     , SIGUNUP_DT
-     , PW_MODIFY_DT 
+        USER_NO
+      , EMAIL
+      , PW
+      , NAME
+      , GENDER
+      , MOBILE
+      , EVENT_AGREE
+      , SIGNUP_KIND
+      , PW_MODIFY_DT
+      , SIGNUP_DT
     ) VALUES (
         USER_SEQ.NEXTVAL
       , #{email}
       , #{pw}
-      , #{name}  
-      , #{mobile}  
-      , {eventAgree}
-      , 0  
-      , #{gender}  
-      , CURRENT_DATE  
-      , CURRENT_DATE  
-    )  
+      , #{name}
+      , #{mobile}
+      , #{gender}
+      , 0
+      , CURRENT_DATE
+      , CURRENT_DATE
+    )
   </insert>
 </mapper>
