@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dosirak.prj.mapper.BlogDetailMapper">
+<!-- 
+ <resultMap type="BlogDetailDto" id="BlogDetailMap">
+   <id     property="blogListNo"     column="BLOG_LIST_NO"/>
+   <result property="keywordNo"      column="KEYWORD_NO"/>
+   <result property="title"      column="TITLE"/>
+   <result property="contents"   column="CONTENTS"/>
+   <result property="createDt"   column="CREATE_DT"/>
+   <result property="modifyDt"   column="MODIFY_DT"/>
+   <association property="user"  javaType="UserDto">
+     <id     property="userNo"  column="USER_NO"/>
+   </association>
+ </resultMap>-->
+
+  <insert id="insertBlogDetail"
+          parameterType="BlogDetailDto">
+    INSERT INTO BLOG_DETAIL_T (
+        BLOG_LIST_NO
+      , USER_NO
+      , KEYWORD_NO
+      , TITLE
+      , CONTENTS
+      , CREATE_DT
+      , MODIFY_DT
+    ) VALUES (
+        BLOG_LIST_SEQ.NEXTVAL
+      , #{user.userNo}
+      , #{keywordNo}
+      , #{title}
+      , #{contents}
+      , CURRENT_TIMESTAMP
+      , CURRENT_TIMESTAMP
+    )
+  
+  </insert>
+  
+ 
+</mapper>
