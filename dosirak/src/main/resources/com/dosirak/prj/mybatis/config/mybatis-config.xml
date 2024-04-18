@@ -12,7 +12,11 @@
   
   <!-- typeAliases -->
   <typeAliases>
+<<<<<<< HEAD
     <typeAlias alias="BlogDetailDto"  type="com.dosirak.prj.dto.BlogDetailDto"/>
+=======
+    <typeAlias alias="UserDto"    type="com.dosirak.prj.dto.UserDto"/>
+>>>>>>> origin/sindongwoo-branch
   </typeAliases>
   
 </configuration>

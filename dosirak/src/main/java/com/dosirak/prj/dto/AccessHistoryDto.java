@@ -10,6 +10,11 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class AccessHistoryDto {
+<<<<<<< HEAD
   private int accessHistoryNo;
   private String email, ip, userAgent, sessionId, signinDt;
+=======
+	private int accessHistoryNo;
+	private String email, ip, userAgent, sessionId, signinDt;
+>>>>>>> origin/sindongwoo-branch
 }
