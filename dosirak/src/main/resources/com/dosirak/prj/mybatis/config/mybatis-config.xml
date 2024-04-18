@@ -12,7 +12,7 @@
   
   <!-- typeAliases -->
   <typeAliases>
-   
+    <typeAlias alias="BlogDetailDto"  type="com.dosirak.prj.dto.BlogDetailDto"/>
   </typeAliases>
   
 </configuration>
