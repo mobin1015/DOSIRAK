@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dosirak.prj.dto.BlogDetailDto;
+import com.dosirak.prj.dto.UserDto;
+import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 
 
@@ -23,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BlogServiceImpl implements BlogService {
 
+  private final BlogDetailMapper blogDetailMapper;
   private final MyFileUtils myFileUtils;
   @Override
   public ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile) {
@@ -57,11 +61,35 @@ public class BlogServiceImpl implements BlogService {
     // 요청 파라미터
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
-    int keywrodNo = Integer.parseInt(request.getParameter("keyword"));
+    int keywordNo = Integer.parseInt(request.getParameter("keyword"));
     //int blogNo = Integer.parseInt(request.getParameter("blogNo"));
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
     
-    // UserDto + BlogDto 객체 생성
-    return 0;
+    
+    // UserDto + BlogDetailDto 객체 생성
+    UserDto user = UserDto.builder()
+                    .userNo(userNo)
+                    .build();
+    
+    BlogDetailDto blog = BlogDetailDto.builder()
+                          .title(title)
+                          .contents(contents)
+                          .user(user)
+                          .keywordNo(keywordNo)
+                         .build();
+    Document document = Jsoup.parse(contents);
+    Elements elements = document.getElementsByTag("img");
+    if(elements != null) {
+      for(Element element : elements) {
+        String src = element.attr("src");
+        /* src 정보를 DB에 저장하는 코드 등이 이 곳에 있으면 된다. */
+        /* editor 상에서 삭제했을 때 upload 폴더에 있는 사진과 비교해서 없는 파일은 upload 폴더에서 삭제하기*/
+        System.out.println(src);
+      }
+    }
+    
+    // DB에 blog 저장
+    return blogDetailMapper.insertBlogDetail(blog);  
     
   }
 }

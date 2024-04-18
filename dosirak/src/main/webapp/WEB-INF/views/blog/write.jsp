@@ -62,7 +62,7 @@
   </div>
   
   <div class="editor" id="btn-wrap">
-    <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
+    <input type="hidden" name="userNo" value="1">
     <button type="submit">작성완료</button>
     <a href="${contextPath}/blog/list.page"><button type="button">작성취소</button></a>
   </div>
