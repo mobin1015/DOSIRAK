@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class KeyWordDto {
+public class KeywordDto {
 	private int keywordNo;
 	private String keywordName;
 }
