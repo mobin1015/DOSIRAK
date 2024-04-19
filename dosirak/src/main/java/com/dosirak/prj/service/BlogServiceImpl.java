@@ -15,17 +15,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.BlogDetailDto;
+import com.dosirak.prj.dto.ImageDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
-
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class BlogServiceImpl implements BlogService {
-
   private final BlogDetailMapper blogDetailMapper;
   private final MyFileUtils myFileUtils;
   @Override
@@ -56,14 +55,39 @@ public class BlogServiceImpl implements BlogService {
   }
   
   @Override
-  public int registerBlog(HttpServletRequest request) {
+  public boolean registerBlog(HttpServletRequest request) {
     
     // 요청 파라미터
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
     int keywordNo = Integer.parseInt(request.getParameter("keyword"));
-    //int blogNo = Integer.parseInt(request.getParameter("blogNo"));
+    String keywordName = null;
     int userNo = Integer.parseInt(request.getParameter("userNo"));
+    
+    // count 변수
+    int insertBlogDetailCount = 0;
+    int insertImageCount = 0;
+    
+    switch(keywordNo) {
+    case 1:
+      keywordName = "TRAVEL";
+      break;
+    case 2:
+      keywordName = "WEBTOON";
+      break;
+    case 3:
+      keywordName = "IT";
+      break;
+    case 4:
+      keywordName = "PHOTO";
+      break;
+    case 5:
+      keywordName = "MOVIE";
+      break;      
+    case 6:
+      keywordName = "BOOK";
+      break;      
+    }
     
     
     // UserDto + BlogDetailDto 객체 생성
@@ -76,20 +100,40 @@ public class BlogServiceImpl implements BlogService {
                           .contents(contents)
                           .user(user)
                           .keywordNo(keywordNo)
+                          .keywordName(keywordName)
                          .build();
+    
+    // BlogDetail 삽입 
+    insertBlogDetailCount = blogDetailMapper.insertBlogDetail(blog);
+    
     Document document = Jsoup.parse(contents);
     Elements elements = document.getElementsByTag("img");
+    int elementCount = elements.size();
+
     if(elements != null) {
       for(Element element : elements) {
         String src = element.attr("src");
+        String filesystemName = src.substring(src.lastIndexOf("/") + 1);
+        String uploadPath = myFileUtils.getUploadPath();
         /* src 정보를 DB에 저장하는 코드 등이 이 곳에 있으면 된다. */
         /* editor 상에서 삭제했을 때 upload 폴더에 있는 사진과 비교해서 없는 파일은 upload 폴더에서 삭제하기*/
-        System.out.println(src);
-      }
+        /* boolean값, myapp의 uploadServiceImpl register 참고*/
+       ImageDto image = ImageDto.builder()
+                          .filesystemName(filesystemName)
+                          .uploadPath(uploadPath)
+                        .build();
+       insertImageCount += blogDetailMapper.insertImages(image);
+       }
+      
     }
     
-    // DB에 blog 저장
-    return blogDetailMapper.insertBlogDetail(blog);  
+    return (insertBlogDetailCount == 1 && insertImageCount == elementCount)? true: false;
     
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getSearchBlogList(HttpServletRequest request) {
+    // TODO Auto-generated method stub
+    return null;
   }
 }

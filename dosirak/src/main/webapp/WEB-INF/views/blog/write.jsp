@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
-<jsp:include page="../layout/header.jsp">
+<jsp:include page="../layout/header-write.jsp">
   <jsp:param value="블로그 작성" name="title"/>
 </jsp:include>
 
@@ -74,9 +74,9 @@
   const fnSummernoteEditor = () => {
 
     $('#contents').summernote({
-    	width: 700,
-    	height: 400,
-    	toolbar: [
+      width: 700,
+      height: 400,
+      toolbar: [
             // [groupName, [list of button]]
             ['fontname', ['fontname']],
             ['fontsize', ['fontsize']],
@@ -100,7 +100,7 @@
               body: formData
               /*  submit 상황에서는 <form enctype="multipart/form-data"> 필요하지만 fetch 에서는 사용하면 안 된다. 
               headers: {
-            	  'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data'
               }
               */
             })
@@ -123,7 +123,7 @@
   }
 
   document.getElementById('frm-blog-register').addEventListener('submit', (evt) => {
-	  fnRegisterBlog(evt);
+    fnRegisterBlog(evt);
   })
   fnSummernoteEditor();
 
