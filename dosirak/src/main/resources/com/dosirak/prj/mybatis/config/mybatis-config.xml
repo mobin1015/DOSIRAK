@@ -12,13 +12,13 @@
   
   <!-- typeAliases -->
   <typeAliases> 
-    <typeAlias alias="AccessHistoryDto" type="com.gdu.myapp.dto.AccessHistoryDto"/>
-    <typeAlias alias="BlogCommentDto"     type="com.gdu.myapp.dto.LeaveUserDto"/>
-    <typeAlias alias="BlogDetailDto"          type="com.gdu.myapp.dto.UserDto"/>
-    <typeAlias alias="ImageDto"           type="com.gdu.myapp.dto.BbsDto"/>
-    <typeAlias alias="LeaveUserDto"          type="com.gdu.myapp.dto.BlogDto"/>
-    <typeAlias alias="LikeDto"        type="com.gdu.myapp.dto.UploadDto"/>
-    <typeAlias alias="UserDto"        type="com.gdu.myapp.dto.AttachDto"/>
+    <typeAlias alias="AccessHistoryDto"      type="com.dosirak.prj.dto.AccessHistoryDto"/>
+    <typeAlias alias="BlogCommentDto"        type="com.dosirak.prj.dto.BlogCommentDto"/>
+    <typeAlias alias="BlogDetailDto"         type="com.dosirak.prj.dto.BlogDetailDto"/>
+    <typeAlias alias="ImageDto"              type="com.dosirak.prj.dto.ImageDto"/>
+    <typeAlias alias="LeaveUserDto"          type="com.dosirak.prj.dto.LeaveUserDto"/>
+    <typeAlias alias="LikeDto"               type="com.dosirak.prj.dto.LikeDto"/>
+    <typeAlias alias="UserDto"               type="com.dosirak.prj.dto.UserDto"/>
   </typeAliases>
   
 </configuration>
