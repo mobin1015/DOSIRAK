@@ -9,5 +9,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface BlogService {
   ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile);
-  int registerBlog(HttpServletRequest request);
+  boolean registerBlog(HttpServletRequest request);
+  ResponseEntity<Map<String, Object>> getSearchBlogList(HttpServletRequest request);
 }

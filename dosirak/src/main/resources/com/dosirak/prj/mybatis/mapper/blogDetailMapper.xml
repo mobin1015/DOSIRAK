@@ -23,6 +23,7 @@
         BLOG_LIST_NO
       , USER_NO
       , KEYWORD_NO
+      , KEYWORD_NAME
       , TITLE
       , CONTENTS
       , CREATE_DT
@@ -31,6 +32,7 @@
         BLOG_LIST_SEQ.NEXTVAL
       , #{user.userNo}
       , #{keywordNo}
+      , #{keywordName}
       , #{title}
       , #{contents}
       , CURRENT_TIMESTAMP
@@ -39,5 +41,24 @@
   
   </insert>
   
+    <insert id="insertImages"
+          parameterType="ImageDto">
+    <selectKey order="BEFORE" keyProperty="blogListNo" resultType="int">
+      SELECT MAX(BLOG_LIST_NO)
+        FROM BLOG_DETAIL_T
+    </selectKey>
+    INSERT INTO IMAGE_T (
+        IMAGE_NO
+      , BLOG_LIST_NO
+      , FILESYSTEM_NAME
+      , UPLOAD_PATH
+    ) VALUES (
+        IMAGE_SEQ.NEXTVAL
+      , #{blogListNo}
+      , #{filesystemName}
+      , #{uploadPath}
+    )
+  
+  </insert>
  
 </mapper>
