@@ -9,10 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.dosirak.prj.dto.BlogDetailDto;
-import com.dosirak.prj.dto.KeywordDto;
 import com.dosirak.prj.mapper.KeywordMapper;
 import com.dosirak.prj.utils.MyPageUtils;
-import com.dosirak.prj.utils.MySecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,28 +29,26 @@ public class KeywordServiceImpl implements KeywordService {
     int page = Integer.parseInt(request.getParameter("page"));
     myPageUtils.setPaging(total, display, page);
     
-    // UserDto + BlogDto 객체 생성
-    BlogDetailDto blogDetail = BlogDetailDto.builder()
-                      .title("TITLE")
-                      .contents("CONTENTS")
-                    .build();
+    /*
+     * String title = request.getParameter("title"); String contents =
+     * request.getParameter("contents"); int keywordNo =
+     * Integer.parseInt(request.getParameter("keywordNo")); String keywordName =
+     * request.getParameter("keywordName");
+     */
     
-    int keywordNo = Integer.parseInt(request.getParameter("keywordNo"));
-    String keywordName = request.getParameter("keywordName");
+        
+    BlogDetailDto blog = BlogDetailDto.builder()
+                          .title("TITLE")
+                          .contents("CONTENTS")
+                          .keywordNo(1)
+                          .keywordName("IT")
+                         .build();
     
-    
-    
-    // BlogDto 객체 생성
-    KeywordDto keyword = KeywordDto.builder()
-                              .keywordNo(keywordNo)
-                              .keywordName(keywordName)
-                            .build();
     
     Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
                                      ,"end", myPageUtils.getEnd());
     
-    return new ResponseEntity<>(Map.of("blogDetail", blogDetail
-                                     , "keyword", keyword
+    return new ResponseEntity<>(Map.of("blogDetail", blog
                                      , "keywordList", keywordMapper.getKeywordList(map)
                                      , "totalPage", myPageUtils.getTotalPage())
                                      , HttpStatus.OK);

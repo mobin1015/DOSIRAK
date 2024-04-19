@@ -12,7 +12,7 @@
 
   
   <div class="keyword-title">
-    <h3>11${keyword.keywordName}</h3>
+    <h3>11${blog.keywordName}</h3>
   </div>  
   <div class="keyword-wrap">
     <div id="keyword-list"></div>
@@ -39,10 +39,10 @@
       dataType: 'json',
       success: (resData) => {   // resData = {"blogList": [], "totalPage": 10}
         totalPage = resData.totalPage; // 가져와서 갱신해준다
-        $.each(resData.keywordList, (i, blogDetail) => {
+        $.each(resData.keywordList, (i, blog) => {
           let str = '<div class="keyword" >';
-          str += '<span>' + blogDetail.title + '</span>';
-          str += '<span>' + blog.hit + '</span>';
+          /* str += '<span>' + blog.title + '</span>';
+          str += '<span>' + blog.contents + '</span>'; */
           /* str += '<span>' + moment(blog.createDt).format('YYYY.MM.DD') + '</span>'; */
           str += '</div>';
           $('#keyword-list').append(str);

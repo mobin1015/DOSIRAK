@@ -23,7 +23,6 @@ public class KeywordController {
     return "blog/keyword";
   }
   
-  
   @GetMapping(value="/blog/keyword.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> getKeywordList(HttpServletRequest request) {
     return keyword.getKeywordList(request);
