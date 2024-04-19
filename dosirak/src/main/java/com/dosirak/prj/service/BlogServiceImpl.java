@@ -14,8 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dosirak.prj.dto.BlogDetailDto;
-import com.dosirak.prj.dto.UserDto;
+import com.dosirak.practice.dto.BlogDetailDto;
+import com.dosirak.practice.dto.UserDto;
 import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 

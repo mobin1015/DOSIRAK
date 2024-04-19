@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.dosirak.prj.dto.BlogDetailDto;
+import com.dosirak.practice.dto.BlogDetailDto;
 
 
 @Mapper
