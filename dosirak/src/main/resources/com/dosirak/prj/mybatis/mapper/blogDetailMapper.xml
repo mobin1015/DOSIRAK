@@ -60,5 +60,28 @@
     )
   
   </insert>
+  
+  <select id="getKeywordNo"
+          resultType="BlogDetailDto">
+    SELECT BLOG_LIST_NO, USER_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NO, KEYWORD_NAME
+      FROM BLOG_DETAIL_T
+     WHERE KEYWORD_NO = #{keywordNo}
+  </select>
+  
+  <select id="getKeywordCount"
+          parameterType="Map"
+          resultType="int">
+    SELECT COUNT(*)
+      FROM BLOG_DETAIL_T
+     WHERE KEYWORD_NO = #{keywordNo}
+  </select>
+
+  <select id="getKeywordList"
+          parameterType="Map"
+          resultType="BlogDetailDto">  
+    SELECT BLOG_LIST_NO, USER_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NO, KEYWORD_NAME
+      FROM BLOG_DETAIL_T
+     WHERE KEYWORD_NO = #{keywordNo}
+  </select>
  
 </mapper>

@@ -1,5 +1,8 @@
 package com.dosirak.prj.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.dosirak.prj.dto.BlogDetailDto;
@@ -18,6 +21,9 @@ public interface BlogDetailMapper {
 //  int removeBlog(int blogNo);
   
   
+  BlogDetailDto getKeywordNo(int keywordNo);
+  int getKeywordCount(int keywordNo);
+  List<BlogDetailDto> getKeywordList(Map<String, Object> map);
   
   
 }
