@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class BlogDetailDto {
-  private int blogListNo, keywordNo;
+  private int blogListNo, keywordNo, hasThumbnail,commentCount ;
   private String title, contents, keywordName;
   private Date createDt, modifyDt;
   private UserDto user;
