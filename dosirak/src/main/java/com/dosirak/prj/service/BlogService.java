@@ -1,5 +1,6 @@
 package com.dosirak.prj.service;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ public interface BlogService {
   boolean registerBlog(HttpServletRequest request);
   ResponseEntity<Map<String, Object>> getSearchBlogList(HttpServletRequest request);
   
-  BlogDetailDto getKeywordNo(int keywordNo);
+  List<BlogDetailDto> getKeywordNo(int keywordNo);
+  int getCommentCount(int blogListNo);
   Map<String, Object> getKeywordList(HttpServletRequest request);
 }

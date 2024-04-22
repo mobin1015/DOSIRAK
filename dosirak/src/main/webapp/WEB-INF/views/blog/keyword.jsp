@@ -14,20 +14,22 @@
   
   <div class="keyword-title">
     <h3>
+   
       <c:choose>
-        <c:when test="${blog.keywordNo == 1}">지구한바퀴 세계여행</c:when>
-        <c:when test="${blog.keywordNo == 2}">그림·웹툰</c:when>
-        <c:when test="${blog.keywordNo == 3}">IT 트렌드</c:when>
-        <c:when test="${blog.keywordNo == 4}">사진·촬영</c:when>
-        <c:when test="${blog.keywordNo == 5}">취향저격 영화 리뷰</c:when>
-        <c:when test="${blog.keywordNo == 6}">오늘은 이런 책</c:when>
-      </c:choose>
+        <c:when test="${blog[0].keywordNo == 1}">지구한바퀴 세계여행</c:when>
+        <c:when test="${blog[0].keywordNo == 2}">그림·웹툰</c:when>
+        <c:when test="${blog[0].keywordNo == 3}">IT 트렌드</c:when>
+        <c:when test="${blog[0].keywordNo == 4}">사진·촬영</c:when>
+        <c:when test="${blog[0].keywordNo == 5}">취향저격 영화 리뷰</c:when>
+        <c:when test="${blog[0].keywordNo == 6}">오늘은 이런 책</c:when>
+      </c:choose>  
     </h3>
   </div>  
   <div class="keyword-wrap">
     <div id="keyword-list"></div>
   </div>
 
+  <input type="hidden" value="${blog[0].blogListNo}" name="blogListNo">
   
 
   <script>
@@ -38,7 +40,7 @@
 	  $.ajax({
 	    type: 'get',
 	    url: '${contextPath}/blog/keywordList.do',
-	    data: 'keywordNo=${blog.keywordNo}&page=' + page,
+	    data: 'keywordNo=${blog[0].keywordNo}&page=' + page,
 	    dataType: 'json',
 	    success: (resData) => {  
 	      console.log(resData);  
@@ -50,10 +52,10 @@
     	            str += '<div class="list-item">';
     	              str += '<h4 class="list-title">' + blog.title + '</h4>';
                     str += '<div class="list-content">' + blog.contents + '</div>';
-                    str += '<div class="list-info">'
-                      str += '<span>댓글0</span>';
+                    str += '<div class="list-info">';
+                      str += '<span>댓글 ' + blog.blogListNo + '  </span>';
                       str += '<span>2시간전</span>';
-                      str += '<span>by 작성자</span>';
+                      str += '<span>by ' + blog.user.nickname + ' </span>';
                     str += '</div>';
                   str += '</div>';
                   str += '<div class="list-item">썸네일이미지</div>';

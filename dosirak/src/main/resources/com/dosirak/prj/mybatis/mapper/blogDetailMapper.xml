@@ -4,18 +4,19 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dosirak.prj.mapper.BlogDetailMapper">
-<!-- 
- <resultMap type="BlogDetailDto" id="BlogDetailMap">
+<resultMap type="BlogDetailDto" id="BlogDetailMap">
    <id     property="blogListNo"     column="BLOG_LIST_NO"/>
    <result property="keywordNo"      column="KEYWORD_NO"/>
+   <result property="keywordName"      column="KEYWORD_NAME"/>
    <result property="title"      column="TITLE"/>
    <result property="contents"   column="CONTENTS"/>
    <result property="createDt"   column="CREATE_DT"/>
    <result property="modifyDt"   column="MODIFY_DT"/>
    <association property="user"  javaType="UserDto">
      <id     property="userNo"  column="USER_NO"/>
+     <result property="nickname"   column="NICKNAME"/>
    </association>
- </resultMap>-->
+ </resultMap>
 
   <insert id="insertBlogDetail"
           parameterType="BlogDetailDto">
@@ -69,7 +70,6 @@
   </select>
   
   <select id="getKeywordCount"
-          parameterType="Map"
           resultType="int">
     SELECT COUNT(*)
       FROM BLOG_DETAIL_T
@@ -78,10 +78,21 @@
 
   <select id="getKeywordList"
           parameterType="Map"
-          resultType="BlogDetailDto">  
-    SELECT BLOG_LIST_NO, USER_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NO, KEYWORD_NAME
-      FROM BLOG_DETAIL_T
-     WHERE KEYWORD_NO = #{keywordNo}
+          resultMap="BlogDetailMap">
+    SELECT BLOG_LIST_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NO, KEYWORD_NAME, NICKNAME, USER_NO
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
+                 , U.NICKNAME, U.USER_NO, D.BLOG_LIST_NO, D.TITLE, D.CONTENTS, D.CREATE_DT, D.MODIFY_DT, D.KEYWORD_NO, D.KEYWORD_NAME
+              FROM USER_T U INNER JOIN BLOG_DETAIL_T D 
+                ON U.USER_NO = D.USER_NO
+             WHERE D.KEYWORD_NO = #{keywordNo})
+     WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
+  
+  <select id="getCommentCount"
+          parameterType="int">
+    SELECT COUNT(*)
+      FROM COMMENT_T
+     WHERE BLOG_LIST_NO = #{blogListNo}
   </select>
  
 </mapper>

@@ -1,6 +1,7 @@
 package com.dosirak.prj.service;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -140,8 +141,13 @@ public class BlogServiceImpl implements BlogService {
   }
   
   @Override
-  public BlogDetailDto getKeywordNo(int keywordNo) {
+  public List<BlogDetailDto> getKeywordNo(int keywordNo) {
     return blogDetailMapper.getKeywordNo(keywordNo);
+  }
+  
+  @Override
+  public int getCommentCount(int blogListNo) {
+    return blogDetailMapper.getCommentCount(blogListNo);
   }
   
   @Override
@@ -153,6 +159,7 @@ public class BlogServiceImpl implements BlogService {
     int total = blogDetailMapper.getKeywordCount(keywordNo);
     
     int display = 10;
+    
     
     myPageUtils.setPaging(total, display, page);
     

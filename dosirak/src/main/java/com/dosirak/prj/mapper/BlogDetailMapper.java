@@ -21,9 +21,11 @@ public interface BlogDetailMapper {
 //  int removeBlog(int blogNo);
   
   
-  BlogDetailDto getKeywordNo(int keywordNo);
+  List<BlogDetailDto> getKeywordNo(int keywordNo);
   int getKeywordCount(int keywordNo);
   List<BlogDetailDto> getKeywordList(Map<String, Object> map);
+  
+  int getCommentCount(int blogListNo);
   
   
 }

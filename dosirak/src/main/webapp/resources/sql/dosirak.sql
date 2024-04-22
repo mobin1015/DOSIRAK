@@ -122,6 +122,7 @@ CREATE TABLE IMAGE_T (
 -- INSERT ADMIN ACCOUNT 
 INSERT INTO USER_T VALUES(USER_SEQ.NEXTVAL, 'admin@example.com', STANDARD_HASH('admin', 'SHA256'), 'admin', '010-1111-1111', '0', 'man', CURRENT_DATE, CURRENT_DATE, NULL, NULL, NULL);
 
+
 --ROLLBACK;
 
 /************************* ?TRIGGER *************************/
