@@ -4,6 +4,41 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dosirak.prj.mapper.UserMapper">
-
+      <!--   ★★★ 불러오기 -->
+      <resultMap type="UserDto" id="UserDto">
+      <id     property="userNo"             column="USER_NO" />
+      <result property="email"       column="EMAIL"/>
+      <result property="blogContents"       column="BLOG_CONTENTS"/>
+      <result property="nickname"           column="NICKNAME"/>
+    </resultMap>
+  
+  
+  <select id="loadUserByNo"
+          resultMap="UserDto">
+    SELECT USER_NO, BLOG_CONTENTS, BLOG_IMG_PATH, NICKNAME
+      FROM USER_T
+     WHERE USER_NO = #{userNo}
+  </select>
+ 
+  
+  <!--  
+  <select id="getUserByNo"
+          resultMap="UserDto">
+    SELECT USER_NO, GENDER, EMAIL
+      FROM USER_T
+     WHERE USER_NO = #{userNo}
+  </select>
+ -->
+ 
+ 
+ <!-- 업데이트 수정!! -->
+   <update id="updateProfile"
+          parameterType="UserDto">
+    UPDATE USER_T
+       SET BLOG_CONTENTS = #{blogContents}
+         , BLOG_IMG_PATH = #{blogImgPath}
+         , NICKNAME = #{nickname}
+     WHERE USER_NO = #{userNo}
+  </update>
 
 </mapper>
