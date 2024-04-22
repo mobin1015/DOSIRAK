@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%session.setAttribute("userNo", 2);%>   
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
@@ -70,7 +71,18 @@
   align-items: center;
   }
 
-   .post {
+.post-list-wrap {width: 100%;}
+
+#post-list a {width: 100%;}
+.list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px;}
+.contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
+.contents-wrap {display: flex; flex-wrap: wrap; align-items: center; margin-top: 6px; justify-content: space-between;}
+.contents-wrap .list-item p img {display: none;}
+.contents-wrap .list-item .list-content {max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px;}
+.list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}
+.list-content{}
+
+/*    .post {
    position: relative;
    width: 700px;
    padding: 24px 0 27px;
@@ -98,7 +110,7 @@
   padding-top: 21px;
   font-size: 12px;
   color: #959595;
-  }
+  } */
   
   
 </style>
@@ -176,19 +188,27 @@ const fnGetProfileBlogList = () => {
 	  success: (resData) => {
 			console.log("success");
 		  totalPage = resData.totalPage;
-		  var postList = $('#post-list'); 
+		  const postList = $('#post-list'); 
 		  postList.empty();
 		  $.each(resData.blogList, (i, post) => {
-			  let str = '<li class="post" data-user-no="'+ post.user.userNo +'"  data-blog-no="' + post.blogListNo + '">';
-			  str += '<strong class="tit-article">' + post.title + '</strong>';
-	      str += '<span class="sub-contents">' + post.contents + '</span>';
-	      str += '<div class="post-append">'
-	      str += '<span>댓글</span>';
-	      str += '<span class="num-comment"></span>';
-	      str += '<span class="ico-dot"></span>';
-	      str += '<span class="publish-time">'+ moment(post.createDt).format('MMM DD.YYYY') +'</span>';
-	      str += '</div>';
-	      str += '</li>';
+			  let str = '<a href="">';
+			      str += '<li class="post" data-user-no="'+ post.user.userNo +'"  data-blog-no="' + post.blogListNo + '">';
+			       str += '<div class="contents-wrap">';
+			        str += '<div class="list-item">';
+			         str += '<h4 class="list-title">' + post.title + '</h4>';
+               str += '<div class="list-content">' + post.contents + '</div>';
+               str += '<div class="list-info">';
+                str += '<span>댓글   </span>';
+                str += '<span class="num-comment"></span>';
+                str += '<span class="publish-time">'+ moment(post.createDt).format('MMM DD.YYYY') +'</span>';
+               str += '</div>';
+              str += '</div>';
+              str += '<div class="list-item">썸네일이미지</div>';
+            str += '</div>';   
+          str += '</div>';   
+          str += '</li>'
+          str += '</a>'  
+			 
 	      postList.append(str);
 		  })
 	  },

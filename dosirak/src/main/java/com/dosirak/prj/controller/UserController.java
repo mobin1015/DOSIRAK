@@ -24,13 +24,6 @@ public class UserController {
 
   private final UserService userService;
   
-  @GetMapping("/")
-  public String login(HttpServletRequest session) {
-    UserDto user = userService.getUserByNo(1);
-    session.setAttribute("loggeInUser", user);
-    return "redirect:/user/mypage.do?userNo=" + user.getUserNo();
-  }
-  
   @GetMapping("/mypage.do")
   public String mypage(@RequestParam int userNo, Model model) {
     model.addAttribute("user", userService.getUserByNo(userNo));
