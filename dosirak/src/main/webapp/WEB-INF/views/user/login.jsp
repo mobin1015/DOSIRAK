@@ -28,7 +28,7 @@
     </div>
     <div>
       <a href="${naverLoginURL}">
-        <button>네이버</button>
+        <img src="${contextPath}/resources/2021Login_with_naver_guidelines_Kr/btnG아이콘원형.png">
       </a>
     </div>
   </form>
