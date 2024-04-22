@@ -29,6 +29,7 @@
       , CONTENTS
       , CREATE_DT
       , MODIFY_DT
+      , HAS_THUMBNAIL
     ) VALUES (
         BLOG_LIST_SEQ.NEXTVAL
       , #{user.userNo}
@@ -38,6 +39,7 @@
       , #{contents}
       , CURRENT_TIMESTAMP
       , CURRENT_TIMESTAMP
+      , #{hasThumbnail}
     )
   
   </insert>
