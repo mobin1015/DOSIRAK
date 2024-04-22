@@ -12,11 +12,10 @@ public interface BlogDetailMapper {
   int insertBlogDetail(BlogDetailDto blog);
   // 블로그글 안에 이미지를 image 테이블에 작성
   int insertImages(ImageDto image);
-//  int getBlogCount();
-//  List<BlogDetailDto> getBlogList(Map<String, Object> map); 
-//  BlogDetailDto getBlogByNo(int blogNo);
-//  int removeBlog(int blogNo);
-  
+//int getBlogCount();
+//List<BlogDetailDto> getBlogList(Map<String, Object> map); 
+//BlogDetailDto getBlogByNo(int blogNo);
+//int removeBlog(int blogNo); 
   
   
   

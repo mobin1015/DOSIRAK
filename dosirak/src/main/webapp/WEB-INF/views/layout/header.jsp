@@ -24,7 +24,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
 <!-- include moment.js -->
-<script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script>
+<script src="${contextPath}/resources/moment/moment-with-locales.js"></script> 
 
 <!-- include summernote css/js -->
 <link rel="stylesheet" href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
@@ -81,6 +81,7 @@
               <div class="btn-request logout">브런치스토리 시작하기</div>
 
               <div type="button" class="nav-btn" id="btn-write" >글쓰기</div>
+              <div type="button" class="nav-btn" id="btn-mypage" >마이페이지</div>
             </div>
            </div>
         </c:if>
@@ -117,7 +118,7 @@
     	})
     }
     fnBlogWrite();
-    
+      
     var aa=true;
     $(".menu-btn").click(function(){
       if(aa){
@@ -129,7 +130,7 @@
     
     $(document).on("click", function(event) {
         if (!$(event.target).closest('.header-wrap').length) {
-            $(".header-nav").animate({'left': '-100%'});
+            $(".header-nav").animate({'left':'-100%'});
             aa = true;
         }
     });
@@ -139,5 +140,15 @@
         event.stopPropagation();
     });
     
+    
+    // 로그인 구현 완료 후 수정 필요
+    const fnMyPage = ()=>{
+        $('#btn-mypage').on('click', (evt)=>{
+          location.href = '${contextPath}/user/mypage.do?userNo=3';
+        })
+      }
+      fnMyPage();
+    
+  
     </script>
     

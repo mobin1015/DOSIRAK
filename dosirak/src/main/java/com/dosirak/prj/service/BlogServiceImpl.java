@@ -2,6 +2,7 @@ package com.dosirak.prj.service;
 
 import java.io.File;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,7 @@ import org.jsoup.select.Elements;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.BlogDetailDto;
@@ -19,6 +21,7 @@ import com.dosirak.prj.dto.ImageDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
+import com.dosirak.prj.utils.MyPageUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class BlogServiceImpl implements BlogService {
   private final BlogDetailMapper blogDetailMapper;
   private final MyFileUtils myFileUtils;
+  
   @Override
   public ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile) {
     
@@ -47,6 +51,7 @@ public class BlogServiceImpl implements BlogService {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
     
     // 이미지가 저장된 경로를 Map 으로 반환
     return new ResponseEntity<>(Map.of("src", uploadPath + "/" + filesystemName)
@@ -136,4 +141,6 @@ public class BlogServiceImpl implements BlogService {
     // TODO Auto-generated method stub
     return null;
   }
+  
+  
 }

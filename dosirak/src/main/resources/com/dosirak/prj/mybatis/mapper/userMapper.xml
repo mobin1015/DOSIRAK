@@ -5,6 +5,62 @@
 
 <mapper namespace="com.dosirak.prj.mapper.UserMapper">
 
+  <resultMap type="BlogDetailDto" id="BlogDetailMap">
+   <id     property="blogListNo"     column="BLOG_LIST_NO"/>
+   <result property="keywordNo"      column="KEYWORD_NO"/>
+   <result property="title"      column="TITLE"/>
+   <result property="contents"   column="CONTENTS"/>
+   <result property="createDt"   column="CREATE_DT"/>
+   <result property="modifyDt"   column="MODIFY_DT"/>
+   <association property="comment"  javaType="BlogCommentDto">
+     <id   property="commentNo"  column="COMMENT_NO"/>
+   </association>
+    <association property="user"  javaType="UserDto">
+     <id   property="userNo"  column="USER_NO"/>
+   </association>
+ </resultMap>
+  
+  <select id="getUserByNo"
+          resultType="UserDto">
+   SELECT USER_NO, EMAIL, NICKNAME, BLOG_CONTENTS, BLOG_IMG_PATH
+     FROM USER_T
+    WHERE USER_NO = #{userNo}
+  </select>
 
-
+  <select id="getBlogCount"
+          resultType="int">
+    SELECT COUNT(*)
+      FROM BLOG_DETAIL_T
+     <!-- WHERE USER_NO = #{user.userNo}  -->
+  </select>
+  
+ <select id="getBlogList"
+         parameterType="Map"
+         resultMap="BlogDetailMap">
+  SELECT BLOG_LIST_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NAME, KEYWORD_NO, USER_NO
+       , COMMENT_NO
+    FROM (SELECT ROW_NUMBER() OVER(ORDER BY BD.BLOG_LIST_NO DESC) AS RN
+               , BD.BLOG_LIST_NO, BD.USER_NO, BD.TITLE, BD.CONTENTS, BD.CREATE_DT, BD.MODIFY_DT, BD.KEYWORD_NAME, BD.KEYWORD_NO
+               , CO.COMMENT_NO
+            FROM BLOG_DETAIL_T BD LEFT JOIN COMMENT_T CO 
+                 ON CO.BLOG_LIST_NO = BD.BLOG_LIST_NO)
+   WHERE RN BETWEEN #{begin} AND #{end}
+ </select>
+ 
+ <select id="getBlogByNo"
+         resultMap="BlogDetailMap">
+ SELECT BD.BLOG_LIST_NO, BD.USER_NO, BD.TITLE, BD.CONTENTS, BD.CREATE_DT, BD.MODIFY_DT, BD.KEYWORD_NAME, BD.KEYWORD_NO
+      , CO.COMMENT_NO
+   FROM BLOG_DETAIL_T BD LEFT JOIN COMMENT_T CO 
+     ON CO.BLOG_LIST_NO = BD.BLOG_LIST_NO
+  WHERE BD.BLOG_LIST_NO = #{blogListNo} 
+ </select>
+  
+<!--  <select id="getCommentCount"
+         resultType="int">
+ SELECT COUNT(*)
+   FROM COMMENT_T
+  WHERE BLOG_LIST_NO = #{blogListNo};         
+ </select>  -->
+  
 </mapper>

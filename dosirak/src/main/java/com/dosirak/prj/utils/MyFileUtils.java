@@ -14,7 +14,7 @@ public class MyFileUtils {
   
   // 업로드 경로 반환
   public String getUploadPath() {
-    return "/upload" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY);
+    return "/Users/suzy/upload" + DateTimeFormatter.ofPattern("/yyyy/MM/dd").format(TODAY);
   }
   
   // 저장될 파일명 반환

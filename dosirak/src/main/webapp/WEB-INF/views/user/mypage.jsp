@@ -6,7 +6,7 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
 <jsp:include page="../layout/header.jsp">
-  <jsp:param value="${blogInfo.nickname}의 브런치스토리" name="title"/>
+  <jsp:param value="${user.nickname}의 브런치스토리" name="title"/>
 </jsp:include>
 
 <style>
@@ -19,44 +19,219 @@
   .profile-wrap {
     width: 700px;
     height: 167px;
+    margin: 10px auto;
   }
+  
   .tab-contents {
     width: 700px;
     height: 59px;
+    margin: 10px auto;
   }
+  
+  .profile-user-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    margin-left: 605px;
+  }
+  
+  .nickname {
+    display:block;
+    box-sizing: border-box;
+    width: 700px;
+    height: 39px;
+    padding-right: 170px;
+    font-size: 28px;
+    font-weight: 400;
+  }
+  
+  .blog-contents {
+    display: block;
+    padding-top: 5px;
+    font-size: 13px;
+    line-height: 20px;
+    color: #959595;
+  }
+  
+  .profile-btn-wrap {
+    padding: 22px 0px 0px 0px;
+    margin-left: 515px;
+  }
+  
+  .btn-profile{
+   width: 94px;
+   color: #959595;
+   border-color: #ddd;
+  }
+  
+  .tab-contents {
+  display: flex;  
+  justify-content: center;  
+  align-items: center;
+  }
+
+   .post {
+   position: relative;
+   width: 700px;
+   padding: 24px 0 27px;
+   border-bottom: 1px solid #666;
+  }
+
+  .tit-article {
+  font-weight: 400;
+  font-size: 20px;
+  }
+  
+  .sub-contents {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 50px;
+  padding-top: 5px;
+  font-size: 14px;
+  padding-top: 6px;
+  color: #666;
+  }
+  
+  .post-append {
+  display: block;
+  overflow: hidden;
+  padding-top: 21px;
+  font-size: 12px;
+  color: #959595;
+  }
+  
   
 </style>
 
 
 <div class="wrap">
-    
-    <div class="header-wrap"></div>
 
     <div class="profile-wrap">
-      <div class="bloger-thumb">
-        <img class="profile-user-image" src="" width="100px" height="100px" alt="프로필 이미지">
+      <div class="bloger-thumb" data-user-no="${user.userNo}">    
+       <!-- 프로필 이미지 있을 때 -->
+       <c:if test="${not empty user.blogImgPath}">
+        <img src="${contextPath}${user.blogImgPath}">
+       </c:if>
+       <!-- 프로필 이미지 없을 때 (기본이미지 첨부 됨) -->
+       <c:if test="${empty user.blogImgPath}">
+        <img class="profile-user-image" src="${contextPath}/resources/images/check1.png" alt="프로필 이미지">
+       </c:if>
       </div>
       <div class="blog-wrap">
-        <strong class="tit-bloger"></strong>
-        <span class="blog-contents"></span>
+        <strong class="nickname">${user.nickname}</strong>
+        <span class="blog-contents">${user.blogContents}</span>
       </div>
-      <div class="profile-btn-wrap ">
-       <button class="btn-profile" type="button">프로필편집</button>
-       <button class="btn-write" type="button">글쓰기</button>
-     </div>
+      <div class="profile-btn-wrap">
+       <%--  <c:if test="${not empty sessionScope.loggeInUser}">
+          <c:if test="${sessionScope.loggeInUser.userNo == user.userNo}"> --%>
+           <button class="btn-profile nav-btn" type="button">프로필편집</button>
+           <button class="btn-write nav-btn" type="button">글쓰기</button>
+         <%--  </c:if>
+        </c:if> --%>
+      </div>
 
     </div>
 
-    <div class="main-wrap">
+    <div class="wrap-main">
       <div class="tab-contents">
         <span>글</span>
-        <span class="num-contents"></span>
+        <span class="num-contents">${blogCount}</span>        
       </div>
-      <div class="article-list-wrap"></div>
+      <div class="post-list-wrap">
+        <ul id="post-list"></ul>
+      </div>
+      
     </div>
 
   </div>
 
+
+<script>
+//글쓰기
+const fnWriteBlog = ()=> {
+  $('.btn-write').on('click', (evt)=>{
+    location.href = '${contextPath}/blog/write.page';
+  })
+}
+
+// 프로필편집
+const fnEditProfile = () => {
+  $('.btn-profile').on('click', (evt)=>{
+        location.href = '${contextPath}/user/profile.do?userNo=${user.userNo}';
+  })
+}
+
+// 전역변수
+var totalPage = 0;
+var page = 1;
+
+const fnGetProfileBlogList = () => {
+	
+	$.ajax({
+		// 요청
+	  type: 'GET',
+	  url: '${contextPath}/user/getProfileBlogList.do?userNo=3&page=' + page,
+	  // 응답
+	  dataType: 'json',
+	  success: (resData) => {
+			console.log("success");
+		  totalPage = resData.totalPage;
+		  var postList = $('#post-list'); 
+		  postList.empty();
+		  $.each(resData.blogList, (i, post) => {
+			  let str = '<li class="post" data-user-no="'+ post.user.userNo +'"  data-blog-no="' + post.blogListNo + '">';
+			  str += '<strong class="tit-article">' + post.title + '</strong>';
+	      str += '<span class="sub-contents">' + post.contents + '</span>';
+	      str += '<div class="post-append">'
+	      str += '<span>댓글</span>';
+	      str += '<span class="num-comment"></span>';
+	      str += '<span class="ico-dot"></span>';
+	      str += '<span class="publish-time">'+ moment(post.createDt).format('MMM DD.YYYY') +'</span>';
+	      str += '</div>';
+	      str += '</li>';
+	      postList.append(str);
+		  })
+	  },
+	  error: (jqXHR) => {
+	      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+	  }
+	});
+}
+
+const fnScrollHandler = () => {
+	
+	var timerId;
+	
+	$(window).on('scroll', (evt) => {                          
+		  
+    if(timerId) {                                               
+        clearTimeout(timerId);   
+    }
+    timerId = setTimeout(() => {
+        
+        let scrollTop = $(window).scrollTop();
+        let windowHeight = $(window).height();
+        let documentHeight = $(document).height();
+    
+        if( (scrollTop + windowHeight + 50 ) >= documentHeight ){ 
+          if(page > totalPage) {
+            return;
+          }
+          page++;
+          fnGetProfileBlogList();
+        }
+      }, 500);
+   })
+}
+
+
+fnWriteBlog();
+fnEditProfile(); 
+fnGetProfileBlogList();
+//fnScrollHandler();
+
+
+</script>
 
 
 <%@ include file="../layout/footer.jsp" %>
