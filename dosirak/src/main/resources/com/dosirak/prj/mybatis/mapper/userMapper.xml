@@ -4,6 +4,82 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dosirak.prj.mapper.UserMapper">
+  
+  <select id="getUserByMap" 
+          parameterType="Map"
+          resultType="UserDto">
+    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGUNUP_DT 
+      FROM USER_T
+    <where>
+      <if test="email!=null">EMAIL = #{email}</if>
+      <if test="pw!=null">AND PW = #{pw}</if>
+    </where>
+  </select>
 
+  <select id="getLeaveUserByMap"
+          parameterType="Map"
+          resultType="LeaveUserDto">
+    SELECT LEAVE_USER_NO
+      FROM LEAVE_USER_T
+    <where>
+      <if test="email!=null">EMAIL = #{email}</if>
+    </where>
+  </select>
+
+  <insert id="insertUser"
+          parameterType="UserDto">
+    INSERT INTO USER_T (
+        USER_NO
+      , EMAIL
+      , PW
+      , NAME
+      , GENDER
+      , MOBILE
+      , SIGNUP_KIND
+      , PW_MODIFY_DT
+      , SIGUNUP_DT
+    ) VALUES (
+        USER_SEQ.NEXTVAL
+      , #{email}
+      , #{pw}
+      , #{name}
+      , #{gender}
+      , #{mobile}
+      , 0
+      , CURRENT_DATE
+      , CURRENT_DATE
+    )
+  </insert>
+
+  <delete id="deleteUser">
+    DELETE
+      FROM USER_T
+     WHERE USER_NO = #{userNo}
+  </delete>
+
+  <insert id="insertAccessHistory"
+          parameterType="Map">
+    INSERT INTO ACCESS_HISTORY_T (
+        ACCESS_HISTORY_NO
+      , EMAIL
+      , IP
+      , USER_AGENT
+      , SESSION_ID
+      , SIGNIN_DT
+    ) VALUES (
+        ACCESS_HISTORY_SEQ.NEXTVAL
+      , #{email}
+      , #{ip}
+      , #{userAgent}
+      , #{sessionId}
+      , CURRENT_DATE
+    )
+  </insert>
+  
+  <update id="updateAccessHistory">
+    UPDATE ACCESS_HISTORY_T
+     WHERE SESSION_ID = #{sessionId} 
+  </update>
+  
 
 </mapper>
