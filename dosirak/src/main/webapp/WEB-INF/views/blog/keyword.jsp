@@ -14,7 +14,6 @@
   
   <div class="keyword-title">
     <h3>
-   
       <c:choose>
         <c:when test="${blog[0].keywordNo == 1}">지구한바퀴 세계여행</c:when>
         <c:when test="${blog[0].keywordNo == 2}">그림·웹툰</c:when>
@@ -37,6 +36,7 @@
   var page = 1;
 
   const fnKeywordList = () => {
+	  const keywordList = $('#keyword-list');
 	  $.ajax({
 	    type: 'get',
 	    url: '${contextPath}/blog/keywordList.do',
@@ -44,16 +44,16 @@
 	    dataType: 'json',
 	    success: (resData) => {  
 	      console.log(resData);  
-	      const keywordList = $('#keyword-list');
-	      keywordList.empty();
+	      keywordList.empty();	      
 	      $.each(resData.keywordList, (i, blog) => {
-	        let str = '<div class="list-wrap">';
+	    	 let str = '<a href="">';
+	           str += '<div class="list-wrap">';
                 str += '<div class="contents-wrap">';
     	            str += '<div class="list-item">';
     	              str += '<h4 class="list-title">' + blog.title + '</h4>';
                     str += '<div class="list-content">' + blog.contents + '</div>';
                     str += '<div class="list-info">';
-                      str += '<span>댓글 ' + blog.blogListNo + '  </span>';
+                      str += '<span>댓글   </span>';
                       str += '<span>2시간전</span>';
                       str += '<span>by ' + blog.user.nickname + ' </span>';
                     str += '</div>';
@@ -61,6 +61,7 @@
                   str += '<div class="list-item">썸네일이미지</div>';
                 str += '</div>';   
               str += '</div>';   
+              str += '</a>'
           keywordList.append(str);
 	      })
 	    },

@@ -101,7 +101,7 @@
   	$('.keyword-list').on('click', (evt)=>{
   		const keywordNo = evt.target.dataset.keywordNo;
       location.href = '${contextPath}/blog/keyword.do?keywordNo=' + keywordNo;
-    })    
+    })
   }
 	  
 	fnKeywordList();
