@@ -53,9 +53,9 @@
     	              str += '<h4 class="list-title">' + blog.title + '</h4>';
                     str += '<div class="list-content">' + blog.contents + '</div>';
                     str += '<div class="list-info">';
-                      str += '<span>댓글   </span>';
+                      str += '<span>댓글 ' + blog.commentCount + '</span>';
                       str += '<span>2시간전</span>';
-                      str += '<span>by ' + blog.user.nickname + ' </span>';
+                      str += '<span>by ' + blog.user.nickname + '</span>';
                     str += '</div>';
                   str += '</div>';
                   str += '<div class="list-item">썸네일이미지</div>';

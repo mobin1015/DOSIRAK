@@ -49,8 +49,6 @@ public class BlogController {
   @GetMapping(value="/keywordList.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> keywordList(HttpServletRequest request) {
     return ResponseEntity.ok(blogService.getKeywordList(request));
-  }
-  
-  
+  }  
 
 }

@@ -146,11 +146,6 @@ public class BlogServiceImpl implements BlogService {
   }
   
   @Override
-  public int getCommentCount(int blogListNo) {
-    return blogDetailMapper.getCommentCount(blogListNo);
-  }
-  
-  @Override
   public Map<String, Object> getKeywordList(HttpServletRequest request) {
     
     int keywordNo = Integer.parseInt(request.getParameter("keywordNo"));

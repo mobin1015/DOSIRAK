@@ -16,6 +16,5 @@ public interface BlogService {
   ResponseEntity<Map<String, Object>> getSearchBlogList(HttpServletRequest request);
   
   List<BlogDetailDto> getKeywordNo(int keywordNo);
-  int getCommentCount(int blogListNo);
   Map<String, Object> getKeywordList(HttpServletRequest request);
 }
