@@ -8,7 +8,7 @@
   <select id="getUserByMap" 
           parameterType="Map"
           resultType="UserDto">
-    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGUNUP_DT 
+    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT 
       FROM USER_T
     <where>
       <if test="email!=null">EMAIL = #{email}</if>
@@ -37,7 +37,7 @@
       , MOBILE
       , SIGNUP_KIND
       , PW_MODIFY_DT
-      , SIGUNUP_DT
+      , SIGNUP_DT
     ) VALUES (
         USER_SEQ.NEXTVAL
       , #{email}
@@ -78,6 +78,7 @@
   
   <update id="updateAccessHistory">
     UPDATE ACCESS_HISTORY_T
+       SET SESSION_ID = #{sessionId}
      WHERE SESSION_ID = #{sessionId} 
   </update>
   

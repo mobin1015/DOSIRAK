@@ -37,17 +37,12 @@
         <c:if test="${sessionScope.user != null}">
         <a href="${contextPath}/user/leave.do">회원탈퇴</a>
         </c:if>
+        <c:if test="${sessionScope.user != null}">
+        <a href="${contextPath}/user/logout.do">로그아웃</a>
+        </c:if>
   </div>
 </div>
+    
   
 <%@ include file="../layout/footer.jsp" %>
 
-<script>
-  function leave() {
-	
-	  if(window.confirm("탈퇴하시겠습니까?")){
-		location.href="/user/leave.do";
-	  }
-	  
-	}
-</script>
