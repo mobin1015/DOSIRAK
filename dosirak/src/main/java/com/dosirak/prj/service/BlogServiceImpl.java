@@ -2,7 +2,6 @@ package com.dosirak.prj.service;
 
 import java.io.File;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,7 +12,6 @@ import org.jsoup.select.Elements;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.BlogDetailDto;
@@ -21,7 +19,7 @@ import com.dosirak.prj.dto.ImageDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
-import com.dosirak.prj.utils.MyPageUtils;
+import com.dosirak.prj.utils.MySecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -63,11 +61,12 @@ public class BlogServiceImpl implements BlogService {
   public boolean registerBlog(HttpServletRequest request) {
     
     // 요청 파라미터
-    String title = request.getParameter("title");
-    String contents = request.getParameter("contents");
+    String title = MySecurityUtils.getPreventXss(request.getParameter("title"));
+    String contents = MySecurityUtils.getPreventXss(request.getParameter("contents"));
     int keywordNo = Integer.parseInt(request.getParameter("keyword"));
     String keywordName = null;
     int userNo = Integer.parseInt(request.getParameter("userNo"));
+    int hasThumbnail = 0;
     
     // count 변수
     int insertBlogDetailCount = 0;
@@ -108,30 +107,37 @@ public class BlogServiceImpl implements BlogService {
                           .keywordName(keywordName)
                          .build();
     
-    // BlogDetail 삽입 
-    insertBlogDetailCount = blogDetailMapper.insertBlogDetail(blog);
-    
     Document document = Jsoup.parse(contents);
     Elements elements = document.getElementsByTag("img");
     int elementCount = elements.size();
 
     if(elements != null) {
-      for(Element element : elements) {
-        String src = element.attr("src");
-        String filesystemName = src.substring(src.lastIndexOf("/") + 1);
-        String uploadPath = myFileUtils.getUploadPath();
-        /* src 정보를 DB에 저장하는 코드 등이 이 곳에 있으면 된다. */
-        /* editor 상에서 삭제했을 때 upload 폴더에 있는 사진과 비교해서 없는 파일은 upload 폴더에서 삭제하기*/
-        /* boolean값, myapp의 uploadServiceImpl register 참고*/
-       ImageDto image = ImageDto.builder()
-                          .filesystemName(filesystemName)
-                          .uploadPath(uploadPath)
-                        .build();
-       insertImageCount += blogDetailMapper.insertImages(image);
-       }
+      if(elementCount == 0) {
+        blog.setHasThumbnail(hasThumbnail);
+        insertBlogDetailCount = blogDetailMapper.insertBlogDetail(blog);
+        
+      } else {
+        hasThumbnail = 1;
+        blog.setHasThumbnail(hasThumbnail);
+        insertBlogDetailCount = blogDetailMapper.insertBlogDetail(blog);
+        // BlogDetail 삽입 
+        for(Element element : elements) {
+          String src = element.attr("src");
+          String filesystemName = src.substring(src.lastIndexOf("/") + 1);
+          String uploadPath = myFileUtils.getUploadPath();
+          /* src 정보를 DB에 저장하는 코드 등이 이 곳에 있으면 된다. */
+          /* editor 상에서 삭제했을 때 upload 폴더에 있는 사진과 비교해서 없는 파일은 upload 폴더에서 삭제하기*/
+          /* boolean값, myapp의 uploadServiceImpl register 참고*/
+          ImageDto image = ImageDto.builder()
+              .filesystemName(filesystemName)
+              .uploadPath(uploadPath)
+              .build();
+          insertImageCount += blogDetailMapper.insertImages(image);
+        }
+      }
       
-    }
-    
+    } 
+
     return (insertBlogDetailCount == 1 && insertImageCount == elementCount)? true: false;
     
   }

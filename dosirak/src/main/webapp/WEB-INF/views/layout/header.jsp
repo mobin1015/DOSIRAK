@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
 <!-- include moment.js -->
-<script src="${contextPath}/resources/moment/moment-with-locales.js"></script> 
+<script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script> 
 
 <!-- include summernote css/js -->
 <link rel="stylesheet" href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
