@@ -5,7 +5,7 @@
 
 <mapper namespace="com.dosirak.prj.mapper.UserMapper">
 
-  <resultMap type="BlogDetailDto" id="BlogDetailMap">
+<!--   <resultMap type="BlogDetailDto" id="BlogDetailMap">
    <id     property="blogListNo"     column="BLOG_LIST_NO"/>
    <result property="keywordNo"      column="KEYWORD_NO"/>
    <result property="title"      column="TITLE"/>
@@ -18,7 +18,22 @@
     <association property="user"  javaType="UserDto">
      <id   property="userNo"  column="USER_NO"/>
    </association>
+ </resultMap> -->
+ 
+   <resultMap type="BlogDetailDto" id="BlogDetailMap">
+   <id     property="blogListNo"     column="BLOG_LIST_NO"/>
+   <result property="keywordNo"      column="KEYWORD_NO"/>
+   <result property="title"      column="TITLE"/>
+   <result property="contents"   column="CONTENTS"/>
+   <result property="createDt"   column="CREATE_DT"/>
+   <result property="modifyDt"   column="MODIFY_DT"/>
+   <result property="blogCount"   column="BLOG_COUNT"/>
+   <result property="commentCount"   column="COMMENT_COUNT"/>   
+    <association property="user"  javaType="UserDto">
+     <id   property="userNo"  column="USER_NO"/>
+   </association>
  </resultMap>
+ 
   
   <select id="getUserByNo"
           resultType="UserDto">
@@ -29,21 +44,21 @@
 
   <select id="getBlogCount"
           resultType="int">
-    SELECT COUNT(*)
+    SELECT COUNT(*) AS blogCount
       FROM BLOG_DETAIL_T
-     <!-- WHERE USER_NO = #{user.userNo}  -->
+     WHERE USER_NO = #{userNo} 
   </select>
   
  <select id="getBlogList"
          parameterType="Map"
          resultMap="BlogDetailMap">
-  SELECT BLOG_LIST_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NAME, KEYWORD_NO, USER_NO
-       , COMMENT_NO
+  SELECT BLOG_LIST_NO, USER_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NAME, KEYWORD_NO, COMMENT_COUNT
+       , IMAGE_NO, FILESYSTEM_NAME, UPLOAD_PATH
     FROM (SELECT ROW_NUMBER() OVER(ORDER BY BD.BLOG_LIST_NO DESC) AS RN
-               , BD.BLOG_LIST_NO, BD.USER_NO, BD.TITLE, BD.CONTENTS, BD.CREATE_DT, BD.MODIFY_DT, BD.KEYWORD_NAME, BD.KEYWORD_NO
-               , CO.COMMENT_NO
-            FROM BLOG_DETAIL_T BD LEFT JOIN COMMENT_T CO 
-                 ON CO.BLOG_LIST_NO = BD.BLOG_LIST_NO)
+               , BD.BLOG_LIST_NO, BD.USER_NO, BD.TITLE, BD.CONTENTS, BD.CREATE_DT, BD.MODIFY_DT, BD.KEYWORD_NAME, BD.KEYWORD_NO, BD.COMMENT_COUNT
+               , IM.IMAGE_NO, IM.FILESYSTEM_NAME, IM.UPLOAD_PATH
+            FROM BLOG_DETAIL_T BD LEFT JOIN IMAGE_T IM 
+                 ON BD.BLOG_LIST_NO = IM.BLOG_LIST_NO)
    WHERE RN BETWEEN #{begin} AND #{end}
  </select>
  

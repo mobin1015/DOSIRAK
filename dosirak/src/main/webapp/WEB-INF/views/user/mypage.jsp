@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%session.setAttribute("userNo", 2);%>   
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
@@ -10,111 +9,8 @@
   <jsp:param value="${user.nickname}의 브런치스토리" name="title"/>
 </jsp:include>
 
-<style>
-  .header-wrap {
-    width: 1920px;
-    height: 120px;
-    background-color: #F8F8F8
-  }
-  
-  .profile-wrap {
-    width: 700px;
-    height: 167px;
-    margin: 10px auto;
-  }
-  
-  .tab-contents {
-    width: 700px;
-    height: 59px;
-    margin: 10px auto;
-  }
-  
-  .profile-user-image {
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
-    margin-left: 605px;
-  }
-  
-  .nickname {
-    display:block;
-    box-sizing: border-box;
-    width: 700px;
-    height: 39px;
-    padding-right: 170px;
-    font-size: 28px;
-    font-weight: 400;
-  }
-  
-  .blog-contents {
-    display: block;
-    padding-top: 5px;
-    font-size: 13px;
-    line-height: 20px;
-    color: #959595;
-  }
-  
-  .profile-btn-wrap {
-    padding: 22px 0px 0px 0px;
-    margin-left: 515px;
-  }
-  
-  .btn-profile{
-   width: 94px;
-   color: #959595;
-   border-color: #ddd;
-  }
-  
-  .tab-contents {
-  display: flex;  
-  justify-content: center;  
-  align-items: center;
-  }
-
-.post-list-wrap {width: 100%;}
-
-#post-list a {width: 100%;}
-.list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px;}
-.contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
-.contents-wrap {display: flex; flex-wrap: wrap; align-items: center; margin-top: 6px; justify-content: space-between;}
-.contents-wrap .list-item p img {display: none;}
-.contents-wrap .list-item .list-content {max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px;}
-.list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}
-.list-content{}
-
-/*    .post {
-   position: relative;
-   width: 700px;
-   padding: 24px 0 27px;
-   border-bottom: 1px solid #666;
-  }
-
-  .tit-article {
-  font-weight: 400;
-  font-size: 20px;
-  }
-  
-  .sub-contents {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 50px;
-  padding-top: 5px;
-  font-size: 14px;
-  padding-top: 6px;
-  color: #666;
-  }
-  
-  .post-append {
-  display: block;
-  overflow: hidden;
-  padding-top: 21px;
-  font-size: 12px;
-  color: #959595;
-  } */
-  
-  
-</style>
-
+<!-- include custom css/js -->
+<link rel="stylesheet" href="${contextPath}/resources/css/mypage.css?dt=${dt}">
 
 <div class="wrap">
 
@@ -134,12 +30,12 @@
         <span class="blog-contents">${user.blogContents}</span>
       </div>
       <div class="profile-btn-wrap">
-       <%--  <c:if test="${not empty sessionScope.loggeInUser}">
-          <c:if test="${sessionScope.loggeInUser.userNo == user.userNo}"> --%>
+        <c:if test="${not empty sessionScope.userNo}">
+          <c:if test="${sessionScope.userNo == user.userNo}"> 
            <button class="btn-profile nav-btn" type="button">프로필편집</button>
            <button class="btn-write nav-btn" type="button">글쓰기</button>
-         <%--  </c:if>
-        </c:if> --%>
+          </c:if>
+        </c:if> 
       </div>
 
     </div>
@@ -147,10 +43,10 @@
     <div class="wrap-main">
       <div class="tab-contents">
         <span>글</span>
-        <span class="num-contents">${blogCount}</span>        
+        <span id="blogCount"></span>        
       </div>
-      <div class="post-list-wrap">
-        <ul id="post-list"></ul>
+      <div class="blog-list-wrap">
+        <ul id="blog-list"></ul>
       </div>
       
     </div>
@@ -182,34 +78,35 @@ const fnGetProfileBlogList = () => {
 	$.ajax({
 		// 요청
 	  type: 'GET',
-	  url: '${contextPath}/user/getProfileBlogList.do?userNo=3&page=' + page,
+	  url: '${contextPath}/user/getProfileBlogList.do?userNo=${userNo}&page=' + page,
+		//data: 'userNo=${sessionScope.userNo}&page=' + page
 	  // 응답
 	  dataType: 'json',
 	  success: (resData) => {
 			console.log("success");
 		  totalPage = resData.totalPage;
-		  const postList = $('#post-list'); 
-		  postList.empty();
-		  $.each(resData.blogList, (i, post) => {
-			  let str = '<a href="">';
-			      str += '<li class="post" data-user-no="'+ post.user.userNo +'"  data-blog-no="' + post.blogListNo + '">';
+		  const blogList = $('#blog-list'); 
+		  blogList.empty();
+		  $.each(resData.blogList, (i, blog) => {
+			  let str = '<a class="blog">';
+			     str += '<div class="list-wrap" data-user-no="'+ blog.user.userNo +'"  data-blog-no="' + blog.blogListNo + '">';
 			       str += '<div class="contents-wrap">';
 			        str += '<div class="list-item">';
-			         str += '<h4 class="list-title">' + post.title + '</h4>';
-               str += '<div class="list-content">' + post.contents + '</div>';
+			         str += '<h4 class="list-title">' + blog.title + '</h4>';
+               str += '<div class="list-content">' + blog.contents + '</div>';
                str += '<div class="list-info">';
-                str += '<span>댓글   </span>';
-                str += '<span class="num-comment"></span>';
-                str += '<span class="publish-time">'+ moment(post.createDt).format('MMM DD.YYYY') +'</span>';
+                str += '<span>댓글</span>';
+                str += '<span class="num-comment">'+ blog.commentCount +'</span>';
+                str += '<span class="ico-dot">'+ '&#8729;' +'</span>';
+                str += '<span class="publish-time">'+ moment(blog.createDt).format('MMM DD.YYYY') +'</span>';
                str += '</div>';
               str += '</div>';
               str += '<div class="list-item">썸네일이미지</div>';
             str += '</div>';   
           str += '</div>';   
-          str += '</li>'
           str += '</a>'  
 			 
-	      postList.append(str);
+	      blogList.append(str);
 		  })
 	  },
 	  error: (jqXHR) => {
@@ -244,11 +141,35 @@ const fnScrollHandler = () => {
    })
 }
 
+$(document).ready(function() {
+    // 페이지가 로드되면 사용자의 블로그 총 개수를 가져오는 AJAX 요청을 보냅니다.
+    $.ajax({
+        type: 'GET',
+        url: '${contextPath}/user/blogCount.do',
+        data: 'userNo=${userNo}', // 사용자 번호를 지정하세요.
+        dataType: 'json',
+        success: function(response) {
+            // 성공적으로 블로그 총 개수를 가져왔을 때, 해당 값을 화면에 표시합니다.
+            $('#blogCount').text(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            // AJAX 요청이 실패한 경우 에러를 콘솔에 출력합니다.
+            console.error('Error:', textStatus, '(' + jqXHR.status + '):', errorThrown);
+        }
+    });
+})
+
+  const fnBlogDetail = () => {
+	$(document).on('click', '.blog', (evt) => {
+		location.href = '${contextPath}/blog/detail.do?blogListNo=${blogListNo}';
+	});
+} 
 
 fnWriteBlog();
 fnEditProfile(); 
 fnGetProfileBlogList();
 //fnScrollHandler();
+fnBlogDetail();
 
 
 </script>

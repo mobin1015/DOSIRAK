@@ -13,7 +13,7 @@ public interface UserMapper {
 
   UserDto getUserByNo (int userNo);
   //블로그글 개수 조회
-  int getBlogCount();
+  int getBlogCount(int userNo);
   // 댓글 개수 조회
   // int getCommentCount(int blogListNo);
   // 블로그글 목록 조회

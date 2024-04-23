@@ -12,7 +12,7 @@ import com.dosirak.prj.dto.UserDto;
 public interface UserService {
 
   UserDto getUserByNo(int userNo);
-  int getblogCount();
+  int getblogCount(int userNo);
   ResponseEntity<Map<String, Object>> getMypageBlogList(HttpServletRequest request);
   void loadBlogByNo(int blogListNo, Model model);
 }

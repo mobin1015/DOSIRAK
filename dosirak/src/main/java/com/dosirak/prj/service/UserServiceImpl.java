@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.UserMapper;
 import com.dosirak.prj.utils.MyFileUtils;
@@ -32,15 +31,16 @@ public class UserServiceImpl implements UserService {
   }
   
   @Override
-  public int getblogCount() {
-    return userMapper.getBlogCount();
+  public int getblogCount(int userNo) {
+    return userMapper.getBlogCount(userNo);
   }
   
   @Override
   public ResponseEntity<Map<String, Object>> getMypageBlogList(HttpServletRequest request) {
     
     // 전체 블로그 개수 + 스크롤 이벤트마다 가져갈 목록의 개수 + 현재 페이지 번호
-    int total = userMapper.getBlogCount();
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    int total = userMapper.getBlogCount(userNo);
     int display = 10;
     
     Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
@@ -66,8 +66,9 @@ public class UserServiceImpl implements UserService {
   @Override
   public void loadBlogByNo(int blogListNo, Model model) {
     model.addAttribute("blog", userMapper.getBlogByNo(blogListNo));
-    model.addAttribute("blogCount", userMapper.getBlogCount());
     
   }
+  
+  
   
 }

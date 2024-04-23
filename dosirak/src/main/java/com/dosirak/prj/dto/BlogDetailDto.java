@@ -15,6 +15,4 @@ public class BlogDetailDto {
   private String title, contents, keywordName;
   private Date createDt, modifyDt;
   private UserDto user;
-  private int blogCount;
-  private BlogCommentDto comment;
 }
