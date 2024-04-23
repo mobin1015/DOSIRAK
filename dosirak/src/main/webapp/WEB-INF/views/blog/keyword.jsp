@@ -34,6 +34,7 @@
   
   const fnKeywordList = () => {
 	  const keywordList = $('#keyword-list');
+	  moment.locale('ko');
 	  $.ajax({
 	    type: 'get',
 	    url: '${contextPath}/blog/keywordList.do',
@@ -54,8 +55,8 @@
              str += '<div class="list-content">' + blog.contents + '</div>';
              str += '<div class="list-info">';
              str += '<span>댓글 ' + blog.commentCount + '</span>';
-             str += '<span>2시간전</span>';
-             str += '<span>by ' + blog.user.nickname + '</span>';
+             str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
+             str += '<span>by '  + blog.user.nickname + '</span>';
              str += '</div>';
              str += '</div>';
              str += '<div class="list-item">';
@@ -74,10 +75,12 @@
 	      }
 	    },
 	    error: (jqXHR) => {
+	    	keywordList.append('<div>해당 키워드에 등록된 글이 없습니다.</div>');
 	      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
 	    }
 	  })
 	}
+  
   
   fnKeywordList();
   </script>

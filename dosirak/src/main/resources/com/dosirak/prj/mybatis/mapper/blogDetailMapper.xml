@@ -90,14 +90,6 @@
      WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
-  <select id="getHasThumbnail"
-          resultType="ImageDto">
-    SELECT MIN(IMG.IMAGE_NO), IMG.BLOG_LIST_NO, D.BLOG_LIST_NO
-      FROM IMAGE_T IMG, BLOG_DETAIL_T D
-     WHERE IMG.BLOG_LIST_NO = #{blogListNo}
-     GROUP BY IMG.BLOG_LIST_NO, , D.BLOG_LIST_NO
-  </select>
-  
   <update id="updateCommentCount">
     UPDATE BLOG_DETAIL_T
        SET COMMENT_COUNT = COMMENT_COUNT + 1
