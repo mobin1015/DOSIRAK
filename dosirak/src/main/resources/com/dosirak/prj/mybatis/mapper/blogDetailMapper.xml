@@ -88,10 +88,5 @@
      WHERE RN BETWEEN #{begin} AND #{end}
   </select>
   
-  <update id="updateCommentCount">
-    UPDATE BLOG_DETAIL_T
-       SET COMMENT_COUNT = COMMENT_COUNT + 1
-     WHERE BLOG_LIST_NO = 1
-  </update>
    
 </mapper>

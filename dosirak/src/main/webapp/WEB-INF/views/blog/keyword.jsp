@@ -76,11 +76,10 @@
 	    },
 	    error: (jqXHR) => {
 	    	keywordList.append('<div>해당 키워드에 등록된 글이 없습니다.</div>');
-	      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
 	    }
 	  })
 	}
-  
+   
   
   fnKeywordList();
   </script>
