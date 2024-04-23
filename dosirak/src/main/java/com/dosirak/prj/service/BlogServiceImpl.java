@@ -21,7 +21,6 @@ import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyPageUtils;
-import com.dosirak.prj.utils.MySecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
