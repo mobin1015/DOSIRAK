@@ -26,6 +26,7 @@ public interface BlogDetailMapper {
   List<BlogDetailDto> getKeywordList(Map<String, Object> map);
   
   int updateCommentCount(int blogListNo);
+  ImageDto getHasThumbnail(int imageNo);
   
   
 }

@@ -28,42 +28,50 @@
     <div id="keyword-list"></div>
   </div>
 
-  <input type="hidden" value="${blog[0].blogListNo}" name="blogListNo">
-  
-
   <script>
    
   var page = 1;
-
+  
   const fnKeywordList = () => {
 	  const keywordList = $('#keyword-list');
 	  $.ajax({
 	    type: 'get',
 	    url: '${contextPath}/blog/keywordList.do',
-	    data: 'keywordNo=${blog[0].keywordNo}&page=' + page,
+	    data: 'keywordNo=' + ${blog[0].keywordNo} + '&page=' + page,
 	    dataType: 'json',
 	    success: (resData) => {  
 	      console.log(resData);  
 	      keywordList.empty();	      
+	      if(resData.keywordList.length === 0) {
+	    	  keywordList.append('<div>등록된 글이 없습니다</div>');
+	      } else {
 	      $.each(resData.keywordList, (i, blog) => {
 	    	 let str = '<a href="">';
-	           str += '<div class="list-wrap">';
-                str += '<div class="contents-wrap">';
-    	            str += '<div class="list-item">';
-    	              str += '<h4 class="list-title">' + blog.title + '</h4>';
-                    str += '<div class="list-content">' + blog.contents + '</div>';
-                    str += '<div class="list-info">';
-                      str += '<span>댓글 ' + blog.commentCount + '</span>';
-                      str += '<span>2시간전</span>';
-                      str += '<span>by ' + blog.user.nickname + '</span>';
-                    str += '</div>';
-                  str += '</div>';
-                  str += '<div class="list-item">썸네일이미지</div>';
-                str += '</div>';   
-              str += '</div>';   
-              str += '</a>'
+             str += '<div class="list-wrap">';
+             str += '<div class="contents-wrap">';
+             str += '<div class="list-item">';
+             str += '<h4 class="list-title">' + blog.title + '</h4>';
+             str += '<div class="list-content">' + blog.contents + '</div>';
+             str += '<div class="list-info">';
+             str += '<span>댓글 ' + blog.commentCount + '</span>';
+             str += '<span>2시간전</span>';
+             str += '<span>by ' + blog.user.nickname + '</span>';
+             str += '</div>';
+             str += '</div>';
+             str += '<div class="list-item">';
+              if(blog.contents.includes('<img')) {
+                 let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+                 str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+               } else {
+                 str += '<div class="list-thumbnail">썸네일없음</div>';
+               }
+             str += '</div>';
+             str += '</div>';   
+             str += '</div>';   
+             str += '</a>'
           keywordList.append(str);
 	      })
+	      }
 	    },
 	    error: (jqXHR) => {
 	      alert(jqXHR.statusText + '(' + jqXHR.status + ')');

@@ -1,9 +1,11 @@
 package com.dosirak.prj.controller;
 
+import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,7 +50,12 @@ public class BlogController {
     
   @GetMapping(value="/keywordList.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> keywordList(HttpServletRequest request) {
-    return ResponseEntity.ok(blogService.getKeywordList(request));
+    try {
+      return ResponseEntity.ok(blogService.getKeywordList(request));      
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Collections.singletonMap("error", "KeywordNo를 갖고 있는 데이터가 없습니다."));
+    }
   }  
 
 }
