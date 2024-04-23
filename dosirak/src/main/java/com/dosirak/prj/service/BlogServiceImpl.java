@@ -1,6 +1,7 @@
 package com.dosirak.prj.service;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import com.dosirak.prj.dto.ImageDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
+import com.dosirak.prj.utils.MyPageUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class BlogServiceImpl implements BlogService {
   private final BlogDetailMapper blogDetailMapper;
   private final MyFileUtils myFileUtils;
+  private final MyPageUtils myPageUtils;
   @Override
   public ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile) {
     
@@ -61,7 +64,7 @@ public class BlogServiceImpl implements BlogService {
     String title = request.getParameter("title");
     String contents = request.getParameter("contents");
     int keywordNo = Integer.parseInt(request.getParameter("keyword"));
-    String keywordName = null;
+    String keywordName = request.getParameter("keywordName");
     int userNo = Integer.parseInt(request.getParameter("userNo"));
     
     // count 변수
@@ -136,4 +139,30 @@ public class BlogServiceImpl implements BlogService {
     // TODO Auto-generated method stub
     return null;
   }
+  
+  @Override
+  public List<BlogDetailDto> getKeywordNo(int keywordNo) {
+    return blogDetailMapper.getKeywordNo(keywordNo);
+  }
+  
+  @Override
+  public Map<String, Object> getKeywordList(HttpServletRequest request) {
+    
+    int keywordNo = Integer.parseInt(request.getParameter("keywordNo"));
+    int page = Integer.parseInt(request.getParameter("page"));
+    int total = blogDetailMapper.getKeywordCount(keywordNo);
+    int display = 10;    
+    
+    myPageUtils.setPaging(total, display, page);
+    
+    Map<String, Object> map = Map.of("keywordNo", keywordNo
+                                   , "begin", myPageUtils.getBegin()
+                                   , "end", myPageUtils.getEnd());    
+    
+    return Map.of("keywordList", blogDetailMapper.getKeywordList(map)
+                , "paging", myPageUtils.getTotalPage());
+  }
+  
+  
+  
 }

@@ -1,0 +1,18 @@
+@charset "UTF-8";
+
+.keyword-title {border-bottom: 1px solid #ddd;}
+.keyword-title h3 {font-size: 30px; text-align: center; padding: 0 0 40px;}
+
+.keyword-wrap {max-width: 940px; margin: 0 auto;}
+
+/* 키워드 리스트 */
+#keyword-list a {width: 100%;}
+.list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px;}
+.contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
+.contents-wrap {display: flex; flex-wrap: nowrap; align-items: center;  margin-top: 6px; justify-content: space-between;}
+.contents-wrap .list-item p img {display: none;}
+.contents-wrap .list-item .list-content {max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px;}
+.list-thumbnail {width:120px; height: 120px; overflow: hidden;}
+.list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}
+
+
