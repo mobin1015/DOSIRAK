@@ -1,21 +1,15 @@
 package com.dosirak.prj.controller;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.service.UserService;
 
-import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/user")
@@ -25,85 +19,54 @@ public class UserController {
 
   private final UserService userService;
   
-  @GetMapping("/signup.page")
-  public String signupPage() {
-    return "user/signup";
+  
+  //mypage로 넘어가는거임ㅅ시
+  
+  @GetMapping("/mypage.do")
+  public String myPage(@RequestParam(value="userNo", required=false, defaultValue="2") int userNo,
+                                    Model model) {
+    userService.loadUserByNo(userNo, model);
+
+    return "user/mypage";
   }
   
-  @PostMapping(value="/checkEmail.do", produces="application/json")
-  public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params) {
-  	System.out.println(params);
-    return userService.checkEmail(params);
+  // ★★★ 불러오기
+  /*
+  @GetMapping("profile")
+  public String profile() {
+    return "/user/profile";
+  }
+  단순페이지이동:확인용 -> 그냥 페이지 확인하려던거니까 나중에 날려
+ */ 
+  
+ // profile jsp 로 user정보 담아서 이동
+  @GetMapping("/profile.do")
+  public String profile(@RequestParam(value="userNo", required=false, defaultValue="2") int userNo,
+                                      Model model){
+    userService.loadUserByNo(userNo, model);
+    //model.addAttribute("user", userService.getUserByNo(userNo));
+    return "user/profile";
   }
   
-  @PostMapping(value="/sendCode.do", produces="application/json")
-  public ResponseEntity<Map<String, Object>> sendCode(@RequestBody Map<String, Object> params) {
-    return userService.sendCode(params);
-  }
-  
-  @PostMapping("/signup.do")
-  public void signup(HttpServletRequest request, HttpServletResponse response) {
-    userService.signup(request, response);
-  }
-  
-  @GetMapping("/leave.do")
-  public void leave(HttpServletRequest request, HttpServletResponse response) {
-    userService.leave(request, response);
-  }
-  
-  @GetMapping("/login.page")
-  public String loginPage(HttpServletRequest request
-  											, Model model) {
-  	
-  	// Log In 페이지로 url 넘겨 주기 (로그인 후 이동할 경로를 의미함)
-  	model.addAttribute("url", userService.getRedirectURLAfterLogin(request));
-  	  	
-  	// Log In 페이지로 naverLoginURL 넘겨 주기 (네이버 로그인 요청 주소를 의미함)
-  	model.addAttribute("naverLoginURL", userService.getNaverLoginURL(request));
-  	
-  	return "user/login";
-  }
-  
-  @PostMapping("/login.do")
-  public void login(HttpServletRequest request, HttpServletResponse response) {
-    userService.login(request, response);
-  }
-  
-  @GetMapping("/naver/getAccessToken.do")
-  public String getAccessToken(HttpServletRequest request) {
-  	String accessToken = userService.getNaverLoginAccessToken(request);
-  	return "redirect:/user/naver/getProfile.do?accessToken=" + accessToken;
-  }
-  
-  @GetMapping("/naver/getProfile.do")
-  public String getProfile(HttpServletRequest request, Model model) {
-  	
-  	// 네이버로부터 받은 프로필 정보
-  	UserDto naverUser = userService.getNaverLoginProfile(request.getParameter("accessToken"));
-  	
-  	// 반환 경로
-  	String path = null;
-  	
-  	// 프로필이 DB에 있는지 확인 (있으면 Log IN, 없으면 Sign UP)
-  	if(userService.hasUser(naverUser)) {
-  		// Log In
-  		userService.naverLogin(request, naverUser);
-  		path = "redirect:/main.page";
-  	} else {
-  		// Sign Up (네이버 가입 화면으로 이동)
-  		model.addAttribute("naverUser", naverUser);
-  		path = "user/naver_signup";
-  	}
-  	return path;
-  }
+  // userNo 에 강제로 숫자 넣어서 이동함
  
-  @GetMapping("/logout.do")
-  public void logout(HttpServletRequest request, HttpServletResponse response) {
-    userService.logout(request, response);
+ /*
+ @GetMapping("/profile.do")
+ public String profile(Model model){
+   int userNo = 1;
+   model.addAttribute("user", userService.getUserByNo(userNo));
+   return "user/profile"; 
+ }
+*/
+  
+  @PostMapping("/modify.do")
+  public String modifyProfile(@RequestParam("blogImgPath") MultipartFile blogImgPath,
+                              @RequestParam("userNo") int userNo,
+                              @RequestParam("nickname") String nickname,
+                              @RequestParam("blogContents") String blogContents) {
+      int modifyCount = userService.modifyProfile(userNo, nickname, blogContents, blogImgPath);
+      // 수정 결과에 따라 리다이렉트할 주소와 함께 리턴
+      return "redirect:/user/mypage.do";
   }
-  
+
 }
-
-   
-  
-
