@@ -45,8 +45,9 @@ public class UserController {
   }
   
   @PostMapping("/signup.do")
-  public void signup(HttpServletRequest request, HttpServletResponse response) {
+  public String signup(HttpServletRequest request, HttpServletResponse response) {
     userService.signup(request, response);
+    return "redirect:/main.page";
   }
   
   @GetMapping("/leave.do")
