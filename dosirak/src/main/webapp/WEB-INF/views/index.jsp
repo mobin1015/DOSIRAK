@@ -67,13 +67,14 @@
 	        str += '<h4 class="slide-title nanum">';
 	        str += blog.title;
 	        str += '</h4>';
-	        str += '<p class="slide-contents">';
+	        str += '<div class="slide-contents">';
 	        str += blog.contents;
-	        str += '</p>';
-	        str += '<span class="slide-by">by</span><span class="slide-user">';
+	        str += '</div>';
+	        str += '<span class="slide-by">by </span><span class="slide-user">';
 	        str += blog.user.nickname;
 	        str += '</span>  ';
 	        str += '</div>'; 
+	        str += '<div class="mask"></div>'
 	        str += '</a>'; 
 	        str += '</div>'; 
 	        mainList.append(str);
