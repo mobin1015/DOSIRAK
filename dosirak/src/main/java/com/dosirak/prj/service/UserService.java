@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 
+import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 
 public interface UserService {
@@ -17,7 +17,7 @@ public interface UserService {
   ResponseEntity<Map<String, Object>> getMypageBlogList(HttpServletRequest request);
   UserDto getUserByNo(int userNo);
   int getblogCount(int userNo);
-  void loadBlogByNo(int blogListNo, Model model);
+  BlogDetailDto getBlogByNo(int blogListNo);
 
 	//가입
 	void signup(HttpServletRequest request, HttpServletResponse response);

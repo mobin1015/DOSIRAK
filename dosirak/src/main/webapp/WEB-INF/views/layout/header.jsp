@@ -1,6 +1,6 @@
+<%@page import="com.dosirak.prj.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%session.setAttribute("userNo", 1);%>     
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
@@ -82,7 +82,6 @@
               <div class="btn-request logout">브런치스토리 시작하기</div>
 
               <div type="button" class="nav-btn" id="btn-write" >글쓰기</div>
-              <div type="button" class="nav-btn" id="btn-mypage" >마이페이지</div>
             </div>
            </div>
         </c:if>
@@ -96,7 +95,7 @@
                 <p class="profile-id">user-email</p>
                 <div class="profile-top">
                   <div class="nav-btn">글쓰기</div>
-                  <div class="nav-btn">마이페이지</div>
+                  <div type="button" class="nav-btn" id="btn-mypage" >마이페이지</div>
                 </div> 
             </div>
           </div>
@@ -141,14 +140,12 @@
         event.stopPropagation();
     });
     
-    
-    // 로그인 구현 완료 후 수정 필요
     const fnMyPage = ()=>{
         $('#btn-mypage').on('click', (evt)=>{
-          location.href = '${contextPath}/user/mypage.do?userNo=${sessionScope.userNo}';
+          location.href = '${contextPath}/user/mypage.do?userNo=${user.userNo}';
         })
       }
-      fnMyPage();
+      fnMyPage(); 
     
   
     </script>

@@ -12,35 +12,33 @@
 <!-- include custom css/js -->
 <link rel="stylesheet" href="${contextPath}/resources/css/mypage.css?dt=${dt}">
 
-<div class="wrap">
-
+  <div class="wrap">
     <div class="profile-wrap">
-      <div class="bloger-thumb" data-user-no="${user.userNo}">    
-       <!-- 프로필 이미지 있을 때 -->
-       <c:if test="${not empty user.blogImgPath}">
-        <img src="${contextPath}${user.blogImgPath}">
-       </c:if>
-       <!-- 프로필 이미지 없을 때 (기본이미지 첨부 됨) -->
-       <c:if test="${empty user.blogImgPath}">
-        <img class="profile-user-image" src="${contextPath}/resources/images/check1.png" alt="프로필 이미지">
-       </c:if>
-      </div>
-      <div class="blog-wrap">
-        <strong class="nickname">${user.nickname}</strong>
-        <span class="blog-contents">${user.blogContents}</span>
-      </div>
-      <div class="profile-btn-wrap">
-        <c:if test="${not empty sessionScope.userNo}">
-          <c:if test="${sessionScope.userNo == user.userNo}"> 
+     <c:if test="${not empty sessionScope.user.userNo}"> 
+       <div class="bloger-thumb" data-user-no="${user.userNo}">    
+         <!-- 프로필 이미지 있을 때 -->
+         <c:if test="${not empty user.blogImgPath}">
+          <img src="${contextPath}${user.blogImgPath}">
+         </c:if>
+         <!-- 프로필 이미지 없을 때 (기본이미지 첨부 됨) -->
+         <c:if test="${empty user.blogImgPath}">
+          <img class="profile-user-image" src="${contextPath}/resources/images/check1.png" alt="프로필 이미지">
+         </c:if>
+       </div>
+       <div class="blog-wrap">
+         <strong class="nickname">${user.nickname}</strong>
+         <span class="blog-contents">${user.blogContents}</span>
+       </div>
+       <div class="profile-btn-wrap">
+         <c:if test="${sessionScope.user.userNo == user.userNo}"> 
            <button class="btn-profile nav-btn" type="button">프로필편집</button>
            <button class="btn-write nav-btn" type="button">글쓰기</button>
-          </c:if>
-        </c:if> 
-      </div>
-
+         </c:if> 
+       </div>  
+      </c:if> 
     </div>
 
-    <div class="wrap-main">
+  <div class="wrap-main">
       <div class="tab-contents">
         <span>글</span>
         <span id="blogCount"></span>        
@@ -55,44 +53,81 @@
 
 
 <script>
-//글쓰기
+
+// 전역변수
+var totalPage = 0;
+var page = 1;
+
+//로그인 체크
+/* const fnCheckSignin = () => {
+    if('${sessionScope.user.userNo}' === '') {  // session에 저장된 유저가 없을 때
+      if(confirm('세션이 만료되어 Sign In 이 필요합니다. Sign In 할까요?')) {
+        location.href = '${contextPath}/user/signin.page';
+      }
+    }
+  } */
+
+// 글쓰기 버튼
 const fnWriteBlog = ()=> {
   $('.btn-write').on('click', (evt)=>{
     location.href = '${contextPath}/blog/write.page';
   })
 }
 
-// 프로필편집
+// 프로필편집 버튼
 const fnEditProfile = () => {
   $('.btn-profile').on('click', (evt)=>{
-        location.href = '${contextPath}/user/profile.do?userNo=${user.userNo}';
+        location.href = '${contextPath}/user/profile.do?userNo=${sessionScope.user.userNo}';
   })
 }
 
-// 전역변수
-var totalPage = 0;
-var page = 1;
+// 블로그 카운트
+$(document).ready(function() {
+    // 페이지가 로드되면 사용자의 블로그 총 개수를 가져오는 ajax 요청을 보낸다.
+    $.ajax({
+        type: 'GET',
+        url: '${contextPath}/user/blogCount.do',
+        data: 'userNo=${sessionScope.user.userNo}', 
+        dataType: 'json',
+        success: function(response) {
+            $('#blogCount').text(response);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error:', textStatus, '(' + jqXHR.status + '):', errorThrown);
+        }
+    });
+})
 
+// 블로그 리스트 
 const fnGetProfileBlogList = () => {
-	
-	$.ajax({
-		// 요청
-	  type: 'GET',
-	  url: '${contextPath}/user/getProfileBlogList.do?userNo=${userNo}&page=' + page,
-		//data: 'userNo=${sessionScope.userNo}&page=' + page
-	  // 응답
-	  dataType: 'json',
-	  success: (resData) => {
-			console.log("success");
-		  totalPage = resData.totalPage;
-		  const blogList = $('#blog-list'); 
-		  blogList.empty();
-		  $.each(resData.blogList, (i, blog) => {
-			  let str = '<a class="blog">';
-			     str += '<div class="list-wrap" data-user-no="'+ blog.user.userNo +'"  data-blog-no="' + blog.blogListNo + '">';
-			       str += '<div class="contents-wrap">';
-			        str += '<div class="list-item">';
-			         str += '<h4 class="list-title">' + blog.title + '</h4>';
+  
+  $.ajax({
+    // 요청
+    type: 'GET',
+    url: '${contextPath}/user/getProfileBlogList.do',
+    data: 'userNo=${user.userNo}&page=' + page,
+    // 응답
+    dataType: 'json',
+    success: (resData) => {
+      console.log("success");
+      totalPage = resData.totalPage;
+      const blogList = $('#blog-list'); 
+      blogList.empty();
+      $.each(resData.blogList, (i, blog) => {
+        let str = '<a class="blog" data-user-no="'+ blog.user.userNo +'"  data-blog-list-no="' + blog.blogListNo + '">';
+           str += '<div class="list-wrap">';
+             str += '<div class="contents-wrap">';
+              str += '<div class="list-item">';
+               str += '<h4 class="list-title">' + blog.title + '</h4>';
+               
+               // 썸네일 이미지 처리
+               if(blog.contents.includes('<img')) {
+                 let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+                 str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+               } else {
+                 str += '<div class="list-thumbnail">썸네일없음</div>';
+               }
+               
                str += '<div class="list-content">' + blog.contents + '</div>';
                str += '<div class="list-info">';
                 str += '<span>댓글</span>';
@@ -105,22 +140,23 @@ const fnGetProfileBlogList = () => {
             str += '</div>';   
           str += '</div>';   
           str += '</a>'  
-			 
-	      blogList.append(str);
-		  })
-	  },
-	  error: (jqXHR) => {
-	      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-	  }
-	});
+       
+        blogList.append(str);
+      })
+    },
+    error: (jqXHR) => {
+        alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+    }
+  });
 }
 
+// 무한 스크롤
 const fnScrollHandler = () => {
-	
-	var timerId;
-	
-	$(window).on('scroll', (evt) => {                          
-		  
+  
+  var timerId;
+  
+  $(window).on('scroll', (evt) => {                          
+      
     if(timerId) {                                               
         clearTimeout(timerId);   
     }
@@ -141,30 +177,17 @@ const fnScrollHandler = () => {
    })
 }
 
-$(document).ready(function() {
-    // 페이지가 로드되면 사용자의 블로그 총 개수를 가져오는 AJAX 요청을 보냅니다.
-    $.ajax({
-        type: 'GET',
-        url: '${contextPath}/user/blogCount.do',
-        data: 'userNo=${userNo}', // 사용자 번호를 지정하세요.
-        dataType: 'json',
-        success: function(response) {
-            // 성공적으로 블로그 총 개수를 가져왔을 때, 해당 값을 화면에 표시합니다.
-            $('#blogCount').text(response);
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            // AJAX 요청이 실패한 경우 에러를 콘솔에 출력합니다.
-            console.error('Error:', textStatus, '(' + jqXHR.status + '):', errorThrown);
-        }
-    });
-})
+// 블로그 상세페이지 이동
+const fnBlogDetail = () => {
+  $(document).on('click', '.blog', function(evt) {
+    let blogListNo = $(this).attr('data-blog-list-no');
+      location.href = '${contextPath}/blog/detail.do?blogListNo=' + blogListNo;
+  });
+}
 
-  const fnBlogDetail = () => {
-	$(document).on('click', '.blog', (evt) => {
-		location.href = '${contextPath}/blog/detail.do?blogListNo=${blogListNo}';
-	});
-} 
 
+  
+//fnCheckSignin();  
 fnWriteBlog();
 fnEditProfile(); 
 fnGetProfileBlogList();

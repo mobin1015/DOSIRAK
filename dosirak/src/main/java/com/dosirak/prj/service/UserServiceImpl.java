@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.UserMapper;
 import com.dosirak.prj.utils.MyFileUtils;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
   
   @Override
   public UserDto getUserByNo(int userNo) {
+    System.out.println(userMapper.getUserByNo(userNo));
     return userMapper.getUserByNo(userNo);
   }
   
@@ -76,9 +78,8 @@ public class UserServiceImpl implements UserService {
  }
   
   @Override
-  public void loadBlogByNo(int blogListNo, Model model) {
-    model.addAttribute("blog", userMapper.getBlogByNo(blogListNo));
-    
+  public BlogDetailDto getBlogByNo(int blogListNo) {
+    return userMapper.getBlogByNo(blogListNo);
   }
   
   private final MyJavaMailUtils myJavaMailUtils;

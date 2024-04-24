@@ -44,9 +44,6 @@ public class UserController {
   // 마이페이지 블로그 리스트
   @GetMapping(value="/getProfileBlogList.do", produces = "application/json")
   public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
-   // System.out.println("getProfileBlogList 요청이 수신되었습니다.");
-   // ResponseEntity<Map<String, Object>> responseEntity = userService.getMypageBlogList(request);
-   // System.out.println("getProfileBlogList 응답을 반환합니다.");
     return userService.getMypageBlogList(request);
   }
   
@@ -57,11 +54,10 @@ public class UserController {
     return ResponseEntity.ok(blogCount);
   }
  
-  // 마이페이지 블로그 상세 
+  // 마이페이지 블로그 상세페이지 이동 
   @GetMapping("/detail.do")
-  public String detail(@RequestParam(value="blogListNo", required=false, defaultValue="0") int blogListNo
-                     , Model model) {
-    userService.loadBlogByNo(blogListNo, model);
+  public String detail(@RequestParam int blogListNo, Model model) {
+    model.addAttribute("blog", userService.getBlogByNo(blogListNo));
     return "blog/detail";
   }
   
