@@ -30,7 +30,9 @@
         </div>
         <br>
         <div class="blog-detail-wirter">
-         <a>${blog.user.nickname}</a>
+         <c:if test="${empty blog.user.nickname}"><a>${blog.user.userNo}</a> </c:if>
+         <c:if test="${!(empty blog.user.nickname)}"><a>${blog.user.nickname}</a> </c:if>
+         
         </div>
         <br>
         <br>
@@ -150,7 +152,12 @@ const fnCommentList = () => {
                    if(comment.state === 0){
                      str += '<div>삭제된 댓글입니다.</div>';
                    } else {
-                     str += '<div>' +comment.user.nickname+ '</div>';
+                	   if(comment.user.nickname === null) {
+                		   str += '<div>' +comment.user.userNo+ '</div>';
+                	   }
+                	   else{
+                		   str += '<div>' +comment.user.nickname+ '</div>';
+                	   }
                      str +=   moment(comment.createDt).format('YYYY.MM.DD') ;
                      str += '<div>' + comment.contents + '</div>';
                      str += '<button type="button" class="btn btn-success btn-reply">답글</button>';

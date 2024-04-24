@@ -21,7 +21,9 @@
 
   <div>
     <span>작성자</span>
-    <span>${blog.user.nickname}</span>
+    <span>         <c:if test="${empty blog.user.nickname}">${blog.user.userNo}</c:if>
+         <c:if test="${!(empty blog.user.nickname)}">${blog.user.nickname}</c:if>
+         </span>
   </div>
   
   <div>
