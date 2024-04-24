@@ -1,6 +1,7 @@
 package com.dosirak.prj.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -17,9 +18,12 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.UserMapper;
+import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyJavaMailUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
 
@@ -31,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
   private final MyJavaMailUtils myJavaMailUtils;
+  
 
 	@Override
 	public ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params) {
@@ -430,9 +435,24 @@ public class UserServiceImpl implements UserService {
     Map<String, Object> map = Map.of("email", naverUser.getEmail(),
                                      "ip", request.getRemoteAddr());
 
+<<<<<<< HEAD
   
     UserDto user = userMapper.getUserByMap(map);
     request.getSession().setAttribute("user", user);
     
   }
+=======
+		Map<String, Object> map = Map.of("email", naverUser.getEmail(), 
+																		 "ip", request.getRemoteAddr());
+		
+		UserDto user = userMapper.getUserByMap(map);
+		request.getSession().setAttribute("user", user);
+		userMapper.insertAccessHistory(map);
+				
+	}
+	
+	
+	
+
+>>>>>>> ec02a7ba5d40f977d7f06bfae49d03077ca3f6a8
 }

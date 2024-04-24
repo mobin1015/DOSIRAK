@@ -80,5 +80,8 @@
      WHERE SESSION_ID = #{sessionId} 
   </update>
   
+  
+  
+ 
 
 </mapper>

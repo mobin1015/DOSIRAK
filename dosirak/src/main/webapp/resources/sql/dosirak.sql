@@ -132,6 +132,7 @@ INSERT INTO USER_T VALUES(USER_SEQ.NEXTVAL, 'admin@example.com', STANDARD_HASH('
 --COMMIT;
 ----ROLLBACK;
 
+
 /************************* ?TRIGGER *************************/
 
 /*
