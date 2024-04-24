@@ -21,9 +21,9 @@ public interface UserService {
 	void login(HttpServletRequest request, HttpServletResponse response);
 	void logout(HttpServletRequest request, HttpServletResponse response);
 	// 네이버 로그인
-	String getNaverLoginURL(HttpServletRequest request);
-	String getNaverLoginAccessToken(HttpServletRequest request);
-	UserDto getNaverLoginProfile(String accessToken);
-	boolean hasUser(UserDto user);
-  void naverLogin(HttpServletRequest request, UserDto naverUser);
+  String getNaverLoginURL(HttpServletRequest request);
+  String getNaverLoginAccessToken(HttpServletRequest request);
+  UserDto getNaverLoginProfile(String accessToken);
+  boolean hasUser(UserDto user);
+  void naverSignin(HttpServletRequest request, UserDto naverUser);
 }
