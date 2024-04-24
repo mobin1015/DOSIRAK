@@ -45,7 +45,7 @@
       , #{name}
       , #{gender}
       , #{mobile}
-      , 0
+      , #{signupKind}
       , CURRENT_DATE
       , CURRENT_DATE
     )
@@ -63,14 +63,12 @@
         ACCESS_HISTORY_NO
       , EMAIL
       , IP
-      , USER_AGENT
       , SESSION_ID
       , SIGNIN_DT
     ) VALUES (
         ACCESS_HISTORY_SEQ.NEXTVAL
       , #{email}
       , #{ip}
-      , #{userAgent}
       , #{sessionId}
       , CURRENT_DATE
     )
