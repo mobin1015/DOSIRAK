@@ -1,6 +1,6 @@
 <%@page import="com.dosirak.prj.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>   
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
@@ -80,7 +80,6 @@
               </p>
               <p class="slogan-writer">C.S.Lewis</p>
               <div class="btn-request logout">브런치스토리 시작하기</div>
-
               <div type="button" class="nav-btn" id="btn-write" >글쓰기</div>
             </div>
            </div>
@@ -146,7 +145,6 @@
         })
       }
       fnMyPage(); 
-    
-  
+
     </script>
     

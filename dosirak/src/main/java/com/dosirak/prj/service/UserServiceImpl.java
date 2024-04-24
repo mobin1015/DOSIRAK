@@ -66,7 +66,8 @@ public class UserServiceImpl implements UserService {
     myPageUtils.setPaging(total, display, page);
 
     // 목록 가져올 때 전달 할 Map 생성
-    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin()
+    Map<String, Object> map = Map.of("userNo", userNo
+                                    , "begin", myPageUtils.getBegin()
                                     , "end", myPageUtils.getEnd());
     
     // 목록 화면으로 반환할 값 (목록 + 전체 페이지 수)

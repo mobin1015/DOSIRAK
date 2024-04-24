@@ -34,7 +34,15 @@ public class UserController {
     return "user/mypage";
   }
   
-  // 마이페이지 프로필버튼
+  // 블로거페이지
+  @GetMapping("/bloger.do")
+  public String blogerPage(@RequestParam int userNo, Model model) {
+    model.addAttribute("user", userService.getUserByNo(userNo));
+    //model.addAttribute("blogCount", userService.getblogCount());
+    return "user/bloger";
+  }
+  
+  // 마이페이지 프로필편집
   @GetMapping("/profile.do")
   public String edit(@RequestParam int userNo, Model model) {
     model.addAttribute("user", userService.getUserByNo(userNo));
@@ -42,8 +50,8 @@ public class UserController {
   }
   
   // 마이페이지 블로그 리스트
-  @GetMapping(value="/getProfileBlogList.do", produces = "application/json")
-  public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+  @GetMapping(value="/getBlogList.do", produces = "application/json")
+  public ResponseEntity<Map<String, Object>> getBlogList(@RequestParam int userNo, HttpServletRequest request) {
     return userService.getMypageBlogList(request);
   }
   

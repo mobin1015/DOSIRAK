@@ -44,7 +44,7 @@
         <span id="blogCount"></span>        
       </div>
       <div class="blog-list-wrap">
-        <ul id="blog-list"></ul>
+        <div id="blog-list"></div>
       </div>
       
     </div>
@@ -87,7 +87,7 @@ $(document).ready(function() {
     $.ajax({
         type: 'GET',
         url: '${contextPath}/user/blogCount.do',
-        data: 'userNo=${sessionScope.user.userNo}', 
+        data: 'userNo=${user.userNo}', 
         dataType: 'json',
         success: function(response) {
             $('#blogCount').text(response);
@@ -99,12 +99,12 @@ $(document).ready(function() {
 })
 
 // 블로그 리스트 
-const fnGetProfileBlogList = () => {
+const fnGetMypageBlogList = () => {
   
   $.ajax({
     // 요청
     type: 'GET',
-    url: '${contextPath}/user/getProfileBlogList.do',
+    url: '${contextPath}/user/getBlogList.do',
     data: 'userNo=${user.userNo}&page=' + page,
     // 응답
     dataType: 'json',
@@ -113,6 +113,9 @@ const fnGetProfileBlogList = () => {
       totalPage = resData.totalPage;
       const blogList = $('#blog-list'); 
       blogList.empty();
+      if (resData.blogList.length === 0) {
+          blogList.append('<p class="none-blog">등록된 게시물이 없습니다.</p>');
+        } else {
       $.each(resData.blogList, (i, blog) => {
         let str = '<a class="blog" data-user-no="'+ blog.user.userNo +'"  data-blog-list-no="' + blog.blogListNo + '">';
            str += '<div class="list-wrap">';
@@ -141,17 +144,18 @@ const fnGetProfileBlogList = () => {
           str += '</div>';   
           str += '</a>'  
        
-        blogList.append(str);
-      })
+         blogList.append(str);
+        });
+      }
     },
     error: (jqXHR) => {
-        alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+    	  alert(jqXHR.statusText + '(' + jqXHR.status + ')');
     }
   });
 }
 
 // 무한 스크롤
-const fnScrollHandler = () => {
+const fnMypageScrollHandler = () => {
   
   var timerId;
   
@@ -171,14 +175,14 @@ const fnScrollHandler = () => {
             return;
           }
           page++;
-          fnGetProfileBlogList();
+          fnGetMypageBlogList();
         }
       }, 500);
    })
 }
 
 // 블로그 상세페이지 이동
-const fnBlogDetail = () => {
+const fnMypageBlogDetail = () => {
   $(document).on('click', '.blog', function(evt) {
     let blogListNo = $(this).attr('data-blog-list-no');
       location.href = '${contextPath}/blog/detail.do?blogListNo=' + blogListNo;
@@ -190,9 +194,9 @@ const fnBlogDetail = () => {
 //fnCheckSignin();  
 fnWriteBlog();
 fnEditProfile(); 
-fnGetProfileBlogList();
-//fnScrollHandler();
-fnBlogDetail();
+fnGetMypageBlogList();
+//fnMypageScrollHandler();
+fnMypageBlogDetail();
 
 
 </script>
