@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+
+
+
+.container {display: flex; justify-content: center;}
+.contets-wrap{width: 700px; padding: 20px; background-color: white;}
+.blog-detail-title {max-width: 960px; letter-spacing: -.05em;  }
+.blog-detail-title h {color: #1a1a1a; font-size: 34pt; font-weight: 400; margin-bottom: 10px; }
+.blog-detail-writer {max-width: 960px; letter-spacing: -.05em; text-align: center;  }
+.blog-detail-writer a {color: #000000; font-size: 12px; font-family:'Noto Sans KR','Malgun Gothic', sans-serif; !important; }
+
+.container2{background-color: #FBFBFB; display: flex; justify-content: center; bottom: 0;}  
+.comment-btn {float: right;}
+
+.utils-wrap {border-top: 1px solid #eee;padding: 32px 0;}
+
+.writerinfo-wrap {width: 700px; padding: 20px; padding: 20px;}       
+
+.writer-iamge{float: right;}
+
+.blog-detail-writer{ text-align: center; }
+.blog-detail-writer a{ color: #666666; font-size: 12px; font-family:'Noto Sans DemiLight','Malgun Gothic', sans-serif;
+
+                      
+
+
+

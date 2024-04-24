@@ -41,4 +41,11 @@ public interface UserService {
   //수정중
  UserDto loadUserByNo(int userNo);
   
+
+  String getNaverLoginURL(HttpServletRequest request);
+  String getNaverLoginAccessToken(HttpServletRequest request);
+  UserDto getNaverLoginProfile(String accessToken);
+  boolean hasUser(UserDto user);
+  void naverSignin(HttpServletRequest request, UserDto naverUser);
+
 }

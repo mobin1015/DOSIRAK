@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/default.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/detail.css?dt=${dt}">
 
 </head>
 <body>
@@ -77,7 +78,6 @@
               </p>
               <p class="slogan-writer georgian">C.S.Lewis</p>
               <div class="btn-request noto"><a href="${contextPath}/user/login.page"">브런치스토리 시작하기</a></div>
-              <!-- div type="button" class="nav-btn" id="btn-write" >글쓰기이따지워</div>-->
             </div>
            </div>
         </c:if>
@@ -90,7 +90,7 @@
                 <p class="profile-name noto">이름</p>
                 <p class="profile-id georgian">user-email@email.com</p>
                 <div class="profile-top">
-                  <div class="nav-btn noto"><a href="">글쓰기</a></div>
+                  <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
                   <div class="nav-btn noto"><a href="">마이페이지</a></div>
                 </div> 
             </div>
@@ -107,12 +107,12 @@
     
     
     <script>
-    const fnBlogWrite = ()=>{
-    	$('#btn-write').on('click', (evt)=>{
-    		location.href = "${contextPath}/blog/write.page";
+    const fnSearchBlog = ()=>{
+    	$('.search-btn').on('click', (evt)=>{
+    		location.href = "${contextPath}/blog/search.page";
     	})
     }
-    fnBlogWrite();
+    fnSearchBlog();
     
     var aa=true;
     $(".menu-btn").click(function(){

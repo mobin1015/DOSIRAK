@@ -36,7 +36,6 @@ public class UserController {
   
   @PostMapping(value="/checkEmail.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> checkEmail(@RequestBody Map<String, Object> params) {
-  	System.out.println(params);
     return userService.checkEmail(params);
   }
   
@@ -46,8 +45,9 @@ public class UserController {
   }
   
   @PostMapping("/signup.do")
-  public void signup(HttpServletRequest request, HttpServletResponse response) {
+  public String signup(HttpServletRequest request, HttpServletResponse response) {
     userService.signup(request, response);
+    return "redirect:/main.page";
   }
   
   @GetMapping("/leave.do")
@@ -75,30 +75,32 @@ public class UserController {
   
   @GetMapping("/naver/getAccessToken.do")
   public String getAccessToken(HttpServletRequest request) {
-  	String accessToken = userService.getNaverLoginAccessToken(request);
-  	return "redirect:/user/naver/getProfile.do?accessToken=" + accessToken;
+    String accessToken = userService.getNaverLoginAccessToken(request);
+    return "redirect:/user/naver/getProfile.do?accessToken=" + accessToken;
   }
   
   @GetMapping("/naver/getProfile.do")
   public String getProfile(HttpServletRequest request, Model model) {
-  	
-  	// 네이버로부터 받은 프로필 정보
-  	UserDto naverUser = userService.getNaverLoginProfile(request.getParameter("accessToken"));
-  	
-  	// 반환 경로
-  	String path = null;
-  	
-  	// 프로필이 DB에 있는지 확인 (있으면 Log IN, 없으면 Sign UP)
-  	if(userService.hasUser(naverUser)) {
-  		// Log In
-  		userService.naverLogin(request, naverUser);
-  		path = "redirect:/main.page";
-  	} else {
-  		// Sign Up (네이버 가입 화면으로 이동)
-  		model.addAttribute("naverUser", naverUser);
-  		path = "user/naver_signup";
-  	}
-  	return path;
+    
+    // 네이버로부터 받은 프로필 정보
+    UserDto naverUser = userService.getNaverLoginProfile(request.getParameter("accessToken"));
+    
+    // 반환 경로
+    String path = null;
+    
+    // 프로필이 DB에 있는지 확인 (있으면 Sign In, 없으면 Sign Up)
+    if(userService.hasUser(naverUser)) {
+      // Sign In
+      userService.naverSignin(request, naverUser);
+      path = "redirect:/main.page";
+    } else {
+      // Sign Up (네이버 가입 화면으로 이동)
+      model.addAttribute("naverUser", naverUser);
+      path = "user/naver_signup";
+    }
+    
+    return path;
+    
   }
  
   @GetMapping("/logout.do")

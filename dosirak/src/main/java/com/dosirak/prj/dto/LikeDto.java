@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class LikeDto {
-	private int likeNo, blogListNo;
-	private UserDto user;
+	private int likeNo, blogListNo, userNo;
 }
