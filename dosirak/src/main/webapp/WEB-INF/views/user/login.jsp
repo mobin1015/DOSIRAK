@@ -26,9 +26,12 @@
       <input type="hidden" name="url" value="${url}">
       <button type="submit">Login In</button>
     </div>
+    
+    </br>
+    
     <div>
       <a href="${naverLoginURL}">
-        <button>네이버</button>
+        <img src="${contextPath}/resources/2021_Login_with_naver_guidelines_Kr/btnW_완성형.png">
       </a>
     </div>
   </form>
@@ -45,4 +48,3 @@
     
   
 <%@ include file="../layout/footer.jsp" %>
-

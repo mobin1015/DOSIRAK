@@ -1,0 +1,26 @@
+@charset "UTF-8";
+
+.header-wrap {width: 1920px; height: 120px; background-color: #F8F8F8}
+.profile-wrap {width: 700px; height: 167px; margin: 10px auto;}
+
+/* 프로필 */
+.profile-user-image {width: 100px; height: 100px; border-radius: 100px; margin-left: 605px;}
+.nickname {display:block; box-sizing: border-box; width: 700px; height: 39px; padding-right: 170px; font-size: 28px; font-weight: 400;}
+.blog-contents {display: block; padding-top: 5px; font-size: 13px; line-height: 20px; color: #959595;}
+
+/* 게시글 total tab */
+.tab-contents {width: 700px; height: 24px; margin: 100px auto 30px; padding: 16px 0 17px; display: flex; justify-content: center; align-items: center; border-top: 1px solid #eee;}
+.tab-contents span {margin: 30px 5px 0 0; }
+
+/* 블로그 리스트 */
+.blog-list-wrap {max-width: 700px; margin: 0 auto;}
+.none-blog {text-align: center; margin-top: 30px;}
+
+#blog-list a {width: 100%;}
+.list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px;}
+.contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
+.contents-wrap {display: flex; flex-wrap: nowrap; align-items: center;  margin-top: 6px; justify-content: space-between;}
+.contents-wrap .list-item p img {display: none;}
+.contents-wrap .list-item .list-content {max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px;}
+.list-thumbnail {width:120px; height: 120px; overflow: hidden;}
+.list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}

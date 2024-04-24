@@ -11,10 +11,9 @@ import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 
 public interface UserService {
-
   
-  // 마이페이지 블로그 리스트 
-  ResponseEntity<Map<String, Object>> getMypageBlogList(HttpServletRequest request);
+  // 블로그 리스트 
+  ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request);
   UserDto getUserByNo(int userNo);
   int getblogCount(int userNo);
   BlogDetailDto getBlogByNo(int blogListNo);
@@ -29,10 +28,10 @@ public interface UserService {
 	void login(HttpServletRequest request, HttpServletResponse response);
 	void logout(HttpServletRequest request, HttpServletResponse response);
 	// 네이버 로그인
-	String getNaverLoginURL(HttpServletRequest request);
-	String getNaverLoginAccessToken(HttpServletRequest request);
-	UserDto getNaverLoginProfile(String accessToken);
-	boolean hasUser(UserDto user);
-  void naverLogin(HttpServletRequest request, UserDto naverUser);
+  String getNaverLoginURL(HttpServletRequest request);
+  String getNaverLoginAccessToken(HttpServletRequest request);
+  UserDto getNaverLoginProfile(String accessToken);
+  boolean hasUser(UserDto user);
+  void naverSignin(HttpServletRequest request, UserDto naverUser);
 
 }

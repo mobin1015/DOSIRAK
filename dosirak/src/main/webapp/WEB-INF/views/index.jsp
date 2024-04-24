@@ -67,18 +67,19 @@
       </div>
       <div class="keyword-wrap">
         <ul>
-          <li><a href=""><span>지구한바퀴<br/>세계여행</span></a></li>
-          <li><a href=""><span>그림·웹툰</span></a></li>
-          <li><a href=""><span>IT<br/>트렌드</span></a></li>
-          <li><a href=""><span>사진·촬영</span></a></li>
-          <li><a href=""><span>취향저격<br/>영화 리뷰</span></a></li>
-          <li><a href=""><span>오늘은<br/>이런 책</span></a></li>
+          <li><a href="javascript:fnKeywordList()" class="keyword-list" data-keyword-no="1" >지구한바퀴<br/>세계여행</a></li>
+          <li><a href="javascript:fnKeywordList()" class="keyword-list" data-keyword-no="2">그림·웹툰</a></li>
+          <li><a href="javascript:fnKeywordList()" class="keyword-list" data-keyword-no="3">IT<br/>트렌드</a></li>
+          <li><a href="javascript:fnKeywordList()" class="keyword-list" data-keyword-no="4">사진·촬영</a></li>
+          <li><a href="javascript:fnKeywordList()" class="keyword-list" data-keyword-no="5">취향저격<br/>영화 리뷰</a></li>
+          <li><a href="javascript:fnKeywordList()" class="keyword-list" data-keyword-no="6">오늘은<br/>이런 책</a></li>
         </ul>
       </div>
     </div>
     
   
   <script>
+  
   $(document).ready(function(){
 	  $('.main-slide').slick({
 		  dots: true,
@@ -94,6 +95,16 @@
 		  variableWidth: true
 	  });
 	});
+  
+  const fnKeywordList = () => {
+      
+  	$('.keyword-list').on('click', (evt)=>{
+  		const keywordNo = evt.target.dataset.keywordNo;
+      location.href = '${contextPath}/blog/keyword.do?keywordNo=' + keywordNo;
+    })
+  }
+	  
+	fnKeywordList();
   </script>
 
 <%@ include file="./layout/footer.jsp" %>

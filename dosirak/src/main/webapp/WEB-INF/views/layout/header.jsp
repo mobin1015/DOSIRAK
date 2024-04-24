@@ -40,6 +40,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/default.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/detail.css?dt=${dt}">
 
 </head>
 <body>
@@ -49,66 +50,66 @@
     <div class="header-in">
       <div class="left">
         <div class="menu-btn"></div>
-        <div class="logo"></div>
+        <a href="${contextPath}/main.page"><div class="logo"></div></a>
       </div>
       <div class="right">
         <!-- Sign In 안 된 경우 -->
         <c:if test="${sessionScope.user == null}">  
-        <div class="login-btn">로그인</div>
+          <div class="login-btn noto"><a href="${contextPath}/user/login.page">로그인</a></div>
         </c:if>
         <!-- Sign In 된 경우 -->
         <c:if test="${sessionScope.user != null}">
-        <div class="login-btn">로그아웃</div>
+        <div class="login-btn noto"><a href="${contextPath}/user/logout.do">로그아웃</a></div>
         </c:if>
         <div class="search-btn"></div>
-      </div>
+       </div>
     </div>
    </div>
     
     <!-- 슬라이드 영역 -->
     <div class="header-nav">
-    
-      
        <!-- Sign In 안 된 경우 -->
        <c:if test="${sessionScope.user == null}">  
           <div class="nav-profile">
             <div class="profile-default">
               <div class="profile-default-image "></div>
-              <p class="slogan">
+              <p class="slogan georgian">
               You can make anything<br>
               by writing
               </p>
+
               <p class="slogan-writer">C.S.Lewis</p>
               <div class="btn-request logout">브런치스토리 시작하기</div>
               <div type="button" class="nav-btn" id="btn-write" >글쓰기</div>
+
+              <p class="slogan-writer georgian">C.S.Lewis</p>
+              <div class="btn-request noto"><a href="${contextPath}/user/login.page">브런치스토리 시작하기</a></div>
             </div>
            </div>
         </c:if>
-
+        
         <!-- Sign In 된 경우 -->
         <c:if test="${sessionScope.user != null}">
-          <div class="nav-profile">
+          <div class="nav-profile nav-profile-login">
             <div class="profile-default">
-                <img  class="profile-login-image">
-                <p class="profile-name">이름</p>
-                <p class="profile-id">user-email</p>
+                <img class="profile-login-image" src="">
+                <p class="profile-name noto">이름</p>
+                <p class="profile-id georgian">user-email@email.com</p>
                 <div class="profile-top">
-                  <div class="nav-btn">글쓰기</div>
-                  <div type="button" class="nav-btn" id="btn-mypage" >마이페이지</div>
+                  <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
+                  <div class="nav-btn noto"><a href="${contextPath}/user/mypage.do?userNo=${user.userNo}">마이페이지</a></div>
                 </div> 
             </div>
           </div>
           <div class="nav-bottom">
-            <div class="nav-btn">탈퇴하기</div>
-            <div class="nav-btn">로그아웃</div>
+            <div class="nav-btn noto"><a href="">탈퇴하기</a></div>
+            <div class="nav-btn noto"><a href="">로그아웃</a></div>
           </div>
-         </c:if>
-
+        </c:if>
     </div>
-    
+      
     <div class="wrap">
-    
-    
+ 
     
     <script>
     const fnBlogWrite = ()=>{
@@ -138,13 +139,6 @@
     $(".header-nav").on("click", function(event) {
         event.stopPropagation();
     });
-    
-    const fnMyPage = ()=>{
-        $('#btn-mypage').on('click', (evt)=>{
-          location.href = '${contextPath}/user/mypage.do?userNo=${user.userNo}';
-        })
-      }
-      fnMyPage(); 
 
     </script>
     

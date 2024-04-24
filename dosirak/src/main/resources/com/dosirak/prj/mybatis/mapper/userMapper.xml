@@ -4,21 +4,6 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dosirak.prj.mapper.UserMapper">
-  
-<!--   <resultMap type="BlogDetailDto" id="BlogDetailMap">
-   <id     property="blogListNo"     column="BLOG_LIST_NO"/>
-   <result property="keywordNo"      column="KEYWORD_NO"/>
-   <result property="title"      column="TITLE"/>
-   <result property="contents"   column="CONTENTS"/>
-   <result property="createDt"   column="CREATE_DT"/>
-   <result property="modifyDt"   column="MODIFY_DT"/>
-   <association property="comment"  javaType="BlogCommentDto">
-     <id   property="commentNo"  column="COMMENT_NO"/>
-   </association>
-    <association property="user"  javaType="UserDto">
-     <id   property="userNo"  column="USER_NO"/>
-   </association>
- </resultMap> -->
  
   <resultMap type="BlogDetailDto" id="BlogDetailMap">
    <id     property="blogListNo"     column="BLOG_LIST_NO"/>
@@ -81,7 +66,7 @@
       , #{name}
       , #{gender}
       , #{mobile}
-      , 0
+      , #{signupKind}
       , CURRENT_DATE
       , CURRENT_DATE
     )
@@ -99,14 +84,12 @@
         ACCESS_HISTORY_NO
       , EMAIL
       , IP
-      , USER_AGENT
       , SESSION_ID
       , SIGNIN_DT
     ) VALUES (
         ACCESS_HISTORY_SEQ.NEXTVAL
       , #{email}
       , #{ip}
-      , #{userAgent}
       , #{sessionId}
       , CURRENT_DATE
     )
@@ -149,12 +132,5 @@
      ON CO.BLOG_LIST_NO = BD.BLOG_LIST_NO
   WHERE BD.BLOG_LIST_NO = #{blogListNo} 
  </select>
-  
-<!--  <select id="getCommentCount"
-         resultType="int">
- SELECT COUNT(*)
-   FROM COMMENT_T
-  WHERE BLOG_LIST_NO = #{blogListNo};         
- </select>  -->
-  
+
 </mapper>

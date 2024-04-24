@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+.wrap {margin-top: 100px;}
 .section {margin: 0 auto 80px;}
 
 /* main 고정 타이틀 */
@@ -28,8 +28,8 @@
 .keyword-wrap ul {overflow: hidden;}
 .keyword-wrap ul li {float: left; width: 16.66%; border: 1px solid #eee; border-right: 0; height: 160px;}
 .keyword-wrap ul li:last-child {border-right: 1px solid #eee;}
-.keyword-wrap ul li a {height: 100%; width: 100%; position: relative;}
-.keyword-wrap ul li a span {position: absolute; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0);}
+.keyword-wrap ul li a {height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;}
+/* .keyword-wrap ul li a span {position: absolute; top: 50%; left: 50%; transform: translate3d(-50%, -50%, 0);} */
 
 
 

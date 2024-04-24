@@ -10,9 +10,8 @@
 </jsp:include>
 
 <!-- include custom css/js -->
-<link rel="stylesheet" href="${contextPath}/resources/css/mypage.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/bloger.css?dt=${dt}">
 
-     <c:if test="${not empty sessionScope.user.userNo}"> 
   <div class="wrap">
     <div class="profile-wrap">
        <div class="bloger-thumb" data-user-no="${user.userNo}">    
@@ -29,12 +28,6 @@
          <strong class="nickname">${user.nickname}</strong>
          <span class="blog-contents">${user.blogContents}</span>
        </div>
-       <div class="profile-btn-wrap">
-         <c:if test="${sessionScope.user.userNo == user.userNo}"> 
-           <button class="btn-profile nav-btn noto" type="button">프로필편집</button>
-           <button class="btn-write nav-btn noto" type="button">글쓰기</button>
-         </c:if> 
-       </div>  
     </div>
 
   <div class="wrap-main">
@@ -45,12 +38,8 @@
       <div class="blog-list-wrap">
         <div id="blog-list"></div>
       </div>
-      
     </div>
-
   </div>
-      </c:if> 
-
 
 <script>
 
@@ -59,51 +48,9 @@ var totalPage = 0;
 var page = 1;
 var loading = false;
 
-//로그인 체크
-const fnCheckSignin = () => {
-    if('${sessionScope.user.userNo}' === '') { 
-      if(confirm('세션이 만료되어 Sign In 이 필요합니다. Sign In 할까요?')) {
-        location.href = '${contextPath}/user/login.page';
-      } else {
-    	  location.href = '${contextPath}/main.page'; 
-      }
-    }
-  } 
-
-// 글쓰기 버튼
-const fnWriteBlog = () => {
-  $('.btn-write').on('click', (evt) => {
-    if ('${sessionScope.user.userNo}' === '') { 
-      if (confirm('세션이 만료되어 Sign In 이 필요합니다. Sign In 할까요?')) {
-        location.href = '${contextPath}/user/login.page';
-      } else {
-        location.href = '${contextPath}/main.page'; 
-      }
-    } else {
-      location.href = '${contextPath}/blog/write.page';
-    }
-  });
-};
-
-// 프로필편집 버튼
-const fnEditProfile = () => {
-  $('.btn-profile').on('click', (evt) => {
-    if ('${sessionScope.user.userNo}' === '') { 
-      if (confirm('세션이 만료되어 Sign In 이 필요합니다. Sign In 할까요?')) {
-        location.href = '${contextPath}/user/login.page';
-      } else {
-        location.href = '${contextPath}/main.page'; 
-      }
-    } else {
-      location.href = '${contextPath}/user/profile.do?userNo=${sessionScope.user.userNo}';
-    }
-  });
-};
-
-
 // 블로그 카운트
 $(document).ready(function() {
-    // 페이지가 로드되면 사용자의 블로그 총 개수를 가져오는 ajax 요청 보냄
+    // 페이지가 로드되면 사용자의 블로그 총 개수를 가져오는 ajax 요청을 보낸다.
     $.ajax({
         type: 'GET',
         url: '${contextPath}/user/blogCount.do',
@@ -113,13 +60,13 @@ $(document).ready(function() {
             $('#blogCount').text(response);
         },
         error: function(jqXHR, textStatus, errorThrown) {
-           console.error('Error:', textStatus, '(' + jqXHR.status + '):', errorThrown);
+            console.error('Error:', textStatus, '(' + jqXHR.status + '):', errorThrown);
         }
     });
 })
 
 // 블로그 리스트 
-const fnGetMypageBlogList = () => {
+const fnGetBlogerList = () => {
   
   $.ajax({
     // 요청
@@ -175,20 +122,20 @@ const fnGetMypageBlogList = () => {
     error: (jqXHR) => {
     	  alert(jqXHR.statusText + '(' + jqXHR.status + ')');
     	  loading = false;
-    	  window.history.back();
+        window.history.back();
     }
   });
 }
 
 //블로그 상세페이지 이동
-const fnMypageBlogDetail = () => {
-$(document).on('click', '.blog', function(evt) {
- let blogListNo = $(this).attr('data-blog-list-no');
-   location.href = '${contextPath}/blog/detail.do?blogListNo=' + blogListNo;
-});
+const fnBlogDetail = () => {
+  $(document).on('click', '.blog', function(evt) {
+    let blogListNo = $(this).attr('data-blog-list-no');
+      location.href = '${contextPath}/blog/detail.do?blogListNo=' + blogListNo;
+  });
 }
 
-// 무한스크롤
+//무한스크롤
 const fnScrollHandler = () => {
     let loading = false;   // 로딩 상태 변수 추가
     let lastScrollTop = 0; // 스크롤 위치 변수 추가
@@ -202,7 +149,7 @@ const fnScrollHandler = () => {
       if (!loading && (scrollTop + windowHeight + bottomOffset >= documentHeight)) {
           loading = true;
           page++;
-          fnGetMypageBlogList();
+          fnGetBlogerList();
       }
 
       // 스크롤 위치 저장
@@ -211,16 +158,9 @@ const fnScrollHandler = () => {
   };
 
 
-//페이지 로드 시 로그인 체크
-$(document).ready(() => {
-  fnCheckSignin();
-});
-
-fnWriteBlog();
-fnEditProfile(); 
-fnGetMypageBlogList();
-fnMypageBlogDetail();
+fnGetBlogerList();
 fnScrollHandler();
+fnBlogDetail();
 
 
 </script>
