@@ -435,24 +435,9 @@ public class UserServiceImpl implements UserService {
     Map<String, Object> map = Map.of("email", naverUser.getEmail(),
                                      "ip", request.getRemoteAddr());
 
-<<<<<<< HEAD
   
     UserDto user = userMapper.getUserByMap(map);
     request.getSession().setAttribute("user", user);
     
-  }
-=======
-		Map<String, Object> map = Map.of("email", naverUser.getEmail(), 
-																		 "ip", request.getRemoteAddr());
-		
-		UserDto user = userMapper.getUserByMap(map);
-		request.getSession().setAttribute("user", user);
-		userMapper.insertAccessHistory(map);
-				
-	}
-	
-	
-	
-
->>>>>>> ec02a7ba5d40f977d7f06bfae49d03077ca3f6a8
+  }				
 }
