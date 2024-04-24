@@ -17,4 +17,15 @@ public interface BlogService {
   
   List<BlogDetailDto> getKeywordNo(int keywordNo);
   Map<String, Object> getKeywordList(HttpServletRequest request);
+
+  BlogDetailDto  getBlogDetailByNo(int blogListNo);
+  ResponseEntity<Map<String, Object>> getCommentList(int blogListNo);
+  int registerComment(HttpServletRequest request);
+  int registerReply(HttpServletRequest request);
+  int removeComment(int commentNo);
+  ResponseEntity<Map<String, Object>> getLikeList(int blogListNo);
+  int insertLike(HttpServletRequest request);
+  int deleteLike(HttpServletRequest request);
+  int removeBlog(int blogListNo);
+  int modifyBlog(HttpServletRequest request);
 }

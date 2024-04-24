@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/default.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/detail.css?dt=${dt}">
 
 </head>
 <body>

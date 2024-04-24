@@ -15,8 +15,31 @@
    <association property="user"  javaType="UserDto">
      <id     property="userNo"  column="USER_NO"/>
      <result property="nickname"   column="NICKNAME"/>
+     <result property="blogImgPath"      column="BLOG_IMG_PATH"/>
+     <result property="blogContents"   column="BLOG_CONTENTS"/>
    </association>
  </resultMap>
+ 
+<resultMap type="BlogCommentDto" id="BlogCommentMap">
+    <id     property="commentNo" column="COMMENT_NO" />
+    <result property="contents"  column="CONTENTS" />
+    <result property="createDt"  column="CREATE_DT" />
+    <result property="state"     column="STATE" />
+    <result property="depth"     column="DEPTH" />
+    <result property="groupNo"   column="GROUP_NO" />
+    <result property="blogListNo"    column="BLOG_LIST_NO" />
+    <association property="user" javaType="UserDto">
+      <id     property="userNo" column="USER_NO" />
+      <result property="nickname"   column="NICKNAME"/>
+      <result property="blogImgPath"  column="BLOG_IMG_PATH" />
+    </association>
+</resultMap>
+
+<resultMap type="LikeDto" id="LikeMap">
+    <id     property="likeNo"     column="LIKE_NO"/>
+    <result property="blogListNo"      column="BLOG_LIST_NO"/>
+    <result property="userNo"      column="USER_NO"/>
+</resultMap>
 
   <insert id="insertBlogDetail"
           parameterType="BlogDetailDto">
@@ -134,6 +157,143 @@
            WHERE D.CONTENTS LIKE '%${query}%' OR D.TITLE LIKE '%${query}%')
    WHERE RN BETWEEN #{begin} AND #{end}    
   </select>
+  
+   <update id="updateBlog" 
+          parameterType="BlogDetailDto">
+    UPDATE BLOG_DETAIL_T
+       SET TITLE = #{title}
+         , CONTENTS = #{contents}
+         , MODIFY_DT = CURRENT_TIMESTAMP
+     WHERE BLOG_LIST_NO = #{blogListNo}
+  </update>
+  
+  <select id="getBlogImageList" 
+          resultType="ImageDto">
+    SELECT BLOG_LIST_NO, UPLOAD_PATH, FILESYSTEM_NAME
+      FROM IMAGE_T
+     WHERE BLOG_LIST_NO = #{blogListNo}
+  </select>
+
+  <delete id="deleteBlogImage">
+    DELETE
+      FROM IMAGE_T
+     WHERE FILESYSTEM_NAME = #{filesystemName}
+  </delete>
+
+  <delete id="deleteBlogImageList">
+    DELETE
+      FROM IMAGE_T
+     WHERE BLOG_LIST_NO = #{blogListNo}
+  </delete>
+
+  <delete id="deleteBlog">
+    DELETE
+      FROM BLOG_DETAIL_T
+     WHERE BLOG_LIST_NO = #{blogListNo}
+  </delete>
+ 
+  
+  <select id="getBlogDetailByNo"
+          resultMap="BlogDetailMap">
+    SELECT B.BLOG_LIST_NO, B.TITLE, B.CONTENTS, B.CREATE_DT, B.MODIFY_DT, B.KEYWORD_NAME, B.KEYWORD_NO 
+         , U.USER_NO , U.NICKNAME, U.BLOG_IMG_PATH, U.BLOG_CONTENTS
+      FROM USER_T U INNER JOIN BLOG_DETAIL_T B
+        ON U.USER_NO = B.USER_NO
+     WHERE B.BLOG_LIST_NO = #{blogListNo}
+  </select>
+  
+  <select id ="getLike"
+          resultMap="LikeMap">
+     SELECT LIKE_NO, BLOG_LIST_NO, USER_NO
+       FROM LIKE_T
+      WHERE BLOG_LIST_NO = #{blogListNo}
+   </select>
+  
+  <insert id="insertLike"
+          parameterType="Map">
+      INSERT INTO LIKE_T (
+         LIKE_NO
+       , BLOG_LIST_NO
+       , USER_NO
+      ) VALUES (
+         LIKE_SEQ.NEXTVAL
+       , #{blogListNo}
+       , #{userNo}
+      )
+  </insert>
+ 
+  <delete id="deleteLike"
+          parameterType="Map">
+      DELETE
+        FROM LIKE_T
+       WHERE BLOG_LIST_NO = #{blogListNo} 
+         AND      USER_NO = #{userNo}
+  
+  </delete>
+  
+   <select id="getCommentList"
+          resultMap="BlogCommentMap">
+        SELECT  C.COMMENT_NO, C.CONTENTS, C.CREATE_DT, C.STATE, C.DEPTH, C.GROUP_NO, C.BLOG_LIST_NO
+                 , U.USER_NO, U.NICKNAME, U.BLOG_IMG_PATH
+              FROM USER_T U INNER JOIN COMMENT_T C
+                ON U.USER_NO = C.USER_NO
+             WHERE BLOG_LIST_NO =  #{blogListNo} 
+             ORDER BY C.GROUP_NO, C.COMMENT_NO ASC
+ 
+  </select>
+
+  
+  <insert id="insertComment"
+          parameterType="BlogCommentDto">
+    INSERT INTO COMMENT_T (
+        COMMENT_NO
+      , CONTENTS
+      , CREATE_DT
+      , STATE
+      , DEPTH
+      , GROUP_NO
+      , USER_NO
+      , BLOG_LIST_NO
+    ) VALUES (
+        COMMENT_SEQ.NEXTVAL
+      , #{contents}
+      , CURRENT_TIMESTAMP
+      , 1
+      , 0
+      , COMMENT_SEQ.CURRVAL
+      , #{user.userNo}
+      , #{blogListNo}
+    )
+  </insert>
+  
+   <insert id="insertReply"
+          parameterType="BlogCommentDto">
+    INSERT INTO COMMENT_T (
+        COMMENT_NO
+      , CONTENTS
+      , CREATE_DT
+      , STATE
+      , DEPTH
+      , GROUP_NO
+      , USER_NO
+      , BLOG_LIST_NO
+    ) VALUES (
+        COMMENT_SEQ.NEXTVAL
+      , #{contents}
+      , CURRENT_TIMESTAMP
+      , 1
+      , 1
+      , #{groupNo}
+      , #{user.userNo}
+      , #{blogListNo}
+    )
+  </insert>
+  
+    <update id="deleteComment">
+    UPDATE COMMENT_T
+       SET STATE = 0
+     WHERE COMMENT_NO = #{commentNo}
+  </update>
   
    
 </mapper>

@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.dosirak.prj.dto.BlogCommentDto;
 import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.ImageDto;
+import com.dosirak.prj.dto.LikeDto;
 
 
 @Mapper
@@ -30,5 +32,20 @@ public interface BlogDetailMapper {
   
   List<BlogDetailDto> getBlogDetailListByWriter(Map<String, Object> map);
   List<BlogDetailDto> getBlogDetailListByContents(Map<String, Object> map);
+  
+//블로그 상세보기
+ BlogDetailDto getBlogDetailByNo(int blogListNo);
+ List<BlogCommentDto> getCommentList(int blogListNo);
+ int insertComment(BlogCommentDto comment);
+ int insertReply(BlogCommentDto comment);
+ int deleteComment(int commentNo);
+ List<LikeDto> getLike(int blogListNo);
+ int insertLike(Map<String, Object> map);
+ int deleteLike(Map<String, Object> map);
+ List<ImageDto> getBlogImageList(int blogListNo);
+ int deleteBlogImage(String filesystemName);
+ int updateBlog(BlogDetailDto blog);
+ int deleteBlog(int blogListNo);
+ int deleteBlogImageList(int blogListNo);
   
 }
