@@ -1,8 +1,10 @@
 package com.dosirak.prj.service;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dosirak.prj.dto.BlogCommentDto;
 import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.ImageDto;
 import com.dosirak.prj.dto.UserDto;
@@ -165,6 +168,193 @@ public class BlogServiceImpl implements BlogService {
                 , "totalPage", myPageUtils.getTotalPage());
     
   }
+  
+  
+  @Override
+  public BlogDetailDto getBlogDetailByNo(int blogListNo) {
+    return blogDetailMapper.getBlogDetailByNo(blogListNo);
+  }
+
+  @Override
+  public ResponseEntity<Map<String, Object>> getCommentList(int blogListNo) {
+    return new ResponseEntity<>(Map.of("commentList", blogDetailMapper.getCommentList(blogListNo))
+        , HttpStatus.OK);
+  }
+
+@Override
+  public int registerComment(HttpServletRequest request) {
+    
+    // 요청 파라미터
+    String contents = request.getParameter("contents");
+    int blogListNo = Integer.parseInt(request.getParameter("blogListNo"));
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    
+    // UserDto 객체 생성
+    UserDto user = new UserDto();
+    user.setUserNo(userNo);
+    
+    // CommentDto 객체 생성
+    BlogCommentDto comment = BlogCommentDto.builder()
+                            .contents(contents)
+                            .user(user)
+                            .blogListNo(blogListNo)
+                          .build();
+    
+    // DB 에 저장 & 결과 반환
+    return blogDetailMapper.insertComment(comment);
+    
+  }
+  
+  @Override
+  public int registerReply(HttpServletRequest request) {
+    // 요청 파라미터
+    String contents = request.getParameter("contents");
+    int groupNo = Integer.parseInt(request.getParameter("groupNo"));
+    int blogListNo = Integer.parseInt(request.getParameter("blogListNo"));
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    
+    // UserDto 객체 생성
+    UserDto user = new UserDto();
+    user.setUserNo(userNo);
+    
+    // CommentDto 객체 생성
+    BlogCommentDto reply = BlogCommentDto.builder()
+                          .contents(contents)
+                          .groupNo(groupNo)
+                          .blogListNo(blogListNo)
+                          .user(user)
+                        .build();
+    
+    // DB 에 저장하고 결과 반환
+    return blogDetailMapper.insertReply(reply);
+  }
+  
+  @Override
+  public int removeComment(int commentNo) {
+    return blogDetailMapper.deleteComment(commentNo);
+  }
+ 
+
+  @Override
+  public ResponseEntity<Map<String, Object>> getLikeList(int blogListNo) {
+    return new ResponseEntity<>(Map.of("LikeList", blogDetailMapper.getLike(blogListNo))
+        , HttpStatus.OK);
+  }
+  
+  @Override
+  public int insertLike(HttpServletRequest request) {
+    Map<String, Object> map = Map.of("blogListNo",request.getParameter("blogListNo")
+       , "userNo" , request.getParameter("userNo") );
+    return blogDetailMapper.insertLike(map);
+  }
+
+  @Override
+  public int deleteLike(HttpServletRequest request) {
+    Map<String, Object> map = Map.of("blogListNo",request.getParameter("blogListNo")
+        , "userNo" , request.getParameter("userNo") );
+    return blogDetailMapper.deleteLike(map);
+  }
+  
+  @Override
+  public int modifyBlog(HttpServletRequest request) {
+    
+    // 수정할 제목/내용/블로그번호
+    String title = request.getParameter("title");
+    String contents = request.getParameter("contents");
+    int blogListNo = Integer.parseInt(request.getParameter("blogListNo"));
+    
+    // DB에 저장된 기존 이미지 가져오기
+    // 1. blogImageDtoList : BlogImageDto를 요소로 가지고 있음
+    // 2. blogImageList    : 이미지 이름(filesystemName)을 요소로 가지고 있음
+    List<ImageDto> blogImageDtoList = blogDetailMapper.getBlogImageList(blogListNo);
+    List<String> blogImageList = blogImageDtoList.stream()
+                                  .map(blogImageDto -> blogImageDto.getFilesystemName())
+                                  .collect(Collectors.toList());
+        
+    // Editor에 포함된 이미지 이름(filesystemName)
+    List<String> editorImageList = getEditorImageList(contents);
+
+    // Editor에 포함되어 있으나 DB에 없는 이미지는 BLOG_IMAGE_T에 추가해야 함
+    editorImageList.stream()
+      .filter(editorImage -> !blogImageList.contains(editorImage))         // 조건 : Editor에 포함되어 있으나 기존 이미지에 포함되어 있지 않다.
+      .map(editorImage -> ImageDto.builder()                           // 변환 : Editor에 포함된 이미지 이름을 BlogImageDto로 변환한다.
+                            .blogListNo(blogListNo)
+                            .uploadPath(myFileUtils.getUploadPath())
+                            .filesystemName(editorImage)
+                            .build())
+      .forEach(blogImageDto -> blogDetailMapper.insertImages(blogImageDto));  // 순회 : 변환된 BlogImageDto를 BLOG_IMAGE_T에 추가한다.
+    
+    // 블로그를 만들 때는 있었는데 수정할 때는 없는 이미지들 삭제 (수정하면서 지운 이미지들)
+    List<ImageDto> removeList = blogImageDtoList.stream()
+                                      .filter(blogImageDto -> !editorImageList.contains(blogImageDto.getFilesystemName()))  // 조건 : 기존 이미지 중에서 Editor에 포함되어 있지 않다.
+                                      .collect(Collectors.toList());                                                        // 조건을 만족하는 blogImageDto를 리스트로 반환한다.
+
+    for(ImageDto ImageDto : removeList) {
+      // BLOG_IMAGE_T 테이블에서 삭제
+      blogDetailMapper.deleteBlogImage(ImageDto.getFilesystemName());  // 파일명이 일치하면 삭제(파일명은 UUID로 만들어졌으므로 파일명의 중복은 없다고 생각하면 된다.)
+      // 이미지 파일 삭제
+      File file = new File(ImageDto.getUploadPath(), ImageDto.getFilesystemName());
+      if(file.exists()) {
+        file.delete();
+      }
+    }
+    
+    // 수정할 제목/내용/블로그번호를 가진 BlogDto
+    BlogDetailDto blog = BlogDetailDto.builder()
+                    .title(title)
+                    .contents(contents)
+                    .blogListNo(blogListNo)
+                    .build();
+    
+    // BLOG_T 수정
+    int modifyResult = blogDetailMapper.updateBlog(blog);
+    
+    return modifyResult;
+    
+  }
+ 
+
+
+  @Override
+  public int removeBlog(int blogListNo) {
+    // BLOG_IMAGE_T 테이블에서 블로그 만들 때 사용한 이미지 파일 삭제
+    List<ImageDto> blogImageDtoList = blogDetailMapper.getBlogImageList(blogListNo);
+    for(ImageDto blogImage : blogImageDtoList) {
+      File file = new File(blogImage.getUploadPath(), blogImage.getFilesystemName());
+      if(file.exists()) {
+        file.delete();
+      }
+    }
+    // BLOG_IMAGE_T 삭제
+    blogDetailMapper.deleteBlogImageList(blogListNo);
+    
+    // BLOG_T 삭제
+    return blogDetailMapper.deleteBlog(blogListNo);
+  }
+  
+  
+  public List<String> getEditorImageList(String contents) {
+    
+    // Summernote Editor에 추가한 이미지 목록 반환하기 (Jsoup 라이브러리 사용)
+    
+    List<String> editorImageList = new ArrayList<>();
+    
+    Document document = Jsoup.parse(contents);
+    Elements elements =  document.getElementsByTag("img");
+    
+    if(elements != null) {
+      for(Element element : elements) {
+        String src = element.attr("src");
+        String filesystemName = src.substring(src.lastIndexOf("/") + 1);
+        editorImageList.add(filesystemName);
+      }
+    }
+    
+    return editorImageList;
+    
+  }
+
+  
   
   
   
