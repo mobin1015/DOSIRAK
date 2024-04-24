@@ -2,6 +2,7 @@ package com.dosirak.prj.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyPageUtils;
+import com.dosirak.prj.utils.MySecurityUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +35,7 @@ public class BlogServiceImpl implements BlogService {
   private final BlogDetailMapper blogDetailMapper;
   private final MyFileUtils myFileUtils;
   private final MyPageUtils myPageUtils;
+  
   @Override
   public ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile) {
     
@@ -65,11 +68,12 @@ public class BlogServiceImpl implements BlogService {
   public boolean registerBlog(HttpServletRequest request) {
     
     // 요청 파라미터
-    String title = request.getParameter("title");
-    String contents = request.getParameter("contents");
+    String title = MySecurityUtils.getPreventXss(request.getParameter("title"));
+    String contents = MySecurityUtils.getPreventXss(request.getParameter("contents"));
     int keywordNo = Integer.parseInt(request.getParameter("keyword"));
-    String keywordName = request.getParameter("keywordName");
+    String keywordName = null;
     int userNo = Integer.parseInt(request.getParameter("userNo"));
+    int hasThumbnail = 0;
     
     // count 변수
     int insertBlogDetailCount = 0;
@@ -110,38 +114,77 @@ public class BlogServiceImpl implements BlogService {
                           .keywordName(keywordName)
                          .build();
     
-    // BlogDetail 삽입 
-    insertBlogDetailCount = blogDetailMapper.insertBlogDetail(blog);
-    
     Document document = Jsoup.parse(contents);
     Elements elements = document.getElementsByTag("img");
     int elementCount = elements.size();
 
     if(elements != null) {
-      for(Element element : elements) {
-        String src = element.attr("src");
-        String filesystemName = src.substring(src.lastIndexOf("/") + 1);
-        String uploadPath = myFileUtils.getUploadPath();
-        /* src 정보를 DB에 저장하는 코드 등이 이 곳에 있으면 된다. */
-        /* editor 상에서 삭제했을 때 upload 폴더에 있는 사진과 비교해서 없는 파일은 upload 폴더에서 삭제하기*/
-        /* boolean값, myapp의 uploadServiceImpl register 참고*/
-       ImageDto image = ImageDto.builder()
-                          .filesystemName(filesystemName)
-                          .uploadPath(uploadPath)
-                        .build();
-       insertImageCount += blogDetailMapper.insertImages(image);
-       }
+      if(elementCount == 0) {
+        blog.setHasThumbnail(hasThumbnail);
+        insertBlogDetailCount = blogDetailMapper.insertBlogDetail(blog);
+        
+      } else {
+        hasThumbnail = 1;
+        blog.setHasThumbnail(hasThumbnail);
+        insertBlogDetailCount = blogDetailMapper.insertBlogDetail(blog);
+        // BlogDetail 삽입 
+        for(Element element : elements) {
+          String src = element.attr("src");
+          String filesystemName = src.substring(src.lastIndexOf("/") + 1);
+          String uploadPath = myFileUtils.getUploadPath();
+          /* src 정보를 DB에 저장하는 코드 등이 이 곳에 있으면 된다. */
+          /* editor 상에서 삭제했을 때 upload 폴더에 있는 사진과 비교해서 없는 파일은 upload 폴더에서 삭제하기*/
+          /* boolean값, myapp의 uploadServiceImpl register 참고*/
+          ImageDto image = ImageDto.builder()
+              .filesystemName(filesystemName)
+              .uploadPath(uploadPath)
+              .build();
+          insertImageCount += blogDetailMapper.insertImages(image);
+        }
+      }
       
-    }
-    
+    } 
+
     return (insertBlogDetailCount == 1 && insertImageCount == elementCount)? true: false;
     
   }
   
   @Override
   public ResponseEntity<Map<String, Object>> getSearchBlogList(HttpServletRequest request) {
-    // TODO Auto-generated method stub
-    return null;
+    String type = request.getParameter("type");
+    String query = MySecurityUtils.getPreventXss(request.getParameter("query"));
+    int page = Integer.parseInt(request.getParameter("page"));
+    ResponseEntity<Map<String, Object>> result = null;
+    
+    int totalBlog = 0;
+    int display = 10;
+    
+    
+    Map<String, Object> map = new HashMap<String, Object>();
+    
+    if(type.equals("writer")) {
+      totalBlog = blogDetailMapper.getBlogListCountByWriter(query);
+      myPageUtils.setPaging(totalBlog, display, page);
+      map.put("begin", myPageUtils.getBegin());
+      map.put("end", myPageUtils.getEnd());
+      map.put("query", query);
+      result = new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByWriter(map)
+                                         , "totalPage", myPageUtils.getTotalPage()
+                                         , "totalBlog", totalBlog)
+          , HttpStatus.OK);
+    } else if(type.equals("contents")){
+      totalBlog = blogDetailMapper.getBlogListCountByContents(query);
+      myPageUtils.setPaging(totalBlog, display, page);
+      map.put("begin", myPageUtils.getBegin());
+      map.put("end", myPageUtils.getEnd());
+      map.put("query", query);
+      result =  new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByContents(map)
+                                          , "totalPage", myPageUtils.getTotalPage()
+                                          , "totalBlog", totalBlog)
+          , HttpStatus.OK);
+    }
+   
+    return result;
   }
   
   @Override
@@ -175,7 +218,11 @@ public class BlogServiceImpl implements BlogService {
 
   @Override
   public ResponseEntity<Map<String, Object>> getCommentList(int blogListNo) {
-    return new ResponseEntity<>(Map.of("commentList", blogDetailMapper.getCommentList(blogListNo))
+    List<BlogCommentDto> a =blogDetailMapper.getCommentList(blogListNo);
+    Map<String, Object> map = Map.of("blogListNo", blogListNo
+        , "commentCount",a.size());    
+    blogDetailMapper.updateCommentCount(map);
+    return new ResponseEntity<>(Map.of("commentList", a)
         , HttpStatus.OK);
   }
 

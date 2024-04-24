@@ -69,7 +69,7 @@
     <!-- 슬라이드 영역 -->
     <div class="header-nav">
        <!-- Sign In 안 된 경우 -->
-       <c:if test="${sessionScope.user == null}">  
+        <c:if test="${sessionScope.user == null}">  
           <div class="nav-profile">
             <div class="profile-default">
               <div class="profile-default-image "></div>
@@ -77,13 +77,8 @@
               You can make anything<br>
               by writing
               </p>
-
-              <p class="slogan-writer">C.S.Lewis</p>
-              <div class="btn-request logout">브런치스토리 시작하기</div>
-              <div type="button" class="nav-btn" id="btn-write" >글쓰기</div>
-
               <p class="slogan-writer georgian">C.S.Lewis</p>
-              <div class="btn-request noto"><a href="${contextPath}/user/login.page">브런치스토리 시작하기</a></div>
+              <div class="btn-request noto"><a href="${contextPath}/user/login.page"">브런치스토리 시작하기</a></div>
             </div>
            </div>
         </c:if>
@@ -112,13 +107,13 @@
  
     
     <script>
-    const fnBlogWrite = ()=>{
-    	$('#btn-write').on('click', (evt)=>{
-    		location.href = "${contextPath}/blog/write.page";
+    const fnSearchBlog = ()=>{
+    	$('.search-btn').on('click', (evt)=>{
+    		location.href = "${contextPath}/blog/search.page";
     	})
     }
-    fnBlogWrite();
-      
+    fnSearchBlog();
+
     var aa=true;
     $(".menu-btn").click(function(){
       if(aa){

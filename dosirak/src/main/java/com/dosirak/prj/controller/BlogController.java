@@ -121,5 +121,15 @@ public class BlogController {
   public ResponseEntity<Map<String, Object>> removeLike(HttpServletRequest request) {
     return ResponseEntity.ok(Map.of("deleteLike", blogService.deleteLike(request)));
   }
+  
+  @GetMapping("/search.page")
+  public String search() {
+    return "blog/search";
+  }
+  
+  @GetMapping(value = "searchBlog.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> searchBlog(HttpServletRequest request) {
+    return blogService.getSearchBlogList(request);
+  }
 
 }

@@ -68,20 +68,15 @@
     <div class="container2">
       <div class="writerinfo-wrap">
         <span  class="writer-name">
-        <div>
-        <!--블로거페이지 테스트용 : 테스트 완료 후 삭제하기 -->
-        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">
-        <span>${blog.user.nickname}</span>
-        </a>
-        </div>
+        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.nickname}</a>
         </span>
         <span class="writer-iamge" >
-        <a>${blog.user.blogImgPath}</a>
+        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogImgPath}</a>
         </span>
         <br>
         <br>
         <div  class="writer-contents">
-        <a>${blog.user.blogContents}</a>
+       <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogContents}</a>
         </div>
         </div> 
      </div>

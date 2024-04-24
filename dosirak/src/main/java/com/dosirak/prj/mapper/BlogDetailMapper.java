@@ -26,6 +26,11 @@ public interface BlogDetailMapper {
   int getKeywordCount(int keywordNo);
   List<BlogDetailDto> getKeywordList(Map<String, Object> map);
   
+  int getBlogListCountByWriter(String writer); 
+  int getBlogListCountByContents(String contents); 
+  
+  List<BlogDetailDto> getBlogDetailListByWriter(Map<String, Object> map);
+  List<BlogDetailDto> getBlogDetailListByContents(Map<String, Object> map);
   
 //블로그 상세보기
  BlogDetailDto getBlogDetailByNo(int blogListNo);
@@ -41,5 +46,6 @@ public interface BlogDetailMapper {
  int updateBlog(BlogDetailDto blog);
  int deleteBlog(int blogListNo);
  int deleteBlogImageList(int blogListNo);
+ int updateCommentCount(Map<String, Object> map);
   
 }
