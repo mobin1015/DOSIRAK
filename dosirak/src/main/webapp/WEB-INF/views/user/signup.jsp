@@ -15,35 +15,94 @@
       action="${contextPath}/user/signup.do"
       id="frm-signup">
 
-  <div class="form_content">
-    <div class="form_section">
-      <div class="form_list">
-          <label class="form_item user error1">아이디</label>
-          <div class="form_item user error2">
-            <input type="text" id="id" name="id" placeholder="example@example.com">
-          </div>
-          <div class="form_item user error3">
-          <button type="button" id="code" class="primary">인증코드받기</button>
-          </div>
-       </div>
-       
-<!--        <div class="form-list">
-        <label for= 
-       </div> -->
-         
-     </div>
+<div class="row">
+    <label for="inp-email" class="col-sm-2 col-form-label">아이디</label>
+    <div class="col-sm-4"><input type="text" id="inp-email" name="email" class="form-control" placeholder="example@example.com"></div>
+    <div class="col-sm-3"><button type="button" id="btn-code" class="btn btn-primary">인증코드받기</button></div>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-3"id="msg-email"></div>
+  </div>
+  <div class="row">
+    <label for="inp-code" class="col-sm-2 col-form-label">인증코드</label>
+    <div class="col-sm-4"><input type="text" id="inp-code" class="form-control" placeholder="인증코드입력" disabled></div>
+    <div class="col-sm-3"><button type="button" id="btn-verify-code" class="btn btn-primary" disabled>인증하기</button></div>
+  </div>
+  
+  <hr class="my-3">
+
+  <div class="row mb-3">
+    <label for="inp-pw" class="col-sm-2 col-form-label">비밀번호</label>
+    <div class="col-sm-4"><input type="password" id="inp-pw" name="pw" class="form-control"></div>
+    <div class="col-sm-6"></div>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-4" id="msg-pw"></div>
+  </div>
+  <div class="row mb-3">
+    <label for="inp-pw2" class="col-sm-3 col-form-label">비밀번호 확인</label>
+    <div class="col-sm-6"><input type="password" id="inp-pw2" class="form-control"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-9" id="msg-pw2"></div>
+  </div>
+  
+  <hr class="my-3">
+  
+  <div class="row mb-3">
+    <label for="inp-name" class="col-sm-3 col-form-label">이름</label>
+    <div class="col-sm-9"><input type="text" name="name" id="inp-name" class="form-control"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-9" id="msg-name"></div>
+  </div>
+
+  <div class="row mb-3">
+    <label for="inp-mobile" class="col-sm-3 col-form-label">휴대전화번호</label>
+    <div class="col-sm-9"><input type="text" name="mobile" id="inp-mobile" class="form-control"></div>
+    <div class="col-sm-3"></div>
+    <div class="col-sm-9" id="msg-mobile"></div>
+  </div>
+
+  <div class="row mb-3">
+    <label class="col-sm-3 form-label">성별</label>
+    <div class="col-sm-1">
+      <input type="radio" name="gender" value="none" id="rdo-none" class="form-check-input" checked>
+      <label class="form-check-label" for="rdo-none">선택안함</label>
+    </div>
+    <div class="col-sm-1">
+      <input type="radio" name="gender" value="man" id="rdo-man" class="form-check-input">
+      <label class="form-check-label" for="rdo-man">남자</label>
+    </div>
+    <div class="col-sm-1">
+      <input type="radio" name="gender" value="woman" id="rdo-woman" class="form-check-input">
+      <label class="form-check-label" for="rdo-woman">여자</label>
     </div>
   </div>
   
-<<<<<<< HEAD
   <hr class="my-3">
-  <input type="text" name="singupKind" class="form-control"  style= 'display: none'; value=0 >
+  
+  <div class="form-check mb-3">
+    <input type="checkbox" class="form-check-input" id="chk-service">
+    <label class="form-check-label" for="chk-service">서비스 이용약관 동의(필수)</label>
+  </div>
+  <div>
+    <textarea rows="5" class="form-control">본 약관은 ...</textarea>
+  </div>
+  
+  <div class="form-check mb-3">
+    <input type="checkbox" name="event" class="form-check-input" id="chk-event">
+    <label class="form-check-label" for="chk-event">
+      이벤트 알림 동의(선택)
+    </label>
+  </div>
+  <div>
+    <textarea rows="5" class="form-control">본 약관은 ...</textarea>
+  </div>
+  
+  <hr class="my-3">
+  
   <div class="m-3">
     <button type="submit" id="btn-signup" class="btn btn-primary">가입하기</button>
   </div>
-=======
+  
 </form>
->>>>>>> ec02a7ba5d40f977d7f06bfae49d03077ca3f6a8
 
 <script>
     const fnGetContextPath = () => {
