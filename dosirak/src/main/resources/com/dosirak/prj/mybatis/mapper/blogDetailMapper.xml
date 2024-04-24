@@ -295,5 +295,12 @@
      WHERE COMMENT_NO = #{commentNo}
   </update>
   
+     <update id="updateCommentCount" 
+          parameterType="Map">
+    UPDATE BLOG_DETAIL_T
+       SET COMMENT_COUNT = #{commentCount}
+     WHERE BLOG_LIST_NO = #{blogListNo}
+  </update>
+  
    
 </mapper>
