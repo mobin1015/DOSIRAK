@@ -68,15 +68,15 @@
     <div class="container2">
       <div class="writerinfo-wrap">
         <span  class="writer-name">
-        <a>${blog.user.nickname}</a>
+        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.nickname}</a>
         </span>
         <span class="writer-iamge" >
-        <a>${blog.user.blogImgPath}</a>
+        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogImgPath}</a>
         </span>
         <br>
         <br>
         <div  class="writer-contents">
-        <a>${blog.user.blogContents}</a>
+       <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogContents}</a>
         </div>
         </div> 
      </div>

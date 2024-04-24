@@ -52,6 +52,7 @@
       , CONTENTS
       , CREATE_DT
       , MODIFY_DT
+      , HAS_THUMBNAIL
     ) VALUES (
         BLOG_LIST_SEQ.NEXTVAL
       , #{user.userNo}
@@ -61,6 +62,7 @@
       , #{contents}
       , CURRENT_TIMESTAMP
       , CURRENT_TIMESTAMP
+      , #{hasThumbnail}
     )
   
   </insert>
@@ -125,6 +127,53 @@
                 ON U.USER_NO = D.USER_NO
              WHERE D.KEYWORD_NO = #{keywordNo})
      WHERE RN BETWEEN #{begin} AND #{end}
+  </select>
+    
+  <select id="getBlogListCountByWriter"
+          resultType="int">
+    SELECT COUNT(U.NICKNAME)
+      FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
+        ON U.USER_NO = D.USER_NO
+     WHERE U.NICKNAME LIKE '%${writer}%'
+  </select>
+  
+  <select id="getBlogListCountByContents"
+          resultType="int">
+    SELECT COUNT(CASE WHEN CONTENTS IS NULL THEN NULL ELSE 0 END)
+      FROM BLOG_DETAIL_T
+     WHERE TO_CHAR(CONTENTS) LIKE '%${contents}%' OR TITLE LIKE '%${contents}%'
+  </select>
+  
+  <select id="getCommentCount"
+          resultType="int">
+  SELECT COUNT(C.CONTENTS)
+    FROM BLOG_DETAIL_T D INNER JOIN COMMENT_T C
+      ON D.BLOG_LIST_NO = C.BLOG_LIST_NO
+   WHERE D.BLOG_LIST_NO = #{blogDetailListNo}
+  </select>
+  
+  <select id="getBlogDetailListByWriter"
+          parameterType="Map"
+          resultMap="BlogDetailMap">
+  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO
+    FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
+               , U.NICKNAME, U.USER_NO, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
+            FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
+              ON U.USER_NO = D.USER_NO
+           WHERE U.NICKNAME LIKE '%${query}%')
+   WHERE RN BETWEEN #{begin} AND #{end}    
+  </select>
+  
+  <select id="getBlogDetailListByContents"
+          parameterType="Map"
+          resultMap="BlogDetailMap">
+  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO
+    FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
+               , U.NICKNAME, U.USER_NO, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
+            FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
+              ON U.USER_NO = D.USER_NO
+           WHERE D.CONTENTS LIKE '%${query}%' OR D.TITLE LIKE '%${query}%')
+   WHERE RN BETWEEN #{begin} AND #{end}    
   </select>
   
    <update id="updateBlog" 
@@ -262,6 +311,13 @@
     UPDATE COMMENT_T
        SET STATE = 0
      WHERE COMMENT_NO = #{commentNo}
+  </update>
+  
+     <update id="updateCommentCount" 
+          parameterType="Map">
+    UPDATE BLOG_DETAIL_T
+       SET COMMENT_COUNT = #{commentCount}
+     WHERE BLOG_LIST_NO = #{blogListNo}
   </update>
   
    

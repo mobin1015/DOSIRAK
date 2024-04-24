@@ -128,5 +128,16 @@ public class BlogController {
   public ResponseEntity<Map<String, Object>> mainList(HttpServletRequest request) {
     return blogService.getBlogList(request);
   }
+  
+  @GetMapping("/search.page")
+  public String search() {
+    return "blog/search";
+  }
+  
+  @GetMapping(value = "searchBlog.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> searchBlog(HttpServletRequest request) {
+    return blogService.getSearchBlogList(request);
+
+  }
 
 }
