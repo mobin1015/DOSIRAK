@@ -85,6 +85,22 @@
   
   </insert>
   
+  <select id="getListCount"
+          resultType="int">
+    SELECT COUNT(*)
+      FROM BLOG_DETAIL_T
+  </select>
+  
+  <select id="getBlogList"
+          parameterType="Map"
+          resultMap="BlogDetailMap">
+    SELECT BLOG_LIST_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NO, KEYWORD_NAME, NICKNAME, USER_NO, COMMENT_COUNT, HAS_THUMBNAIL
+      FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
+                 , U.NICKNAME, U.USER_NO, D.BLOG_LIST_NO, D.TITLE, D.CONTENTS, D.CREATE_DT, D.MODIFY_DT, D.KEYWORD_NO, D.KEYWORD_NAME, D.COMMENT_COUNT, D.HAS_THUMBNAIL
+              FROM USER_T U INNER JOIN BLOG_DETAIL_T D 
+                ON U.USER_NO = D.USER_NO)
+  </select>
+  
   <select id="getKeywordNo"
           resultType="BlogDetailDto">
     SELECT BLOG_LIST_NO, USER_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NO, KEYWORD_NAME

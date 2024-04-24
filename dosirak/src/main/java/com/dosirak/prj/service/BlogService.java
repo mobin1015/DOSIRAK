@@ -28,4 +28,6 @@ public interface BlogService {
   int deleteLike(HttpServletRequest request);
   int removeBlog(int blogListNo);
   int modifyBlog(HttpServletRequest request);
+  
+  ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request);
 }

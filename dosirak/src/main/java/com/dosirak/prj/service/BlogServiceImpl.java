@@ -2,6 +2,7 @@ package com.dosirak.prj.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -356,6 +357,17 @@ public class BlogServiceImpl implements BlogService {
 
   
   
+
   
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+        
+    Map<String, Object> map = new HashMap<>();
+    List<BlogDetailDto> blogList = blogDetailMapper.getBlogList(map);
+    map.put("blogList", blogList);    
+    
+    return new ResponseEntity<>(map, HttpStatus.OK);
+  }
   
 }

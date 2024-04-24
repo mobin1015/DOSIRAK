@@ -9,11 +9,11 @@
 .main-title span {color: #dedede;}
 
 /* main-slide */
-.main-slide .slick-slide {}
-.main-slide .img-wrap {background: url(../images/uki1.jpg) center center no-repeat; background-size: cover; min-height: 400px;}
+.main-slide .list-thumbnail {width: 400px; min-height: 500px; background-size: cover!important;}
 .main-slide .text-wrap {color: #fff; position: relative; bottom: 130px; padding: 0 10px;}
 .main-slide .text-wrap .slide-title {font-size: 30px;}
 .main-slide .text-wrap .slide-contents {margin: 5px 0;}
+.main-slide .text-wrap img {display: none;}
 
 /* main-slide dots-custom */
 .bn-controller {text-align: center; margin-top: -50px; z-index: 99; position: relative;}

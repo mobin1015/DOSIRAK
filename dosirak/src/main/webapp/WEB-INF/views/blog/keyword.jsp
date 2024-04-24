@@ -50,7 +50,7 @@
         if(resData.totalPage > 0) {
         	totalPage = resData.totalPage;
           $.each(resData.keywordList, (i, blog) => {
-            let str = '<a href="">';
+            let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
             str += '<div class="list-wrap">';
             str += '<div class="contents-wrap">';
             str += '<div class="list-item">';
@@ -67,7 +67,7 @@
                 let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
                 str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
             } else {
-                str += '<div class="list-thumbnail">썸네일없음</div>';
+                str += '<div class="list-thumbnail"><img src="${contextPath}/resources/images/wh-image.png"></div>';
             }
             str += '</div>';
             str += '</div>';

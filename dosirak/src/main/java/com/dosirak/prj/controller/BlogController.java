@@ -41,6 +41,8 @@ public class BlogController {
     redirectAttributes.addFlashAttribute("insertCount", blogService.registerBlog(request));
     return "redirect:/main.page";
   }
+  
+  
     
   @GetMapping("/keyword.do")
   public String keyword(@RequestParam int keywordNo, Model model) {
@@ -120,6 +122,11 @@ public class BlogController {
   @GetMapping("/removeLike.do")
   public ResponseEntity<Map<String, Object>> removeLike(HttpServletRequest request) {
     return ResponseEntity.ok(Map.of("deleteLike", blogService.deleteLike(request)));
+  }
+  
+  @GetMapping(value="/mainList.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> mainList(HttpServletRequest request) {
+    return blogService.getBlogList(request);
   }
 
 }
