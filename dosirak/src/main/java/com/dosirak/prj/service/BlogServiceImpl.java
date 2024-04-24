@@ -174,7 +174,11 @@ public class BlogServiceImpl implements BlogService {
 
   @Override
   public ResponseEntity<Map<String, Object>> getCommentList(int blogListNo) {
-    return new ResponseEntity<>(Map.of("commentList", blogDetailMapper.getCommentList(blogListNo))
+    List<BlogCommentDto> a =blogDetailMapper.getCommentList(blogListNo);
+    Map<String, Object> map = Map.of("blogListNo", blogListNo
+        , "commentCount",a.size());    
+    blogDetailMapper.updateCommentCount(map);
+    return new ResponseEntity<>(Map.of("commentList", a)
         , HttpStatus.OK);
   }
 

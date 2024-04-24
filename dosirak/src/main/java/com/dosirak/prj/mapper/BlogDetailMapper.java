@@ -42,5 +42,6 @@ public interface BlogDetailMapper {
  int updateBlog(BlogDetailDto blog);
  int deleteBlog(int blogListNo);
  int deleteBlogImageList(int blogListNo);
+ int updateCommentCount(Map<String, Object> map);
   
 }
