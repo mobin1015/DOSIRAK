@@ -74,9 +74,9 @@
   const fnSummernoteEditor = () => {
 
     $('#contents').summernote({
-    	width: 700,
-    	height: 400,
-    	toolbar: [
+      width: 700,
+      height: 400,
+      toolbar: [
             // [groupName, [list of button]]
             ['fontname', ['fontname']],
             ['fontsize', ['fontsize']],
@@ -100,7 +100,7 @@
               body: formData
               /*  submit 상황에서는 <form enctype="multipart/form-data"> 필요하지만 fetch 에서는 사용하면 안 된다. 
               headers: {
-            	  'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data'
               }
               */
             })
@@ -120,18 +120,18 @@
       evt.preventDefault();
       return;
     } else if($("select[name=keyword]").val() === '0') {
-    	alert('키워드를 선택해주세요.');
-    	evt.preventDefault();
-    	return;
+      alert('키워드를 선택해주세요.');
+      evt.preventDefault();
+      return;
     } else if(document.getElementById('contents').value === ''){
-    	alert('내용을 입력해주세요');
-    	evt.preventDefault();
-    	return;
+      alert('내용을 입력해주세요');
+      evt.preventDefault();
+      return;
     }
   }
 
   document.getElementById('frm-blog-register').addEventListener('submit', (evt) => {
-	  fnRegisterBlog(evt);
+    fnRegisterBlog(evt);
   })
   fnSummernoteEditor();
 
