@@ -106,10 +106,68 @@ public class UserController {
     userService.logout(request, response);
   }
   
+  // SD 코드
+  //mypage로 넘어가는거임ㅅ시
   
+  @GetMapping("/mypage.do")
+  public String myPage(@RequestParam(value="userNo", required=false, defaultValue="2") int userNo,
+                                    Model model) {
+    userService.loadUserByNo(userNo);
+    return "user/mypage";
+  }
+  
+  // ★★★ 불러오기
 
   
+ // profile jsp 로 user정보 담아서 이동
+  //userNo 에 강제로 숫자 넣어서 이동함
   
+  
+ 
+  @GetMapping("/profile.do")
+  public String modifyProfile(@RequestParam("userNo") int userNo, Model model) {
+      // 사용자 번호를 기반으로 사용자 정보를 가져옴
+      UserDto user = userService.loadUserByNo(userNo);
+
+      // 사용자의 닉네임 사용하기
+      String nickname = user.getNickname();
+      String blogContents = user.getBlogContents();
+      String blogImgPath = user.getBlogImgPath();
+
+      // 모델에 사용자 정보를 추가하여 프로필 페이지로 전달
+      //model.addAttribute("userNo", user.getUserNo());
+      model.addAttribute("nickname", nickname);
+      model.addAttribute("blogContents", blogContents);
+      model.addAttribute("blogImgPath",blogImgPath);
+
+      // 다른 필요한 정보도 모델에 추가할 수 있음
+
+      System.out.println(nickname);
+      System.out.println(blogImgPath);
+     // redirectAttributes.addFlashAttribute("modifyResult", modifyCount == 1 ? "1" : "0");
+      // 프로필 페이지로 이동
+      return "user/profile";
+  }
+  
+  
+  
+  @PostMapping("/modify.do")
+  public String modifyProfile(@RequestParam(value = "blogImgPath", required = false) MultipartFile blogImgPath,
+                              @RequestParam("userNo") int userNo,
+                              @RequestParam("nickname") String nickname,
+                              @RequestParam("blogContents") String blogContents,
+//                              RedirectAttributes redirectAttributes) {
+                              Model model) {
+      int modifyCount = userService.modifyProfile(userNo, nickname, blogContents, blogImgPath);
+//      redirectAttributes.addFlashAttribute("modifyResult", modifyCount == 1 ? "1" : "0");
+      // 수정 결과에 따라 리다이렉트할 주소와 함께 리턴
+     // System.out.println("수정:"+modifyCount);
+      model.addAttribute("msg", "프로필이 수정되었습니다.");
+      //model.addAttribute("url", "/user/mypage.do");
+      model.addAttribute("url", "./mypage.do");
+      //return "alert";
+      return "/user/modifyalert";
+  }
   
   
 }

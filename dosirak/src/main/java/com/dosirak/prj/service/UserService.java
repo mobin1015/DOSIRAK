@@ -31,7 +31,14 @@ public interface UserService {
   
   
   
-
+  // SD코드
+  //void loadUserByNo(int userNo, Model model);
+  int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath);
+  //int getUserByNo(int userNo);
   
+  int modifyProfileWithoutImage(int userNo, String nickname, String blogContents);
+  
+  //수정중
+ UserDto loadUserByNo(int userNo);
   
 }
