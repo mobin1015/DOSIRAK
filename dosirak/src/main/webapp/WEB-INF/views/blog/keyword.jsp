@@ -31,57 +31,84 @@
   <script>
    
   var page = 1;
+  var totalPage = 0;
+  var loading = false;
   
   const fnKeywordList = () => {
-	  const keywordList = $('#keyword-list');
-	  moment.locale('ko');
-	  $.ajax({
-	    type: 'get',
-	    url: '${contextPath}/blog/keywordList.do',
-	    data: 'keywordNo=' + ${blog[0].keywordNo} + '&page=' + page,
-	    dataType: 'json',
-	    success: (resData) => {  
-	      console.log(resData);  
-	      keywordList.empty();	      
-	      if(resData.keywordList.length === 0) {
-	    	  keywordList.append('<div>등록된 글이 없습니다</div>');
-	      } else {
-	      $.each(resData.keywordList, (i, blog) => {
-	    	 let str = '<a href="">';
-             str += '<div class="list-wrap">';
-             str += '<div class="contents-wrap">';
-             str += '<div class="list-item">';
-             str += '<h4 class="list-title">' + blog.title + '</h4>';
-             str += '<div class="list-content">' + blog.contents + '</div>';
-             str += '<div class="list-info">';
-             str += '<span>댓글 ' + blog.commentCount + '</span>';
-             str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
-             str += '<span>by '  + blog.user.nickname + '</span>';
-             str += '</div>';
-             str += '</div>';
-             str += '<div class="list-item">';
-              if(blog.contents.includes('<img')) {
-                 let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
-                 str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
-               } else {
-                 str += '<div class="list-thumbnail">썸네일없음</div>';
-               }
-             str += '</div>';
-             str += '</div>';   
-             str += '</div>';   
-             str += '</a>'
-          keywordList.append(str);
-	      })
-	      }
-	    },
-	    error: (jqXHR) => {
-	    	keywordList.append('<div>해당 키워드에 등록된 글이 없습니다.</div>');
-	    }
-	  })
+    const keywordList = $('#keyword-list');
+    moment.locale('ko');
+    $.ajax({
+      type: 'get',
+      url: '${contextPath}/blog/keywordList.do',
+      data: 'keywordNo=' + ${blog[0].keywordNo} + '&page=' + page,
+      dataType: 'json',
+      beforeSend: () => { // 요청 보내기 전에 로딩 상태 설정
+        loading = true;
+      },
+      success: (resData) => {
+        console.log(resData);
+        if(resData.totalPage > 0) {
+        	totalPage = resData.totalPage;
+          $.each(resData.keywordList, (i, blog) => {
+            let str = '<a href="">';
+            str += '<div class="list-wrap">';
+            str += '<div class="contents-wrap">';
+            str += '<div class="list-item">';
+            str += '<h4 class="list-title">' + blog.title + '</h4>';
+            str += '<div class="list-content">' + blog.contents + '</div>';
+            str += '<div class="list-info">';
+            str += '<span>댓글 ' + blog.commentCount + '</span>';
+            str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
+            str += '<span>by ' + blog.user.nickname + '</span>';
+            str += '</div>';
+            str += '</div>';
+            str += '<div class="list-item">';
+            if (blog.contents.includes('<img')) {
+                let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+                str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+            } else {
+                str += '<div class="list-thumbnail">썸네일없음</div>';
+            }
+            str += '</div>';
+            str += '</div>';
+            str += '</div>';
+            str += '</a>'
+            keywordList.append(str);
+          });
+        }
+      loading = false; // AJAX 요청이 완료되면 loading 상태를 해제합니다.
+      },
+      error: (jqXHR) => {
+        alert('해당 키워드에 등록된 글이 없습니다.');
+        loading = false; // AJAX 요청이 완료되면 loading 상태를 해제합니다.
+        window.history.back();
+      }
+    });
 	}
-   
+	
+	const fnScrollHandler = () => {
+    let loading = false;
+    let lastScrollTop = 0;
+
+    $(window).on('scroll', () => {
+      const scrollTop = $(window).scrollTop();
+      const documentHeight = $(document).height();
+      const windowHeight = $(window).height();
+      const bottomOffset = 50; // 스크롤 이벤트를 발생시킬 화면 하단과의 거리
+
+      if (!loading && (scrollTop + windowHeight + bottomOffset >= documentHeight)) {
+          loading = true;
+          page++;
+          fnKeywordList();
+      }
+
+      // 스크롤 위치 저장
+      lastScrollTop = scrollTop;
+    });
+	};
   
   fnKeywordList();
+  fnScrollHandler();
   </script>
 
 <%@ include file="../layout/footer.jsp" %>

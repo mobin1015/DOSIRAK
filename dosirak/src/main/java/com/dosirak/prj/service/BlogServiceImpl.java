@@ -153,14 +153,17 @@ public class BlogServiceImpl implements BlogService {
     int total = blogDetailMapper.getKeywordCount(keywordNo);
     int display = 10;    
     
+    
     myPageUtils.setPaging(total, display, page);
     
     Map<String, Object> map = Map.of("keywordNo", keywordNo
                                    , "begin", myPageUtils.getBegin()
-                                   , "end", myPageUtils.getEnd());    
+                                   , "end", myPageUtils.getEnd()
+                                   , "total", total);   
     
     return Map.of("keywordList", blogDetailMapper.getKeywordList(map)
-                , "paging", myPageUtils.getTotalPage());
+                , "totalPage", myPageUtils.getTotalPage());
+    
   }
   
   
