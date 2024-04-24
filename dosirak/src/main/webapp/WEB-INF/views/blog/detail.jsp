@@ -76,7 +76,7 @@
         <br>
         <br>
         <div  class="writer-contents">
-       <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogContents}</a>
+       <a>${blog.user.blogContents}</a>
         </div>
         </div> 
      </div>
