@@ -56,6 +56,16 @@ public class BlogController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
           .body(Collections.singletonMap("error", "KeywordNo를 갖고 있는 데이터가 없습니다."));
     }
-  }  
+  }
+  
+  @GetMapping("/search.page")
+  public String search() {
+    return "blog/search";
+  }
+  
+  @GetMapping(value = "searchBlog.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> searchBlog(HttpServletRequest request) {
+    return blogService.getSearchBlogList(request);
+  }
 
 }

@@ -5,7 +5,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
-<jsp:include page="../layout/header-write.jsp">
+<jsp:include page="../layout/header.jsp">
   <jsp:param value="블로그 작성" name="title"/>
 </jsp:include>
 
@@ -45,7 +45,7 @@
   
   <div class="editor">
     <select name="keyword" class="keyword">
-      <option value="0">키워드</option>
+      <option value="0" selected>키워드</option>
       <option value="1">여행</option>
       <option value="2">웹툰</option>
       <option value="3">IT</option>
@@ -62,7 +62,7 @@
   </div>
   
   <div class="editor" id="btn-wrap">
-    <input type="hidden" name="userNo" value="1">
+    <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
     <button type="submit">작성완료</button>
     <a href="${contextPath}/blog/list.page"><button type="button">작성취소</button></a>
   </div>
@@ -74,9 +74,9 @@
   const fnSummernoteEditor = () => {
 
     $('#contents').summernote({
-      width: 700,
-      height: 400,
-      toolbar: [
+    	width: 700,
+    	height: 400,
+    	toolbar: [
             // [groupName, [list of button]]
             ['fontname', ['fontname']],
             ['fontsize', ['fontsize']],
@@ -100,7 +100,7 @@
               body: formData
               /*  submit 상황에서는 <form enctype="multipart/form-data"> 필요하지만 fetch 에서는 사용하면 안 된다. 
               headers: {
-                'Content-Type': 'multipart/form-data'
+            	  'Content-Type': 'multipart/form-data'
               }
               */
             })
@@ -116,14 +116,22 @@
 
   const fnRegisterBlog = (evt) => {
     if(document.getElementById('title').value === '') {
-      alert('제목 입력은 필수입니다.');
+      alert('제목을 입력해주세요');
       evt.preventDefault();
       return;
+    } else if($("select[name=keyword]").val() === '0') {
+    	alert('키워드를 선택해주세요.');
+    	evt.preventDefault();
+    	return;
+    } else if(document.getElementById('contents').value === ''){
+    	alert('내용을 입력해주세요');
+    	evt.preventDefault();
+    	return;
     }
   }
 
   document.getElementById('frm-blog-register').addEventListener('submit', (evt) => {
-    fnRegisterBlog(evt);
+	  fnRegisterBlog(evt);
   })
   fnSummernoteEditor();
 
