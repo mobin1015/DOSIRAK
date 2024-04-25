@@ -193,8 +193,7 @@
     DELETE
       FROM BLOG_DETAIL_T
      WHERE BLOG_LIST_NO = #{blogListNo}
-  </delete>
- 
+  </delete> 
   
   <select id="getBlogDetailByNo"
           resultMap="BlogDetailMap">
