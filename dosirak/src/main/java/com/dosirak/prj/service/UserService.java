@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
@@ -34,4 +35,10 @@ public interface UserService {
   boolean hasUser(UserDto user);
   void naverSignin(HttpServletRequest request, UserDto naverUser);
 
+  
+  // 산들Profile영역
+  UserDto loadUserByNo(int userNo);
+  int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath);
+
+  
 }

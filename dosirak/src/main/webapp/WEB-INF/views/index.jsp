@@ -78,7 +78,6 @@
     </div>
     
     
-    <a href="${contextPath}/user/profile.do?userNo=${sessionScope.user.userNo}">ggggggggggo</a>
   
   <script>
   

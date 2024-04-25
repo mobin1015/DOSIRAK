@@ -132,5 +132,39 @@
      ON CO.BLOG_LIST_NO = BD.BLOG_LIST_NO
   WHERE BD.BLOG_LIST_NO = #{blogListNo} 
  </select>
+ 
+ 
+ <!--   ★ 산들 Profile영역  -->
+     <!--   ★★★ 불러오기 -->
+  <resultMap type="UserDto" id="profileUserDto">
+    <id     property="userNo"             column="USER_NO" />
+    <result property="email"              column="EMAIL"/>
+    <result property="blogContents"       column="BLOG_CONTENTS"/>
+    <result property="nickname"           column="NICKNAME"/>
+    <result property="blogImgPath"        column="BLOG_IMG_PATH"/>
+  </resultMap>
+
+  <select id="loadUserByNo"
+          resultMap="profileUserDto">
+    SELECT USER_NO, BLOG_CONTENTS, BLOG_IMG_PATH, NICKNAME
+      FROM USER_T
+     WHERE USER_NO = #{userNo}
+  </select>
+  
+ <!-- 업데이트 수정!! -->
+   <update id="updateProfile"
+          parameterType="UserDto">
+    UPDATE USER_T
+       SET BLOG_CONTENTS = #{blogContents}
+         , BLOG_IMG_PATH = #{blogImgPath, jdbcType=VARCHAR}
+         , NICKNAME = #{nickname}
+     WHERE USER_NO = #{userNo}
+  </update>
+  
+  <select id="getImgPathByUserNo" resultType="String">
+    SELECT BLOG_IMG_PATH
+    FROM USER_T
+    WHERE USER_NO = #{userNo}
+  </select>
 
 </mapper>
