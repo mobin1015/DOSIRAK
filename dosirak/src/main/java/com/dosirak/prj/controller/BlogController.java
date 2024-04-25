@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.service.BlogService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,11 @@ public class BlogController {
   }
   
   @PostMapping("/register.do")
-  public String register(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    redirectAttributes.addFlashAttribute("insertCount", blogService.registerBlog(request));
-    return "redirect:/main.page";
+  public String register(HttpServletRequest request) {
+    blogService.registerBlog(request);
+    UserDto user = (UserDto) request.getSession().getAttribute("user");
+    int userNo = user.getUserNo();
+    return "redirect:/user/mypage.do?userNo=" + userNo;
   }
 
   @GetMapping("/keyword.do")
@@ -137,5 +140,16 @@ public class BlogController {
     return blogService.getSearchBlogList(request);
 
   }
+  
+  @GetMapping("/now.page")
+  public String nowList() {
+    return "blog/now";
+  }
+  
+  @GetMapping(value = "nowBlog.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> nowBlog(HttpServletRequest request) {
+    return blogService.getNowBlogList(request);
+  }
+  
 
 }

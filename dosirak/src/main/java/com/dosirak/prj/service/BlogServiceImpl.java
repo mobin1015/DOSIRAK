@@ -415,4 +415,21 @@ public class BlogServiceImpl implements BlogService {
         
     return new ResponseEntity<>(map, HttpStatus.OK);
   }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getNowBlogList(HttpServletRequest request) {
+    
+    String order = request.getParameter("order");
+    int page = Integer.parseInt(request.getParameter("page"));
+    
+    int totalBlog = blogDetailMapper.getBlogCount();
+    int display = 10;
+    
+    myPageUtils.setPaging(totalBlog, display, page);
+    
+    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin() , "end", myPageUtils.getEnd(), "order", order);
+
+    return new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByDesc(map)
+        , "totalPage", myPageUtils.getTotalPage()), HttpStatus.OK);
+  }
 }
