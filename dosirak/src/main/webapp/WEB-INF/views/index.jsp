@@ -51,41 +51,48 @@
 	    url: contextPath + '/blog/mainList.do',
 	    dataType: 'json',
 	    success: (resData) => {
-	      console.log(resData);
 	      mainList.empty();
+	      const stripHtml = (html)=>{
+          let doc = new DOMParser().parseFromString(html, 'text/html');
+          return doc.body.textContent || "";
+        }
 	      let blogList = resData.blogList;
         if(blogList.length > 10) {
           blogList = blogList.slice(0, 10);           
-        } else if(blogList.length == 0) {
-        	let str = '<div class="no-data"><p>등록된 게시물이 없습니다. 첫 게시물의 주인공이 되어보세요!</p></div>';
+        } 
+        if(blogList.length === 0) {
+            let str = '<div class="no-data nanum"><p>We are waiting for your story!</p></div>';
+            mainList.append(str);
+        } else {
+  	      $.each(blogList, (i, blog) => {
+  	    	  let plainContents = stripHtml(blog.contents);
+  	        let str = '<div class="blog-item">'; 
+  	        str += '<a href="' + contextPath + '/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
+  	        str += '<div class="img-wrap">';
+  	        if (blog.contents.includes('<img')) {
+  	          let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+  	          str += '<div class="list-thumbnail" style="background: url(' + thumbnailUrl + ')"></div>';
+  	        } else {
+  	          str += '<div class="list-thumbnail"><img src="' + contextPath + '/resources/images/wh-image.png"></div>';
+  	        }
+  	        str += '</div>'; // img-wrap 종료
+  	        str += '<div class="text-wrap">';
+  	        str += '<h4 class="slide-title nanum">';
+  	        str += blog.title;
+  	        str += '</h4>';
+  	        str += '<div class="slide-contents">';
+  	        str += plainContents;
+  	        str += '</div>';
+  	        str += '<span class="slide-by">by </span><span class="slide-user">';
+  	        str += blog.user.nickname;
+  	        str += '</span>  ';
+  	        str += '</div>'; 
+  	        str += '<div class="mask"></div>'
+  	        str += '</a>'; 
+  	        str += '</div>'; 
+  	        mainList.append(str);
+  	      });
         }
-	      $.each(blogList, (i, blog) => {
-	        let str = '<div class="blog-item">'; 
-	        str += '<a href="' + contextPath + '/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
-	        str += '<div class="img-wrap">';
-	        if (blog.contents.includes('<img')) {
-	          let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
-	          str += '<div class="list-thumbnail" style="background: url(' + thumbnailUrl + ')"></div>';
-	        } else {
-	          str += '<div class="list-thumbnail"><img src="' + contextPath + '/resources/images/wh-image.png"></div>';
-	        }
-	        str += '</div>'; // img-wrap 종료
-	        str += '<div class="text-wrap">';
-	        str += '<h4 class="slide-title nanum">';
-	        str += blog.title;
-	        str += '</h4>';
-	        str += '<div class="slide-contents">';
-	        str += blog.contents;
-	        str += '</div>';
-	        str += '<span class="slide-by">by </span><span class="slide-user">';
-	        str += blog.user.nickname;
-	        str += '</span>  ';
-	        str += '</div>'; 
-	        str += '<div class="mask"></div>'
-	        str += '</a>'; 
-	        str += '</div>'; 
-	        mainList.append(str);
-	      });
 
 	      // 슬라이드를 초기화하고 새로 추가된 슬라이드를 반영합니다.
 	      $('.main-slide').slick({
