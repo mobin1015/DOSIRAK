@@ -46,7 +46,6 @@
 // 전역변수
 var totalPage = 0;
 var page = 1;
-var loading = false;
 
 // 블로그 카운트
 $(document).ready(function() {
@@ -75,18 +74,17 @@ const fnGetBlogerList = () => {
     data: 'userNo=${user.userNo}&page=' + page,
     // 응답
     dataType: 'json',
-    beforeSend: () => { // 요청 보내기 전에 로딩 상태 설정
-        loading = true;
-     },
     success: (resData) => {
-      console.log("success"); // 구현 완료 후 삭제 필요
       totalPage = resData.totalPage;
-      const blogList = $('#blog-list'); 
-      blogList.empty();
+      const blogList = $('#blog-list');
+      if (page === 1) {
+          blogList.empty();
+       }
       if (resData.blogList.length === 0) {
           blogList.append('<p class="none-blog">등록된 게시물이 없습니다.</p>');
         } else {
       $.each(resData.blogList, (i, blog) => {
+    	  let plainContents = stripHtml(blog.contents);
         let str = '<a class="blog" data-user-no="'+ blog.user.userNo +'"  data-blog-list-no="' + blog.blogListNo + '">';
            str += '<div class="list-wrap">';
              str += '<div class="contents-wrap">';
@@ -94,19 +92,29 @@ const fnGetBlogerList = () => {
                str += '<h4 class="list-title">' + blog.title + '</h4>';
                
                // 썸네일 이미지 처리
-               if(blog.contents.includes('<img')) {
-                 let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+               if(plainContents.includes('<img')) {
+                 let thumbnailUrl = $(plainContents).find('img').first().attr('src');
                  str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
                } else {
-                 str += '<div class="list-thumbnail">썸네일없음</div>';
+            	   str += '<div class="list-thumbnail" style="display: none;"></div>';
                }
                
-               str += '<div class="list-content">' + blog.contents + '</div>';
+               // 이미지를 포함한 게시글인 경우만 썸네일을 표시, 그렇지 않은 경우에는 숨김 (class명으로 조정)
+               str += '<div class="list-content' + (plainContents.includes('<img') ? ' list_has_image' : '') + '">' + plainContents + '</div>';
                str += '<div class="list-info">';
                 str += '<span>댓글</span>';
                 str += '<span class="num-comment">'+ blog.commentCount +'</span>';
                 str += '<span class="ico-dot">'+ '&#8729;' +'</span>';
-                str += '<span class="publish-time">'+ moment(blog.createDt).format('MMM DD.YYYY') +'</span>';
+                
+                // 블로그 게재시간 표시
+                const publishTime = moment(blog.createDt);
+                const now = moment();
+                const diffHours = now.diff(publishTime, 'hours');
+                if (diffHours <= 12) {
+                  str += '<span class="publish-time">'+ publishTime.locale('ko').fromNow() +'</span>';
+                } else {
+                  str += '<span class="publish-time">'+ publishTime.format('MMM DD.YYYY') +'</span>';
+                } 
                str += '</div>';
               str += '</div>';
               str += '<div class="list-item"></div>';
@@ -117,14 +125,16 @@ const fnGetBlogerList = () => {
          blogList.append(str);
         });
       }
-      loading = false; 
     },
     error: (jqXHR) => {
     	  alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-    	  loading = false;
-        window.history.back();
     }
   });
+}
+
+const stripHtml = (html)=>{
+    let doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || "";
 }
 
 //블로그 상세페이지 이동
@@ -137,31 +147,37 @@ const fnBlogDetail = () => {
 
 //무한스크롤
 const fnScrollHandler = () => {
-    let loading = false;   // 로딩 상태 변수 추가
-    let lastScrollTop = 0; // 스크롤 위치 변수 추가
-
-    $(window).on('scroll', () => {
-      const scrollTop = $(window).scrollTop();
-      const documentHeight = $(document).height();
-      const windowHeight = $(window).height();
-      const bottomOffset = 50; // 스크롤 이벤트를 발생시킬 화면 하단과의 거리
-
-      if (!loading && (scrollTop + windowHeight + bottomOffset >= documentHeight)) {
-          loading = true;
-          page++;
-          fnGetBlogerList();
+  
+  var timerId;
+  
+  $(window).on('scroll', (evt) => {                          
+  
+    if(timerId) {                
+        clearTimeout(timerId);   
+    }
+    
+    timerId = setTimeout(() => {
+      
+      let scrollTop = $(window).scrollTop();
+      let windowHeight = $(window).height();
+      let documentHeight = $(document).height();
+  
+      if( (scrollTop + windowHeight + 50 ) >= documentHeight ){ 
+        if(page >= totalPage) {
+          return;
+        }
+        page++;
+        fnGetBlogerList();
       }
-
-      // 스크롤 위치 저장
-      lastScrollTop = scrollTop;
-    });
-  };
-
+      
+    }, 500);
+    
+  })
+}
 
 fnGetBlogerList();
-fnScrollHandler();
 fnBlogDetail();
-
+fnScrollHandler();
 
 </script>
 
