@@ -43,7 +43,7 @@ background-color: #fff;border: 1px solid #00c6be;border-radius: 16px;color: #00c
 .nav-profile-login{height:239px;}
 .profile-default .profile-login-image{display: block;width: 60px;height: 60px;margin:0 auto;border-radius: 60px;overflow:hidden;cursor:pointer;}
 .profile-default .profile-name{margin-top:12px;cursor:pointer;}
-.profile-default .profile-id{font-size:12px;margin-top:6.5px;cursor:pointer;}
+.profile-default .profile-id{font-size:12px;cursor:pointer;}
 
 .profile-default .profile-top{display:flex;gap:4px;}
 .nav-btn a{display:inline-block;width: 80px;height: 32px;line-height:32px;margin-top: 18px;
