@@ -9,7 +9,7 @@
   <jsp:param value="프로필편집" name="title"/>
 </jsp:include>
 
-<link rel="stylesheet" href="../resources/css/profile.css"/>
+<link rel="stylesheet" href="../resources/css/profile.css?dt=${dt}"/>
 
   <div id="mArticle">
 

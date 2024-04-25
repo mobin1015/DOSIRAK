@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
 		String gender = request.getParameter("gender");
 		String mobile = request.getParameter("mobile");
 		int signupKind = Integer.parseInt(request.getParameter("singupKind"));
+		
 
 		// Mapper 로 보낼 UserDto 객체 생성
 		UserDto user = UserDto.builder()
