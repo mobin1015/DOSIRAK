@@ -52,7 +52,11 @@
 	    success: (resData) => {
 	      console.log(resData);
 	      mainList.empty();
-	      $.each(resData.blogList, (i, blog) => {
+	      let blogList = resData.blogList;
+        if(blogList.length > 10) {
+          blogList = blogList.slice(0, 10);           
+        }
+	      $.each(blogList, (i, blog) => {
 	        let str = '<div class="blog-item">'; 
 	        str += '<a href="' + contextPath + '/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
 	        str += '<div class="img-wrap">';

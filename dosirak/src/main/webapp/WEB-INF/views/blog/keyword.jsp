@@ -37,6 +37,10 @@
   const fnKeywordList = () => {
     const keywordList = $('#keyword-list');
     moment.locale('ko');
+    const stripHtml = (html)=>{
+      let doc = new DOMParser().parseFromString(html, 'text/html');
+      return doc.body.textContent || "";
+    }
     $.ajax({
       type: 'get',
       url: '${contextPath}/blog/keywordList.do',
@@ -50,12 +54,14 @@
         if(resData.totalPage > 0) {
         	totalPage = resData.totalPage;
           $.each(resData.keywordList, (i, blog) => {
+        	  
+        	  let plainContents = stripHtml(blog.contents);
             let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
             str += '<div class="list-wrap">';
             str += '<div class="contents-wrap">';
             str += '<div class="list-item">';
             str += '<h4 class="list-title">' + blog.title + '</h4>';
-            str += '<div class="list-content">' + blog.contents + '</div>';
+            str += '<div class="list-content">' + plainContents + '</div>';
             str += '<div class="list-info">';
             str += '<span>댓글 ' + blog.commentCount + '</span>';
             str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
