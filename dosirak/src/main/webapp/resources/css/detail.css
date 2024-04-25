@@ -137,3 +137,24 @@ hr{visibility:visible; }
     vertical-align: middle;
     width: 2px;}
     
+ #modify{
+ float: right;
+ }
+ 
+ #btn-edit-blog{
+       background-color: white;
+  width: 25px;
+      height: 25px;
+     background-image: url(../images/header_icon.png);
+      
+      background-position:2px -147px
+ }
+ 
+ #btn-remove-blog{
+       background-color: white;
+ width: 25px;
+      height: 25px;
+           background-image: url(../images/header_icon.png);
+      background-position:-57px -147px
+ }
+    
