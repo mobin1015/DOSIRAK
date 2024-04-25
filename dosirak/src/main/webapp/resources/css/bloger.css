@@ -13,14 +13,15 @@
 .tab-contents span {margin: 30px 5px 0 0; }
 
 /* 블로그 리스트 */
-.blog-list-wrap {max-width: 700px; margin: 0 auto;}
+.blog-list-wrap {width: 100%; max-width: 700px; margin: 0 auto;}
 .none-blog {text-align: center; margin-top: 30px;}
 
-#blog-list a {width: 100%;}
-.list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px;}
-.contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
-.contents-wrap {display: flex; flex-wrap: nowrap; align-items: center;  margin-top: 6px; justify-content: space-between;}
-.contents-wrap .list-item p img {display: none;}
-.contents-wrap .list-item .list-content {max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px;}
-.list-thumbnail {width:120px; height: 120px; overflow: hidden;}
-.list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}
+.list-wrap {overflow: hidden; border-bottom: 1px solid #eee; padding: 20px 0;}
+.list-title {font-size: 18px; color: #333; margin-bottom: 10px;}
+.list-title:hover { color: #3e3e3e; text-decoration: underline; }
+.list-content {font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 10px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
+.list-thumbnail {float: right; width: 120px; height: 120px; margin-left: 20px;} 
+.list-info {color: #999; font-size: 12px; margin-top: 5px;} 
+.num-comment {margin-right: 5px;}
+.ico-dot {margin: 0 5px;}
+.publish-time {color: #999;}

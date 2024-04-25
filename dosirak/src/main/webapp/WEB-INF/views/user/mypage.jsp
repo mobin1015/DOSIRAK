@@ -162,7 +162,7 @@ const fnGetMypageBlogList = () => {
                 str += '<span class="publish-time">'+ moment(blog.createDt).format('MMM DD.YYYY') +'</span>';
                str += '</div>';
               str += '</div>';
-              str += '<div class="list-item">썸네일이미지</div>';
+              str += '<div class="list-item"></div>';
             str += '</div>';   
           str += '</div>';   
           str += '</a>'  
