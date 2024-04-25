@@ -125,6 +125,11 @@ public class BlogController {
     return ResponseEntity.ok(Map.of("deleteLike", blogService.deleteLike(request)));
   }
   
+  @GetMapping(value="/mainList.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> mainList(HttpServletRequest request) {
+    return blogService.getBlogList(request);
+  }
+  
   @GetMapping("/search.page")
   public String search() {
     return "blog/search";
@@ -133,6 +138,7 @@ public class BlogController {
   @GetMapping(value = "searchBlog.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> searchBlog(HttpServletRequest request) {
     return blogService.getSearchBlogList(request);
+
   }
 
 }
