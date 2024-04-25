@@ -26,14 +26,6 @@ public class UserController {
 
   private final UserService userService;
   
-  // 헤더 마이페이지
-  @GetMapping("/mypage.do")
-  public String mypage(@RequestParam int userNo, Model model) {
-    model.addAttribute("user", userService.getUserByNo(userNo));
-    //model.addAttribute("blogCount", userService.getblogCount());
-    return "user/mypage";
-  }
-  
   // 블로거페이지
   @GetMapping("/bloger.do")
   public String blogerPage(@RequestParam int userNo, Model model) {
