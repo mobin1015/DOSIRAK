@@ -8,8 +8,32 @@
 <jsp:include page="../layout/header.jsp" />
 
 <link rel="stylesheet" href="../resources/css/search.css"/>
+<style>
+.search-btn{
+    display: inline-block;
+    height: 22px;
+    margin-left:16px;
+    margin-right: 0;
+    margin-top: 0;
+    width: 22px;
+    background:url('../resources/images/header_icon.png');
+    background-position: -30px 0;
+    cursor:pointer;
+}
+.register-btn{
+    padding:0 10px;
+    height:28px;
+    line-height:28px;
+    text-align:center;
+    border:1px solid #959595;
+    border-radius: 16px;
+}
+button {
+    background: none;
+    border: none;
 
 
+</style>
 <div class="search-write-wrap">
   <form name="frm-search" id ="frm-search" onsubmit="return false;">
     <select name="type" class="search-type">
@@ -44,8 +68,11 @@
       alert('검색 타입을 선택해주세요');
       return false;
     } else if(searchQuery === '' || searchQuery === undefined){
-      alert('검색어를 입력해주세요');
+    	alert('검색어를 입력해주세요');
       return false;
+    } else if(hasSpecialCharacters(searchQuery)){
+    	alert('특수문자는 검색할 수 없습니다. 다시 작성해주세요');
+    	return false;
     }
     $.ajax({
       type: 'GET',
@@ -60,6 +87,7 @@
         		result = '<div id="none-result"><span class="highlight">' + searchQuery +'</span>'+' 에 대한 검색 결과가 없습니다.</div>';
         		result += '<div><span>검색어의 단어 수를 줄이거나, 보다 일반적인 검색어로 다시 검색해보세요.</span></div>';
         		result += '<div><span>두 단어 이상을 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해보세요.</span><div>';
+        		result += '<div><span>키워드에 있는 특수문자를 뺀 후에 검색해보세요.</span><div>';
         		
         	}else{ 		
             if(searchType === 'contents'){
@@ -132,10 +160,19 @@
     });
   }
   
+  // contents 태그 제거 함수
   const stripHtml = (html)=>{
 	    let doc = new DOMParser().parseFromString(html, 'text/html');
 	    return doc.body.textContent || "";
 	}
+  
+  // query 특수문자 확인시
+  const hasSpecialCharacters = (input)=>{
+    // 특수문자를 포함하는지 여부를 확인하는 정규식
+    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    return regex.test(input);
+  }
+  
   
   
   // 무한스크롤
