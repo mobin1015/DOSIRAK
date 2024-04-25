@@ -4,7 +4,21 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dosirak.prj.mapper.UserMapper">
-  
+ 
+  <resultMap type="BlogDetailDto" id="BlogDetailMap">
+   <id     property="blogListNo"     column="BLOG_LIST_NO"/>
+   <result property="keywordNo"      column="KEYWORD_NO"/>
+   <result property="title"      column="TITLE"/>
+   <result property="contents"   column="CONTENTS"/>
+   <result property="createDt"   column="CREATE_DT"/>
+   <result property="modifyDt"   column="MODIFY_DT"/>
+   <result property="blogCount"   column="BLOG_COUNT"/>
+   <result property="commentCount"   column="COMMENT_COUNT"/>   
+    <association property="user"  javaType="UserDto">
+     <id   property="userNo"  column="USER_NO"/>
+   </association>
+ </resultMap>
+ 
   <select id="getUserByMap" 
           parameterType="Map"
           resultType="UserDto">
@@ -14,6 +28,13 @@
       <if test="email!=null">EMAIL = #{email}</if>
       <if test="pw!=null">AND PW = #{pw}</if>
     </where>
+  </select>
+
+  <select id="getUserByNo"
+          resultType="UserDto">
+   SELECT USER_NO, EMAIL, NICKNAME, BLOG_CONTENTS, BLOG_IMG_PATH
+     FROM USER_T
+    WHERE USER_NO = #{userNo}
   </select>
 
   <select id="getLeaveUserByMap"
@@ -80,8 +101,36 @@
      WHERE SESSION_ID = #{sessionId} 
   </update>
   
+
+<!--  ********************** 수지 작업 ********************** -->
+
+  <select id="getBlogCount"
+          resultType="int">
+    SELECT COUNT(*) AS blogCount
+      FROM BLOG_DETAIL_T
+     WHERE USER_NO = #{userNo} 
+  </select>
   
-  
+ <select id="getBlogList"
+         parameterType="Map"
+         resultMap="BlogDetailMap">
+  SELECT BLOG_LIST_NO, TITLE, CONTENTS, CREATE_DT, MODIFY_DT, KEYWORD_NAME, KEYWORD_NO, COMMENT_COUNT, HAS_THUMBNAIL, USER_NO
+    FROM (SELECT ROW_NUMBER() OVER(ORDER BY BD.BLOG_LIST_NO DESC) AS RN
+               , BD.BLOG_LIST_NO, BD.TITLE, BD.CONTENTS, BD.CREATE_DT, BD.MODIFY_DT, BD.KEYWORD_NAME, BD.KEYWORD_NO, BD.COMMENT_COUNT, BD.HAS_THUMBNAIL
+               , USR.USER_NO
+            FROM USER_T USR INNER JOIN BLOG_DETAIL_T BD 
+              ON USR.USER_NO = BD.USER_NO)
+   WHERE USER_NO = #{userNo}           
+     AND RN BETWEEN #{begin} AND #{end}
+ </select>
  
+ <select id="getBlogByNo"
+         resultMap="BlogDetailMap">
+ SELECT BD.BLOG_LIST_NO, BD.USER_NO, BD.TITLE, BD.CONTENTS, BD.CREATE_DT, BD.MODIFY_DT, BD.KEYWORD_NAME, BD.KEYWORD_NO
+      , CO.COMMENT_NO
+   FROM BLOG_DETAIL_T BD LEFT JOIN COMMENT_T CO 
+     ON CO.BLOG_LIST_NO = BD.BLOG_LIST_NO
+  WHERE BD.BLOG_LIST_NO = #{blogListNo} 
+ </select>
 
 </mapper>

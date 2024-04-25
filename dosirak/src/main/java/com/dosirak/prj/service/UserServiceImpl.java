@@ -1,7 +1,6 @@
 package com.dosirak.prj.service;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -9,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +18,12 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.multipart.MultipartFile;
 
+import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.UserMapper;
-import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyJavaMailUtils;
+import com.dosirak.prj.utils.MyPageUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +33,51 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
+  private final MyPageUtils myPageUtils;
+  
+  @Override
+  public UserDto getUserByNo(int userNo) {
+    System.out.println(userMapper.getUserByNo(userNo));
+    return userMapper.getUserByNo(userNo);
+  }
+  
+  @Override
+  public int getblogCount(int userNo) {
+    return userMapper.getBlogCount(userNo);
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+    
+    // 전체 블로그 개수 + 스크롤 이벤트마다 가져갈 목록의 개수 + 현재 페이지 번호
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    int total = userMapper.getBlogCount(userNo);
+    int display = 10;
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(opt.orElse("1"));
+
+    // 페이징 처리 
+    myPageUtils.setPaging(total, display, page);
+
+    // 목록 가져올 때 전달 할 Map 생성
+    Map<String, Object> map = Map.of("userNo", userNo
+                                    , "begin", myPageUtils.getBegin()
+                                    , "end", myPageUtils.getEnd()
+                                    , "total", total);
+    
+    // 목록 화면으로 반환할 값 (목록 + 전체 페이지 수)
+    return new ResponseEntity<>(Map.of("blogList", userMapper.getBlogList(map)
+        , "totalPage", myPageUtils.getTotalPage())
+        , HttpStatus.OK);
+    
+ }
+  
+  @Override
+  public BlogDetailDto getBlogByNo(int blogListNo) {
+    return userMapper.getBlogByNo(blogListNo);
+  }
+  
   private final MyJavaMailUtils myJavaMailUtils;
   
 
@@ -435,9 +479,9 @@ public class UserServiceImpl implements UserService {
     Map<String, Object> map = Map.of("email", naverUser.getEmail(),
                                      "ip", request.getRemoteAddr());
 
-  
-    UserDto user = userMapper.getUserByMap(map);
-    request.getSession().setAttribute("user", user);
-    
-  }				
+		UserDto user = userMapper.getUserByMap(map);
+		request.getSession().setAttribute("user", user);
+
+	}			
+
 }

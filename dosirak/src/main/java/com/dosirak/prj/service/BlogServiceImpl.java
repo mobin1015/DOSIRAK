@@ -57,6 +57,7 @@ public class BlogServiceImpl implements BlogService {
       e.printStackTrace();
     }
     
+    
     // 이미지가 저장된 경로를 Map 으로 반환
     return new ResponseEntity<>(Map.of("src", uploadPath + "/" + filesystemName)
                               , HttpStatus.OK);
@@ -397,9 +398,5 @@ public class BlogServiceImpl implements BlogService {
     return editorImageList;
     
   }
-
-  
-  
-  
   
 }
