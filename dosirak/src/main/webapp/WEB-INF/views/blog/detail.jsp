@@ -32,10 +32,12 @@
           <div class="container" style=" border-top: 1px solid #eee;">
         <div class="contets-wrap">
         
-               <div id="modify">
-  <c:if test="${sessionScope.user.userNo == blog.user.userNo}">
-    <form id="frm-btn" method="POST">  
+      <div id="modify">
+      <c:if test="${sessionScope.user.userNo == blog.user.userNo}">
+      <form id="frm-btn" method="POST">  
       <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
+      <input type="hidden" name="usrNo" value="${blog.user.userNo}">
+      <input type="hidden" name="url" value="${url}">
       <button type="button" id="btn-edit-blog"></button>
       <button type="button" id="btn-remove-blog" ></button>
     </form>
@@ -62,21 +64,6 @@
        
        <div id="comments-register" style="display:none">
        
-       <%--   if(comment.user.nickname === null) {
-                       if(Number('${sessionScope.userNo}') === comment.user.userNo) {
-                       str += '<a id="userImg"><img height="32px" width="32px"src=""></a><div style="display: inline; position: relative;  width: 100%; "><span  style="font-size:13px;">' +comment.user.userNo+ '</span><button type="button"  class="btn-remove-comment" style="display: inline;  background-color: white; float: right;" data-comment-no="' + comment.commentNo + '">삭제</button>';
-                       }else{
-                         str += '<a id="userImg"><img height="32px" width="32px" src=""></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.userNo+ '</span>';
-                       }
-                       
-                     }
-                     else{
-                       if(Number('${sessionScope.userNo}') === comment.user.userNo) {
-                       str += '<a id="userImg"><img height="32px" width="32px"  src=""></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.nickname+ '</span><button type="button" class="btn-remove-comment" style="display: inline;  background-color: white;  float: right;" data-comment-no="' + comment.commentNo + '">삭제</button>';
-                       }else{
-                         str += '<a id="userImg"><img height="32px" width="32px" src=""></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.nickname+ '</span>';
-                       }}
-       --%>
        
 <form id="frm-comment">
     <a id="userImg"><img height="32px" width="32px"src="/prj${blog.user.blogImgPath}"></a>
