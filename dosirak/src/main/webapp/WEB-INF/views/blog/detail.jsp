@@ -14,17 +14,11 @@
 
 <body>
 
-<div>
-  <c:if test="${sessionScope.user.userNo == blog.user.userNo}">
-    <form id="frm-btn" method="POST">  
-      <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
-      <button type="button" id="btn-edit-blog" class="btn btn-warning btn-sm">편집</button>
-      <button type="button" id="btn-remove-blog" class="btn btn-danger btn-sm">삭제</button>
-    </form>
-  </c:if>
-</div>
+
             <div class="container">
         <div class="contets-wrap">
+        
+ 
         <div class="blog-detail-title nanum">
          <h1>${blog.title}</h1>
         </div>
@@ -37,6 +31,16 @@
         </div></div>
           <div class="container" style=" border-top: 1px solid #eee;">
         <div class="contets-wrap">
+        
+               <div id="modify">
+  <c:if test="${sessionScope.user.userNo == blog.user.userNo}">
+    <form id="frm-btn" method="POST">  
+      <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
+      <button type="button" id="btn-edit-blog"></button>
+      <button type="button" id="btn-remove-blog" ></button>
+    </form>
+  </c:if>
+</div>
         <div class="blog-detail-contents">
          <p>${blog.contents}</p>
         </div>
