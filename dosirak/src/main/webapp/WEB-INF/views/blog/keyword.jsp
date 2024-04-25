@@ -50,11 +50,9 @@
         loading = true;
       },
       success: (resData) => {
-        console.log(resData);
         if(resData.totalPage > 0) {
         	totalPage = resData.totalPage;
           $.each(resData.keywordList, (i, blog) => {
-        	  
         	  let plainContents = stripHtml(blog.contents);
             let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
             str += '<div class="list-wrap">';
