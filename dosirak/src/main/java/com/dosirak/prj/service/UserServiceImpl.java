@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
   private final MyJavaMailUtils myJavaMailUtils;
   private final MyFileUtils myFileUtils;
 
-
 	@Override
 	public ResponseEntity<Map<String, Object>> checkEmail(Map<String, Object> params) {
 		boolean enableEmail = userMapper.getUserByMap(params) == null
@@ -330,87 +329,6 @@ public class UserServiceImpl implements UserService {
       con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");  // 반드시 대문자로 작성해야 한다.
 
-		Map<String, Object> map = Map.of("email", naverUser.getEmail(), 
-																		 "ip", request.getRemoteAddr());
-		
-		UserDto user = userMapper.getUserByMap(map);
-		request.getSession().setAttribute("user", user);
-		userMapper.insertAccessHistory(map);
-				
-	}
-	
- // SD코드
-  
-
-  //★★★ 수정하기
-
-@Override
-public int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath) {
-  // 이전 이미지 경로 가져오기
-  String originalImgPath = userMapper.getImgPathByUserNo(userNo); 
-  // 새로운 이미지가 있는지 확인
-  String newImgPath = null;
-  if (blogImgPath != null && !blogImgPath.isEmpty()) {
-      // 파일이 전달된 경우에 대한 처리
-      // 이미지 업로드 및 사용자 정보 업데이트
-      String uploadPath = myFileUtils.getUploadPath();
-      
-      File dir = new File(uploadPath);
-      if (!dir.exists()) {
-          dir.mkdirs();
-      }
-      String filesystemName = myFileUtils.getFilesystemName(blogImgPath.getOriginalFilename());
-      File file = new File(dir, filesystemName);
-      try {
-          blogImgPath.transferTo(file);
-      } catch (Exception e) {
-          e.printStackTrace();
-      }
-
-      // 파일 경로 설정
-      newImgPath = uploadPath + "/" + filesystemName;
-  } else {
-      // 새로운 이미지가 없는 경우에는 이전 이미지 경로 사용
-      newImgPath = originalImgPath;
-  }
-
-  // UserDto 객체 생성
-  UserDto profile = UserDto.builder()
-          .userNo(userNo)
-          .blogContents(blogContents)
-          .nickname(nickname)
-          .blogImgPath(newImgPath)
-          .build();
-
-  // 사용자 정보 업데이트
-  int modifyResult = userMapper.updateProfile(profile);
-  return modifyResult;
-}
-	
-	
-	// 파일이 전달되지 않은 경우의 프로필 수정 메서드
-	@Override
-	public int modifyProfileWithoutImage(int userNo, String nickname, String blogContents) {
-	// 사용자 정보 업데이트
-    UserDto profile = UserDto.builder()
-            .userNo(userNo)
-            .blogContents(blogContents)
-            .nickname(nickname)
-            .build();
-    // 사용자 정보 업데이트
-    int modifyResult = userMapper.updateProfile(profile);
-    return modifyResult;
-	}
-
-
-  
-  @Override
-  public UserDto loadUserByNo(int userNo) {
-    UserDto user = userMapper.loadUserByNo(userNo);
-    return user;
-  }
-
-	
       // 응답 스트림 생성
       BufferedReader reader = null;
       int responseCode = con.getResponseCode();
@@ -521,5 +439,68 @@ public int modifyProfile(int userNo, String nickname, String blogContents, Multi
     UserDto user = userMapper.getUserByMap(map);
     request.getSession().setAttribute("user", user);
     
-  }				
+  }			
+  
+  
+// SD코드
+  
+//★★★ 수정하기
+
+@Override
+public UserDto loadUserByNo(int userNo) {
+  UserDto user = userMapper.loadUserByNo(userNo);
+  return user;
+}  
+  
+@Override
+public int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath) {
+  // 이전 이미지 경로 가져오기
+  String originalImgPath = userMapper.getImgPathByUserNo(userNo); 
+  // 새로운 이미지가 있는지 확인
+  String newImgPath = null;
+  if (blogImgPath != null && !blogImgPath.isEmpty()) {
+      // 파일이 전달된 경우에 대한 처리
+      // 이미지 업로드 및 사용자 정보 업데이트
+      String uploadPath = myFileUtils.getUploadPath();
+      
+      File dir = new File(uploadPath);
+      if (!dir.exists()) {
+          dir.mkdirs();
+      }
+      String filesystemName = myFileUtils.getFilesystemName(blogImgPath.getOriginalFilename());
+      File file = new File(dir, filesystemName);
+      try {
+          blogImgPath.transferTo(file);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+
+      // 파일 경로 설정
+      newImgPath = uploadPath + "/" + filesystemName;
+      } else {
+          // 새로운 이미지가 없는 경우에는 이전 이미지 경로 사용
+          newImgPath = originalImgPath;
+      }
+
+  // UserDto 객체 생성
+  UserDto profile = UserDto.builder()
+          .userNo(userNo)
+          .blogContents(blogContents)
+          .nickname(nickname)
+          .blogImgPath(newImgPath)
+          .build();
+
+  // 사용자 정보 업데이트
+  int modifyResult = userMapper.updateProfile(profile);
+  return modifyResult;
+}
+  
+  
+
+
+
+  
+
+
+  
 }

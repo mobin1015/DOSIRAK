@@ -27,25 +27,17 @@ public interface UserService {
 	String getNaverLoginAccessToken(HttpServletRequest request);
 	UserDto getNaverLoginProfile(String accessToken);
 	boolean hasUser(UserDto user);
-  void naverLogin(HttpServletRequest request, UserDto naverUser);
+  void naverSignin(HttpServletRequest request, UserDto naverUser);
+
   
   
   
   // SD코드
-  //void loadUserByNo(int userNo, Model model);
+  UserDto loadUserByNo(int userNo);
   int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath);
-  //int getUserByNo(int userNo);
-  
-  int modifyProfileWithoutImage(int userNo, String nickname, String blogContents);
-  
-  //수정중
- UserDto loadUserByNo(int userNo);
+
   
 
-  String getNaverLoginURL(HttpServletRequest request);
-  String getNaverLoginAccessToken(HttpServletRequest request);
-  UserDto getNaverLoginProfile(String accessToken);
-  boolean hasUser(UserDto user);
-  void naverSignin(HttpServletRequest request, UserDto naverUser);
+
 
 }

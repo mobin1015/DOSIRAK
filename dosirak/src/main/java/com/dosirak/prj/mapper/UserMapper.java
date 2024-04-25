@@ -20,13 +20,12 @@ public interface UserMapper {
 	
 	 //SD코드
   //★★★ 불러오기
-  //UserDto getUserByNo(int userNo);
    UserDto loadUserByNo(int userNo);
-   UserDto getUserByNo(int userNo);
+   int updateProfile(UserDto user);
+   String getImgPathByUserNo(int userNo);
+  // UserDto getUserByNo(int userNo);
    
  //★★★ 수정하기
-   int updateProfile(UserDto user);
    
-   String getImgPathByUserNo(int userNo);
 
 }
