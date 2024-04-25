@@ -9,6 +9,7 @@
 
 <link rel="stylesheet" href="../resources/css/search.css"/>
 
+
 <div class="search-write-wrap">
   <form name="frm-search" id ="frm-search" onsubmit="return false;">
     <select name="type" class="search-type">
@@ -100,7 +101,7 @@
             str += '<div class="list-content">' + shortContents + '</div>';
             } else {
               str += '<h4 class="list-title">' + blog.title + '</h4>';
-              str += '<div class="list-content">' + blog.contents + '</div>';
+              str += '<div class="list-content">' + plainContents + '</div>';
             }
 
             str += '<div class="list-info">';

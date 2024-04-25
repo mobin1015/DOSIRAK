@@ -40,7 +40,20 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}">
 <style>
-  body{background:#fff; color: #333; font-size: 15px; text-align:left; font-weight: 400; font-family: 'Noto Sans KR', 'Sans-serif', sans-serif; word-break: keep-all; -ms-word-break: keep-all;}
+
+.register-btn{
+    padding:0 10px;
+    height:28px;
+    line-height:28px;
+    text-align:center;
+    border:1px solid #959595;
+    border-radius: 16px;
+}
+button {
+    background: none;
+    border: none;
+
+
 </style>
 
 </head>

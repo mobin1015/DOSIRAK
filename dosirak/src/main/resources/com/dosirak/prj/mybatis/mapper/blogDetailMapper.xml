@@ -13,6 +13,7 @@
    <result property="createDt"   column="CREATE_DT"/>
    <result property="modifyDt"   column="MODIFY_DT"/>
    <result property="commentCount"   column="COMMENT_COUNT"/>
+   <result property="hasThumbnail"   column="HAS_THUMBNAIL"/>
    <association property="user"  javaType="UserDto">
      <id     property="userNo"  column="USER_NO"/>
      <result property="nickname"   column="NICKNAME"/>
