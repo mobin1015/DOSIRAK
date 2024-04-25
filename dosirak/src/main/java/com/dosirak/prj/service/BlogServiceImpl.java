@@ -412,8 +412,8 @@ public class BlogServiceImpl implements BlogService {
         
     Map<String, Object> map = new HashMap<>();
     List<BlogDetailDto> blogList = blogDetailMapper.getBlogList(map);
-    map.put("blogList", blogList);    
-    
+    map.put("blogList", blogList);   
+        
     return new ResponseEntity<>(map, HttpStatus.OK);
   }
 }

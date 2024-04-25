@@ -55,6 +55,8 @@
 	      let blogList = resData.blogList;
         if(blogList.length > 10) {
           blogList = blogList.slice(0, 10);           
+        } else if(blogList.length == 0) {
+        	let str = '<div class="no-data"><p>등록된 게시물이 없습니다. 첫 게시물의 주인공이 되어보세요!</p></div>';
         }
 	      $.each(blogList, (i, blog) => {
 	        let str = '<div class="blog-item">'; 
