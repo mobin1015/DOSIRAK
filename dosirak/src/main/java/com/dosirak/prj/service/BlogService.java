@@ -30,4 +30,6 @@ public interface BlogService {
   int modifyBlog(HttpServletRequest request);
   
   ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request);
+  
+  ResponseEntity<Map<String, Object>> getNowBlogList(HttpServletRequest request);
 }

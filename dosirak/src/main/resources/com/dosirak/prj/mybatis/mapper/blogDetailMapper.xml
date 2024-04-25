@@ -321,7 +321,24 @@
                 ON U.USER_NO = D.USER_NO)
      WHERE HAS_THUMBNAIL = 1
   </select>
+
+  <select id="getBlogDetailListByDesc"
+          parameterType="Map"
+          resultMap="BlogDetailMap">
+  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO
+    FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
+               , U.NICKNAME, U.USER_NO, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
+            FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
+              ON U.USER_NO = D.USER_NO
+            ORDER BY CREATE_DT ${order})
+   WHERE RN BETWEEN #{begin} AND #{end}    
+  </select>
   
+  <select id="getBlogCount"
+          resultType="int">
+  SELECT COUNT(*)
+    FROM BLOG_DETAIL_T
+  </select> 
   
    
 </mapper>
