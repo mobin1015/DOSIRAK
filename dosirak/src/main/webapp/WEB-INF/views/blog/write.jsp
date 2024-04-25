@@ -5,36 +5,10 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
-<jsp:include page="../layout/header.jsp">
+<jsp:include page="../layout/header-write.jsp">
   <jsp:param value="블로그 작성" name="title"/>
 </jsp:include>
-
-<style>
-  .editor{
-    display: flex;
-    margin: 0 auto;
-    width: 700px;
-    font-size: 20px;
-
-  }
-  .summernote{
-    margin: 0 auto;
-    width: 700px;
-  }
-  .keyword{
-    display: inline-block;
-    margin-right: 30px;
-  }
-  #title{
-    width: 650px;
-
-  }
-  .editor#btn-wrap{
-     justify-contents: center;
-  }
-
-</style>
-
+<link rel="stylesheet" href="../resources/css/write.css"/>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
@@ -46,12 +20,12 @@
   <div class="editor">
     <select name="keyword" class="keyword">
       <option value="0" selected>키워드</option>
-      <option value="1">여행</option>
-      <option value="2">웹툰</option>
-      <option value="3">IT</option>
-      <option value="4">사진</option>
-      <option value="5">영화</option>
-      <option value="6">책</option>
+      <option value="1">지구한바퀴 세계여행</option>
+      <option value="2">그림·웹툰</option>
+      <option value="3">IT 트렌드</option>
+      <option value="4">사진·촬용</option>
+      <option value="5">취향저격 영화 리뷰</option>
+      <option value="6">오늘은 이런 책</option>
 
     </select>
     <input type="text" name="title" id="title" placeholder="제목을 입력하세요">
@@ -63,8 +37,6 @@
   
   <div class="editor" id="btn-wrap">
     <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
-    <button type="submit">작성완료</button>
-    <a href="${contextPath}/blog/list.page"><button type="button">작성취소</button></a>
   </div>
       
 </form>
@@ -74,9 +46,9 @@
   const fnSummernoteEditor = () => {
 
     $('#contents').summernote({
-      width: 700,
-      height: 400,
-      toolbar: [
+    	width: 700,
+    	height: 700,
+    	toolbar: [
             // [groupName, [list of button]]
             ['fontname', ['fontname']],
             ['fontsize', ['fontsize']],
@@ -100,7 +72,7 @@
               body: formData
               /*  submit 상황에서는 <form enctype="multipart/form-data"> 필요하지만 fetch 에서는 사용하면 안 된다. 
               headers: {
-                'Content-Type': 'multipart/form-data'
+            	  'Content-Type': 'multipart/form-data'
               }
               */
             })
@@ -120,19 +92,28 @@
       evt.preventDefault();
       return;
     } else if($("select[name=keyword]").val() === '0') {
-      alert('키워드를 선택해주세요.');
-      evt.preventDefault();
-      return;
+    	alert('키워드를 선택해주세요.');
+    	evt.preventDefault();
+    	return;
     } else if(document.getElementById('contents').value === ''){
-      alert('내용을 입력해주세요');
-      evt.preventDefault();
-      return;
+    	alert('내용을 입력해주세요');
+    	evt.preventDefault();
+    	return;
     }
   }
-
+  
+  // submit event
   document.getElementById('frm-blog-register').addEventListener('submit', (evt) => {
-    fnRegisterBlog(evt);
-  })
+      fnRegisterBlog(evt);
+    })
+  
+  // button click event
+  document.getElementById('btn-register').addEventListener('click', (evt) => {
+	  document.getElementById('frm-blog-register').submit();
+
+  })  
+
+
   fnSummernoteEditor();
 
 </script>
