@@ -294,9 +294,9 @@ const fnSwitchingReplyInput = () => {
              str += '    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px;">${blog.user.nickname}</span></c:if> ';
              str += '      <textarea id="contents" name="contents" placeholder="답글을 입력하세요." style="    width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
              str += '  <input type="hidden" name="blogListNo" value="${blog.blogListNo}">';
-            	 str += ' <input type="hidden" name="groupNo" value="'+ classNo+'">';
-            	 str += ' <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
-            	 str += ' <div style="     border-top: 1px solid #eee; width:100%" >';
+               str += ' <input type="hidden" name="groupNo" value="'+ classNo+'">';
+               str += ' <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
+               str += ' <div style="     border-top: 1px solid #eee; width:100%" >';
              str += '       <button type="button" class="btn-register-reply">답글등록</button></div>';
              str += '  </form>';
              str += '</div>';
