@@ -75,7 +75,7 @@
        --%>
        
 <form id="frm-comment">
-    <a id="userImg"><img height="32px" width="32px"src=""></a>
+    <a id="userImg"><img height="32px" width="32px"src="/prj${blog.user.blogImgPath}"></a>
     <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px;">${blog.user.userNo}</span></c:if>
     <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px;">${blog.user.nickname}</span></c:if> 
   <textarea id="contents" name="contents" placeholder="댓글을 입력하세요." style="    width: 100%;
@@ -289,7 +289,7 @@ const fnSwitchingReplyInput = () => {
          
            let str = '<div class="div-frm-reply blind" style="padding-left: 32px">';
              str += '  <form class="frm-reply">';
-             str += '    <a id="userImg"><img height="32px" width="32px"src=""></a>';
+             str += '    <a id="userImg"><img height="32px" width="32px" src="/prj${blog.user.blogImgPath}"></a>';
              str += '   <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px;">${blog.user.userNo}</span></c:if>';
              str += '    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px;">${blog.user.nickname}</span></c:if> ';
              str += '      <textarea id="contents" name="contents" placeholder="답글을 입력하세요." style="    width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
@@ -407,14 +407,6 @@ const fnGetBlogList = () => {
                  return false;
                } 
              });
-           /*$.each(resData.LikeList, (i, like) => {
-               let str = '<div>';
-               str += '<span>' + like.likeNo + '</span>';
-               str += '<span>' + like.blogListNo + '</span>';
-               str += '<span>' + like.userNo + '</span>';
-               str += '</div>';
-               $('#like-list').append(str);
-             })*/
        },
        error: (jqXHR) => {
          alert(jqXHR.statusText + '(' + jqXHR.status + ')');
