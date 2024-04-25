@@ -54,4 +54,8 @@ public interface BlogDetailMapper {
  int getListCount();
  List<BlogDetailDto> getBlogList(Map<String, Object> map);
  
+ // 브런치스토리 나우
+ List<BlogDetailDto> getBlogDetailListByDesc(Map<String, Object> map);
+ int getBlogCount();
+ 
 }

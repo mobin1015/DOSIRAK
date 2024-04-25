@@ -140,5 +140,16 @@ public class BlogController {
     return blogService.getSearchBlogList(request);
 
   }
+  
+  @GetMapping("/now.page")
+  public String nowList() {
+    return "blog/now";
+  }
+  
+  @GetMapping(value = "nowBlog.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> nowBlog(HttpServletRequest request) {
+    return blogService.getNowBlogList(request);
+  }
+  
 
 }
