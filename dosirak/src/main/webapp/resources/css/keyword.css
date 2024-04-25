@@ -13,7 +13,7 @@
 .contents-wrap .list-item:nth-child(1) {margin-right: 15px;}
 .contents-wrap .list-item p img {display: none;}
 .contents-wrap .list-item .list-content {overflow: hidden; max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px;}
-.contents-wrap .list-item .list-content p {height: 44px; line-height: 20px; overflow: hidden;}
+.contents-wrap .list-item .list-content p {height: 44px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
 .list-thumbnail {width:120px; height: 120px; overflow: hidden;}
 .list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}
 

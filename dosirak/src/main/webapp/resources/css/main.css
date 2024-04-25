@@ -20,7 +20,7 @@
 .main-slide .text-wrap img {display: none;}
 .main-slide .text-wrap .slide-by {margin-right: 5px;}
 
-.mask {position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #333; opacity: .4;}
+.mask {position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #111; opacity: .38;}
 
 /* main-slide dots-custom */
 .bn-controller {text-align: center; z-index: 99; position: relative; margin-top: 20px;}
