@@ -64,7 +64,7 @@ const fnCheckSignin = () => {
       if(confirm('세션이 만료되어 Sign In 이 필요합니다. Sign In 할까요?')) {
         location.href = '${contextPath}/user/login.page';
       } else {
-    	  location.href = '${contextPath}/main.page'; 
+        location.href = '${contextPath}/main.page'; 
       }
     }
   } 
@@ -121,6 +121,7 @@ $(document).ready(function() {
 const fnGetMypageBlogList = () => {
   
   $.ajax({
+
     // 요청
     type: 'GET',
     url: '${contextPath}/user/getBlogList.do',

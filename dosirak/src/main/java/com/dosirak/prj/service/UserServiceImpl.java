@@ -1,6 +1,7 @@
 package com.dosirak.prj.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
@@ -18,10 +19,12 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.UserMapper;
+import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyJavaMailUtils;
 import com.dosirak.prj.utils.MyPageUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
@@ -34,6 +37,7 @@ public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
   private final MyPageUtils myPageUtils;
+  private final MyFileUtils myFileUtils;
   
   @Override
   public UserDto getUserByNo(int userNo) {
@@ -114,6 +118,7 @@ public class UserServiceImpl implements UserService {
 		String gender = request.getParameter("gender");
 		String mobile = request.getParameter("mobile");
 		int signupKind = Integer.parseInt(request.getParameter("singupKind"));
+		
 
 		// Mapper 로 보낼 UserDto 객체 생성
 		UserDto user = UserDto.builder()
@@ -482,6 +487,58 @@ public class UserServiceImpl implements UserService {
 		UserDto user = userMapper.getUserByMap(map);
 		request.getSession().setAttribute("user", user);
 
-	}			
+	}
+  
+  //산들Profile영역
+//★★★ 수정하기
 
+@Override
+public UserDto loadUserByNo(int userNo) {
+  UserDto user = userMapper.loadUserByNo(userNo);
+  return user;
+}  
+  
+@Override
+public int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath) {
+  // 이전 이미지 경로 가져오기
+  String originalImgPath = userMapper.getImgPathByUserNo(userNo); 
+  // 새로운 이미지가 있는지 확인
+  String newImgPath = null;
+  if (blogImgPath != null && !blogImgPath.isEmpty()) {
+      // 파일이 전달된 경우에 대한 처리
+      // 이미지 업로드 및 사용자 정보 업데이트
+      String uploadPath = myFileUtils.getUploadPath();
+      
+      File dir = new File(uploadPath);
+      if (!dir.exists()) {
+          dir.mkdirs();
+      }
+      String filesystemName = myFileUtils.getFilesystemName(blogImgPath.getOriginalFilename());
+      File file = new File(dir, filesystemName);
+      try {
+          blogImgPath.transferTo(file);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+
+      // 파일 경로 설정
+      newImgPath = uploadPath + "/" + filesystemName;
+      } else {
+          // 새로운 이미지가 없는 경우에는 이전 이미지 경로 사용
+          newImgPath = originalImgPath;
+      }
+
+  // UserDto 객체 생성
+  UserDto profile = UserDto.builder()
+          .userNo(userNo)
+          .blogContents(blogContents)
+          .nickname(nickname)
+          .blogImgPath(newImgPath)
+          .build();
+
+  // 사용자 정보 업데이트
+  int modifyResult = userMapper.updateProfile(profile);
+  return modifyResult;
+
+  } 
 }

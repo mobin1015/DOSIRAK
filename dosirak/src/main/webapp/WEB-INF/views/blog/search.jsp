@@ -8,7 +8,32 @@
 <jsp:include page="../layout/header.jsp" />
 
 <link rel="stylesheet" href="../resources/css/search.css"/>
+<style>
+.search-btn{
+    display: inline-block;
+    height: 22px;
+    margin-left:16px;
+    margin-right: 0;
+    margin-top: 0;
+    width: 22px;
+    background:url('../resources/images/header_icon.png');
+    background-position: -30px 0;
+    cursor:pointer;
+}
+.register-btn{
+    padding:0 10px;
+    height:28px;
+    line-height:28px;
+    text-align:center;
+    border:1px solid #959595;
+    border-radius: 16px;
+}
+button {
+    background: none;
+    border: none;
 
+
+</style>
 <div class="search-write-wrap">
   <form name="frm-search" id ="frm-search" onsubmit="return false;">
     <select name="type" class="search-type">
@@ -43,8 +68,11 @@
       alert('검색 타입을 선택해주세요');
       return false;
     } else if(searchQuery === '' || searchQuery === undefined){
-      alert('검색어를 입력해주세요');
+    	alert('검색어를 입력해주세요');
       return false;
+    } else if(hasSpecialCharacters(searchQuery)){
+    	alert('특수문자는 검색할 수 없습니다. 다시 작성해주세요');
+    	return false;
     }
     $.ajax({
       type: 'GET',
@@ -53,44 +81,57 @@
       success: (resData)=>{
         totalPage = resData.totalPage;
         let result='';
+        // 검색 결과 출력
         if(document.getElementById('div-result') === null){
-          if(searchType === 'contents'){
-            result = '<div id="div-result">내용/제목 검색 결과 '+ resData.totalBlog + '건</div>';                    
-          } else if(searchType === 'writer'){
-            result = '<div id="div-result">작성자 검색 결과 '+ resData.totalBlog + '건</div>';          
-          }
+        	if(resData.totalBlog === 0){
+        		result = '<div id="none-result"><span class="highlight">' + searchQuery +'</span>'+' 에 대한 검색 결과가 없습니다.</div>';
+        		result += '<div><span>검색어의 단어 수를 줄이거나, 보다 일반적인 검색어로 다시 검색해보세요.</span></div>';
+        		result += '<div><span>두 단어 이상을 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해보세요.</span><div>';
+        		result += '<div><span>키워드에 있는 특수문자를 뺀 후에 검색해보세요.</span><div>';
+        		
+        	}else{ 		
+            if(searchType === 'contents'){
+              result = '<div id="div-result">내용/제목 검색 결과 '+ resData.totalBlog + '건</div>';                    
+            } else if(searchType === 'writer'){
+              result = '<div id="div-result">작성자 검색 결과 '+ resData.totalBlog + '건</div>';          
+            }
+        	}
         searchList.append(result);
         }
+        
+        // 블로그 리스트 출력
         $.each(resData.blogList, (i, blog) => { 
           let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
+          let plainContents = stripHtml(blog.contents);
+
           str += '<div class="list-wrap">';
           str += '<div class="contents-wrap">';
           str += '<div class="list-item">';
 
           // 검색어 하이라이트 추가
           if (searchType === 'contents') {
-              let titleWithHighlight = blog.title.replace(searchQuery, '<span class="highlight">' + searchQuery + '</span>');
-              str += '<h4 class="list-title">' + titleWithHighlight + '</h4>';
-              
-              let plainContents = stripHtml(blog.contents);
-              let queryIndex = plainContents.indexOf(searchQuery);
-              let start = queryIndex - 50 < 0 ? 0 : queryIndex - 50;
-              let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 50;
-              let shortContents = plainContents.substring(start, end);
-              if (start > 0) {
-                  shortContents = '…' + shortContents;
-              }
-              if (end < plainContents.length) {
-                  shortContents += '…';
-              }
-              shortContents = shortContents.replace(new RegExp(searchQuery, 'gi'), '<span class="highlight">' + searchQuery + '</span>');
-              str += '<div class="list-content">' + shortContents + '</div>';
-          } else {
-              str += '<h4 class="list-title">' + blog.title + '</h4>';
-              let shortContents = blog.contents.length > 100 ? blog.contents.substring(0, 100) + '•••' : blog.contents;
-              str += '<div class="list-content">' + shortContents + '</div>';
-          }
+        	  // 타이틀 하이라이트
+            let titleWithHighlight = blog.title.replace(searchQuery, '<span class="highlight">' + searchQuery + '</span>');
+            str += '<h4 class="list-title">' + titleWithHighlight + '</h4>';
             
+            // 컨텐츠 하이라이트
+            let queryIndex = plainContents.indexOf(searchQuery);
+            let start = queryIndex - 50 < 0 ? 0 : queryIndex - 50;
+            let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 50;
+            let shortContents = plainContents.substring(start, end);
+            if (start > 0) {
+                shortContents = '…' + shortContents;
+            }
+            if (end < plainContents.length) {
+                shortContents += '…';
+            }
+            shortContents = shortContents.replace(new RegExp(searchQuery, 'gi'), '<span class="highlight">' + searchQuery + '</span>');
+            str += '<div class="list-content">' + shortContents + '</div>';
+            } else {
+              str += '<h4 class="list-title">' + blog.title + '</h4>';
+              str += '<div class="list-content">' + plainContents + '</div>';
+            }
+
             str += '<div class="list-info">';
             str += '<span>댓글 ' + blog.commentCount + ' • </span>';
             str += '<span>' + moment(blog.createDt).fromNow() + ' • </span>';
@@ -104,7 +145,7 @@
               let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
               str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
             } else {
-              str += '<div class="list-thumbnail">썸네일없음</div>';
+              str += '<div class="list-thumbnail"></div>';
             }
             str += '</div>';
             str += '</div>';
@@ -119,10 +160,19 @@
     });
   }
   
+  // contents 태그 제거 함수
   const stripHtml = (html)=>{
-      let doc = new DOMParser().parseFromString(html, 'text/html');
-      return doc.body.textContent || "";
+	    let doc = new DOMParser().parseFromString(html, 'text/html');
+	    return doc.body.textContent || "";
+	}
+  
+  // query 특수문자 확인시
+  const hasSpecialCharacters = (input)=>{
+    // 특수문자를 포함하는지 여부를 확인하는 정규식
+    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    return regex.test(input);
   }
+  
   
   
   // 무한스크롤

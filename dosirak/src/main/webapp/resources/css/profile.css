@@ -1,0 +1,54 @@
+@charset "UTF-8";
+
+
+    .wrap{margin-top:0px}
+    #mArticle{}
+    .edit-coverimg{background-color: #f8f8f8;height: 160px;}
+    .edit-cover-in{position: relative;width:700px;height:100%;margin:0 auto;}
+    .bloger-thumb{position: absolute;bottom: -35%;right: 0%;z-index: 5;
+    width: 100px;height: 100px;margin-left: 250px;}
+
+    .img-thumb{display: block;width: 100px;height: 100px;border-radius: 100px;}
+    .profile-image-span{display:inline-block;width:42px;height:42px;
+    background:url('../images/icon_camera.png');
+    background-size:100% 100%;
+    position:absolute;bottom:0px;right:-10px;}
+    #profile-image-input{width:42px;height:42px;background:transparent;text-indent:-9999px}
+    .edit-profile{width:100%;margin:0 auto;}
+    #edit-form{width:100%;;margin:0px auto  0;position:Relative;padding-bottom:50px}
+    #edit-form .form-in{width:700px;margin:40px auto 0;}
+    #edit-form label{display:inline-block;font-size: 12px;
+    font-weight: normal;
+    line-height: 14px;
+    margin-right: 10px;
+    padding-bottom:13px;
+    padding-right:10px;
+    position:relative;}
+    #edit-form label::after{content:'*';position:Absolute;top:-2px;right:0;color:#00c6be;font-size:16px;}
+    #edit-form .input-box{width:100%;border-bottom:1px solid #eee;padding-bottom:6px;}
+    #edit-form .ff{margin-bottom:60px}
+    #edit-form input{display:block;width:100%;height:40px;
+    font-size:28px;line-height:34px;color: #333;font-weight:300;}
+    #edit-form input#profile-image-input{border-bottom:none;cursor:pointer;}
+    #edit-form input#nickname{}
+    #edit-form textarea{display:block;padding:15px 20px 13px;resize: none;font-size: 13px;font-weight:300;
+    line-height: 24px;color: #333;border: 1px solid #eee;}
+    #edit-form .input-notice{display:none;color:#ff4040;font-size:12px;font-weight:300;margin-bottom:0;margin-top:10px;}
+    #edit-form .info-tip{padding-top: 17px;}
+    #edit-form  .tip-icon{border: 1px solid #00c6be;
+    border-radius: 8px;
+    color: #00c6be;
+    float: left;
+    font-size: 10px;
+    line-height: 15px;
+    margin: 4px 6px 0 0;
+    padding: 0 4px;}
+    #edit-form  .tip-txt{color: #959595;
+    font-size: 12px;
+    line-height: 20px;
+    overflow: hidden;}
+    
+    #edit-form .button-wrap{display:flex;justify-content: center;gap:6px;margin-top:30px;}
+    #edit-form .button-wrap button{background:#fff;width:80px;height:32px;line-height:32px;color:#666;border:1px solid #bbb;border-radius:20px;
+    font-size:13px;font-weigh:100;}
+    #edit-form .button-wrap #submit-btn{border: 1px solid #00c6be;border-radius: 20px;color: #00c6be;}

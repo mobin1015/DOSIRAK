@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.service.BlogService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,9 +38,11 @@ public class BlogController {
   }
   
   @PostMapping("/register.do")
-  public String register(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-    redirectAttributes.addFlashAttribute("insertCount", blogService.registerBlog(request));
-    return "redirect:/main.page";
+  public String register(HttpServletRequest request) {
+    blogService.registerBlog(request);
+    UserDto user = (UserDto) request.getSession().getAttribute("user");
+    int userNo = user.getUserNo();
+    return "redirect:/user/mypage.do?userNo=" + userNo;
   }
 
   @GetMapping("/keyword.do")
@@ -84,7 +87,7 @@ public class BlogController {
                          , RedirectAttributes redirectAttributes) {
     int removeCount = blogService.removeBlog(blogListNo);
     redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "블로그가 삭제되었습니다." : "블로그가 삭제되지 않았습니다.");
-    return "redirect:/blog/list.page";
+    return "redirect:/user/mypage.page";
   }
 
   @GetMapping(value="CommentList.do", produces="application/json")
@@ -122,6 +125,11 @@ public class BlogController {
     return ResponseEntity.ok(Map.of("deleteLike", blogService.deleteLike(request)));
   }
   
+  @GetMapping(value="/mainList.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> mainList(HttpServletRequest request) {
+    return blogService.getBlogList(request);
+  }
+  
   @GetMapping("/search.page")
   public String search() {
     return "blog/search";
@@ -130,6 +138,18 @@ public class BlogController {
   @GetMapping(value = "searchBlog.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> searchBlog(HttpServletRequest request) {
     return blogService.getSearchBlogList(request);
+
   }
+  
+  @GetMapping("/now.page")
+  public String nowList() {
+    return "blog/now";
+  }
+  
+  @GetMapping(value = "nowBlog.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> nowBlog(HttpServletRequest request) {
+    return blogService.getNowBlogList(request);
+  }
+  
 
 }

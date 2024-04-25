@@ -1,0 +1,39 @@
+@charset "UTF-8";
+  
+  .editor{
+    display: flex;
+    margin: 10px auto;
+    width: 700px;
+    font-size: 15px;
+    color: #666; border: 0; font-size: inherit; font-family: inherit; font-size: inherit; resize: none; font-weight: 400;
+  }
+  .summernote{
+    margin: 0 auto;
+    width: 700px;
+  }
+  .keyword{
+    display: inline-block;
+    margin-right: 30px;
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    -o-appearance: none; 
+    appearance: none;
+    border: none;
+    color: #666; border: 0; font-size: inherit; font-family: inherit; font-size: inherit; resize: none; font-weight: 400;
+  }
+  select:focus {outline: none;}
+  .keyword option{
+    -webkit-appearance: none; 
+    -moz-appearance: none; 
+    -o-appearance: none; 
+    appearance: none;
+  }
+  #title{
+    width: 650px;
+    border: none;
+    color: #666; border: 0; font-size: inherit; font-family: inherit; font-size: inherit; resize: none; font-weight: 400;
+  }
+  .editor#btn-wrap{
+     justify-contents: center;
+  }
+  

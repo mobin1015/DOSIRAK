@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.service.UserService;
@@ -26,6 +27,14 @@ public class UserController {
 
   private final UserService userService;
   
+  //헤더 마이페이지
+   @GetMapping("/mypage.do")
+   public String mypage(@RequestParam int userNo, Model model) {
+     model.addAttribute("user", userService.getUserByNo(userNo));
+     //model.addAttribute("blogCount", userService.getblogCount());
+     return "user/mypage";
+   }
+  
   // 블로거페이지
   @GetMapping("/bloger.do")
   public String blogerPage(@RequestParam int userNo, Model model) {
@@ -35,12 +44,7 @@ public class UserController {
   }
   
   // 마이페이지 프로필편집
-  @GetMapping("/profile.do")
-  public String edit(@RequestParam int userNo, Model model) {
-    model.addAttribute("user", userService.getUserByNo(userNo));
-    return "user/profile";
-  }
-  
+
   // 마이페이지 블로그 리스트
   @GetMapping(value="/getBlogList.do", produces = "application/json")
   public ResponseEntity<Map<String, Object>> getBlogList(@RequestParam int userNo, HttpServletRequest request) {
@@ -141,6 +145,46 @@ public class UserController {
 
   }
   
+  
+  
+  
+  // ★ 산들 Profile영역
+  @GetMapping("/profile.do")
+  public String modifyProfile(@RequestParam("userNo") int userNo, Model model) {
+      // userNo를 기반으로 사용자 정보를 가져옴
+      UserDto user = userService.loadUserByNo(userNo);
+
+      // 사용자의 닉네임 사용하기
+      String nickname = user.getNickname();
+      String blogContents = user.getBlogContents();
+      String blogImgPath = user.getBlogImgPath();
+
+      // 모델에 사용자 정보를 추가하여 프로필 페이지로 전달
+      model.addAttribute("nickname", nickname);
+      model.addAttribute("blogContents", blogContents);
+      model.addAttribute("blogImgPath",blogImgPath);
+
+      // 프로필 페이지로 이동
+      return "user/profile";
+  }
+  
+  
+
+  
+  @PostMapping("/modify.do")
+  public String modifyProfile(@RequestParam(value = "blogImgPath", required = false) MultipartFile blogImgPath,
+                              @RequestParam("userNo") int userNo,
+                              @RequestParam("nickname") String nickname,
+                              @RequestParam("blogContents") String blogContents,
+                              Model model) {
+       int modifyCount = userService.modifyProfile(userNo, nickname, blogContents, blogImgPath);
+      // 수정 성공 시 메시지
+      model.addAttribute("msg", "프로필이 수정되었습니다.");
+      // 되돌아갈 주소
+      model.addAttribute("url", "/user/mypage.do");
+      model.addAttribute("no", userNo);
+      return "/user/modifyalert";
+  }
   
 }
 

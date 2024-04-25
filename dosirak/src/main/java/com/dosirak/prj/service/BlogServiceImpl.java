@@ -26,7 +26,6 @@ import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyPageUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
-
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -200,14 +199,17 @@ public class BlogServiceImpl implements BlogService {
     int total = blogDetailMapper.getKeywordCount(keywordNo);
     int display = 10;    
     
+    
     myPageUtils.setPaging(total, display, page);
     
     Map<String, Object> map = Map.of("keywordNo", keywordNo
                                    , "begin", myPageUtils.getBegin()
-                                   , "end", myPageUtils.getEnd());    
+                                   , "end", myPageUtils.getEnd()
+                                   , "total", total);   
     
     return Map.of("keywordList", blogDetailMapper.getKeywordList(map)
-                , "paging", myPageUtils.getTotalPage());
+                , "totalPage", myPageUtils.getTotalPage());
+    
   }
   
   
@@ -398,5 +400,36 @@ public class BlogServiceImpl implements BlogService {
     return editorImageList;
     
   }
+
   
+  
+
+  
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+        
+    Map<String, Object> map = new HashMap<>();
+    List<BlogDetailDto> blogList = blogDetailMapper.getBlogList(map);
+    map.put("blogList", blogList);   
+        
+    return new ResponseEntity<>(map, HttpStatus.OK);
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getNowBlogList(HttpServletRequest request) {
+    
+    String order = request.getParameter("order");
+    int page = Integer.parseInt(request.getParameter("page"));
+    
+    int totalBlog = blogDetailMapper.getBlogCount();
+    int display = 10;
+    
+    myPageUtils.setPaging(totalBlog, display, page);
+    
+    Map<String, Object> map = Map.of("begin", myPageUtils.getBegin() , "end", myPageUtils.getEnd(), "order", order);
+
+    return new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByDesc(map)
+        , "totalPage", myPageUtils.getTotalPage()), HttpStatus.OK);
+  }
 }
