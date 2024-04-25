@@ -1,5 +1,6 @@
+<%@page import="com.dosirak.prj.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>   
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
@@ -24,7 +25,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
 <!-- include moment.js -->
-<script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script>
+<script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script> 
 
 <!-- include summernote css/js -->
 <link rel="stylesheet" href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
@@ -68,7 +69,7 @@
     <!-- 슬라이드 영역 -->
     <div class="header-nav">
        <!-- Sign In 안 된 경우 -->
-       <c:if test="${sessionScope.user == null}">  
+        <c:if test="${sessionScope.user == null}">  
           <div class="nav-profile">
             <div class="profile-default">
               <div class="profile-default-image "></div>
@@ -91,7 +92,7 @@
                 <p class="profile-id georgian">user-email@email.com</p>
                 <div class="profile-top">
                   <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
-                  <div class="nav-btn noto"><a href="">마이페이지</a></div>
+                  <div class="nav-btn noto"><a href="${contextPath}/user/mypage.do?userNo=${user.userNo}">마이페이지</a></div>
                 </div> 
             </div>
           </div>
@@ -103,8 +104,7 @@
     </div>
       
     <div class="wrap">
-    
-    
+ 
     
     <script>
     const fnSearchBlog = ()=>{
@@ -113,7 +113,7 @@
     	})
     }
     fnSearchBlog();
-    
+
     var aa=true;
     $(".menu-btn").click(function(){
       if(aa){
@@ -125,7 +125,7 @@
     
     $(document).on("click", function(event) {
         if (!$(event.target).closest('.header-wrap').length) {
-            $(".header-nav").animate({'left': '-100%'});
+            $(".header-nav").animate({'left':'-100%'});
             aa = true;
         }
     });
@@ -134,6 +134,6 @@
     $(".header-nav").on("click", function(event) {
         event.stopPropagation();
     });
-    
+
     </script>
     

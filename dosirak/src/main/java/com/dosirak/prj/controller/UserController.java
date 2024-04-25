@@ -4,22 +4,19 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.service.UserService;
 
-import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/user")
@@ -28,6 +25,49 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
   private final UserService userService;
+  
+  // 헤더 마이페이지
+  @GetMapping("/mypage.do")
+  public String mypage(@RequestParam int userNo, Model model) {
+    model.addAttribute("user", userService.getUserByNo(userNo));
+    //model.addAttribute("blogCount", userService.getblogCount());
+    return "user/mypage";
+  }
+  
+  // 블로거페이지
+  @GetMapping("/bloger.do")
+  public String blogerPage(@RequestParam int userNo, Model model) {
+    model.addAttribute("user", userService.getUserByNo(userNo));
+    //model.addAttribute("blogCount", userService.getblogCount());
+    return "user/bloger";
+  }
+  
+  // 마이페이지 프로필편집
+  @GetMapping("/profile.do")
+  public String edit(@RequestParam int userNo, Model model) {
+    model.addAttribute("user", userService.getUserByNo(userNo));
+    return "user/profile";
+  }
+  
+  // 마이페이지 블로그 리스트
+  @GetMapping(value="/getBlogList.do", produces = "application/json")
+  public ResponseEntity<Map<String, Object>> getBlogList(@RequestParam int userNo, HttpServletRequest request) {
+    return userService.getBlogList(request);
+  }
+  
+  // 마이페이지 블로그 카운트
+  @GetMapping("/blogCount.do")
+  public ResponseEntity<Integer> getUserBlogCount (@RequestParam int userNo) {
+    int blogCount = userService.getblogCount(userNo);
+    return ResponseEntity.ok(blogCount);
+  }
+ 
+  // 마이페이지 블로그 상세페이지 이동 
+  @GetMapping("/detail.do")
+  public String detail(@RequestParam int blogListNo, Model model) {
+    model.addAttribute("blog", userService.getBlogByNo(blogListNo));
+    return "blog/detail";
+  }
   
   @GetMapping("/signup.page")
   public String signupPage() {
@@ -106,12 +146,8 @@ public class UserController {
   @GetMapping("/logout.do")
   public void logout(HttpServletRequest request, HttpServletResponse response) {
     userService.logout(request, response);
-  }
-  
-  
 
-  
-  
+  }
   
   
 }

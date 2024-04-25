@@ -192,8 +192,7 @@
     DELETE
       FROM BLOG_DETAIL_T
      WHERE BLOG_LIST_NO = #{blogListNo}
-  </delete>
- 
+  </delete> 
   
   <select id="getBlogDetailByNo"
           resultMap="BlogDetailMap">
@@ -303,6 +302,5 @@
        SET COMMENT_COUNT = #{commentCount}
      WHERE BLOG_LIST_NO = #{blogListNo}
   </update>
-  
-   
+
 </mapper>
