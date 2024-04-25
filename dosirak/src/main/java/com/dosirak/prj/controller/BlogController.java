@@ -87,7 +87,7 @@ public class BlogController {
                          , RedirectAttributes redirectAttributes) {
     int removeCount = blogService.removeBlog(blogListNo);
     redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "블로그가 삭제되었습니다." : "블로그가 삭제되지 않았습니다.");
-    return "redirect:/blog/list.page";
+    return "redirect:/user/mypage.page";
   }
 
   @GetMapping(value="CommentList.do", produces="application/json")
