@@ -10,7 +10,7 @@
 
     .img-thumb{display: block;width: 100px;height: 100px;border-radius: 100px;}
     .profile-image-span{display:inline-block;width:42px;height:42px;
-    background:url('${contextPath}/resources/images/icon_camera.png');
+    background:url('../images/icon_camera.png');
     background-size:100% 100%;
     position:absolute;bottom:0px;right:-10px;}
     #profile-image-input{width:42px;height:42px;background:transparent;text-indent:-9999px}
