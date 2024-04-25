@@ -12,6 +12,7 @@
    <result property="contents"   column="CONTENTS"/>
    <result property="createDt"   column="CREATE_DT"/>
    <result property="modifyDt"   column="MODIFY_DT"/>
+   <result property="commentCount"   column="COMMENT_COUNT"/>
    <association property="user"  javaType="UserDto">
      <id     property="userNo"  column="USER_NO"/>
      <result property="nickname"   column="NICKNAME"/>
@@ -123,9 +124,9 @@
   
   <select id="getBlogListCountByContents"
           resultType="int">
-    SELECT COUNT(CASE WHEN CONTENTS IS NULL THEN NULL ELSE 0 END)
-      FROM BLOG_DETAIL_T
-     WHERE TO_CHAR(CONTENTS) LIKE '%${contents}%' OR TITLE LIKE '%${contents}%'
+  SELECT COUNT(*)
+  FROM BLOG_DETAIL_T
+  WHERE DBMS_LOB.INSTR(CONTENTS, #{query}) > 0 OR TITLE LIKE '%${query}%'
   </select>
   
   <select id="getCommentCount"
@@ -156,7 +157,7 @@
                , U.NICKNAME, U.USER_NO, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
             FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
               ON U.USER_NO = D.USER_NO
-           WHERE D.CONTENTS LIKE '%${query}%' OR D.TITLE LIKE '%${query}%')
+           WHERE DBMS_LOB.INSTR(D.CONTENTS, #{query}) > 0 OR TITLE LIKE '%${query}%')
    WHERE RN BETWEEN #{begin} AND #{end}    
   </select>
   

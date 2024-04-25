@@ -53,44 +53,56 @@
       success: (resData)=>{
         totalPage = resData.totalPage;
         let result='';
+        // 검색 결과 출력
         if(document.getElementById('div-result') === null){
-          if(searchType === 'contents'){
-            result = '<div id="div-result">내용/제목 검색 결과 '+ resData.totalBlog + '건</div>';                    
-          } else if(searchType === 'writer'){
-            result = '<div id="div-result">작성자 검색 결과 '+ resData.totalBlog + '건</div>';          
-          }
+        	if(resData.totalBlog === 0){
+        		result = '<div id="none-result"><span class="highlight">' + searchQuery +'</span>'+' 에 대한 검색 결과가 없습니다.</div>';
+        		result += '<div><span>검색어의 단어 수를 줄이거나, 보다 일반적인 검색어로 다시 검색해보세요.</span></div>';
+        		result += '<div><span>두 단어 이상을 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해보세요.</span><div>';
+        		
+        	}else{ 		
+            if(searchType === 'contents'){
+              result = '<div id="div-result">내용/제목 검색 결과 '+ resData.totalBlog + '건</div>';                    
+            } else if(searchType === 'writer'){
+              result = '<div id="div-result">작성자 검색 결과 '+ resData.totalBlog + '건</div>';          
+            }
+        	}
         searchList.append(result);
         }
+        
+        // 블로그 리스트 출력
         $.each(resData.blogList, (i, blog) => { 
           let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
+          let plainContents = stripHtml(blog.contents);
+
           str += '<div class="list-wrap">';
           str += '<div class="contents-wrap">';
           str += '<div class="list-item">';
 
           // 검색어 하이라이트 추가
           if (searchType === 'contents') {
-              let titleWithHighlight = blog.title.replace(searchQuery, '<span class="highlight">' + searchQuery + '</span>');
-              str += '<h4 class="list-title">' + titleWithHighlight + '</h4>';
-              
-              let plainContents = stripHtml(blog.contents);
-              let queryIndex = plainContents.indexOf(searchQuery);
-              let start = queryIndex - 50 < 0 ? 0 : queryIndex - 50;
-              let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 50;
-              let shortContents = plainContents.substring(start, end);
-              if (start > 0) {
-                  shortContents = '…' + shortContents;
-              }
-              if (end < plainContents.length) {
-                  shortContents += '…';
-              }
-              shortContents = shortContents.replace(new RegExp(searchQuery, 'gi'), '<span class="highlight">' + searchQuery + '</span>');
-              str += '<div class="list-content">' + shortContents + '</div>';
-          } else {
-              str += '<h4 class="list-title">' + blog.title + '</h4>';
-              let shortContents = blog.contents.length > 100 ? blog.contents.substring(0, 100) + '•••' : blog.contents;
-              str += '<div class="list-content">' + shortContents + '</div>';
-          }
+        	  // 타이틀 하이라이트
+            let titleWithHighlight = blog.title.replace(searchQuery, '<span class="highlight">' + searchQuery + '</span>');
+            str += '<h4 class="list-title">' + titleWithHighlight + '</h4>';
             
+            // 컨텐츠 하이라이트
+            let queryIndex = plainContents.indexOf(searchQuery);
+            let start = queryIndex - 50 < 0 ? 0 : queryIndex - 50;
+            let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 50;
+            let shortContents = plainContents.substring(start, end);
+            if (start > 0) {
+                shortContents = '…' + shortContents;
+            }
+            if (end < plainContents.length) {
+                shortContents += '…';
+            }
+            shortContents = shortContents.replace(new RegExp(searchQuery, 'gi'), '<span class="highlight">' + searchQuery + '</span>');
+            str += '<div class="list-content">' + shortContents + '</div>';
+            } else {
+              str += '<h4 class="list-title">' + blog.title + '</h4>';
+              str += '<div class="list-content">' + blog.contents + '</div>';
+            }
+
             str += '<div class="list-info">';
             str += '<span>댓글 ' + blog.commentCount + ' • </span>';
             str += '<span>' + moment(blog.createDt).fromNow() + ' • </span>';
@@ -104,7 +116,7 @@
               let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
               str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
             } else {
-              str += '<div class="list-thumbnail">썸네일없음</div>';
+              str += '<div class="list-thumbnail"></div>';
             }
             str += '</div>';
             str += '</div>';
@@ -120,9 +132,9 @@
   }
   
   const stripHtml = (html)=>{
-      let doc = new DOMParser().parseFromString(html, 'text/html');
-      return doc.body.textContent || "";
-  }
+	    let doc = new DOMParser().parseFromString(html, 'text/html');
+	    return doc.body.textContent || "";
+	}
   
   
   // 무한스크롤
