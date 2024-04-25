@@ -84,7 +84,7 @@ public class BlogController {
                          , RedirectAttributes redirectAttributes) {
     int removeCount = blogService.removeBlog(blogListNo);
     redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "블로그가 삭제되었습니다." : "블로그가 삭제되지 않았습니다.");
-    return "redirect:/blog/list.page";
+    return "redirect:/user/mypage.page";
   }
 
   @GetMapping(value="CommentList.do", produces="application/json")
@@ -122,6 +122,11 @@ public class BlogController {
     return ResponseEntity.ok(Map.of("deleteLike", blogService.deleteLike(request)));
   }
   
+  @GetMapping(value="/mainList.do", produces="application/json")
+  public ResponseEntity<Map<String, Object>> mainList(HttpServletRequest request) {
+    return blogService.getBlogList(request);
+  }
+  
   @GetMapping("/search.page")
   public String search() {
     return "blog/search";
@@ -130,6 +135,7 @@ public class BlogController {
   @GetMapping(value = "searchBlog.do", produces="application/json")
   public ResponseEntity<Map<String, Object>> searchBlog(HttpServletRequest request) {
     return blogService.getSearchBlogList(request);
+
   }
 
 }

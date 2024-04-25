@@ -199,14 +199,17 @@ public class BlogServiceImpl implements BlogService {
     int total = blogDetailMapper.getKeywordCount(keywordNo);
     int display = 10;    
     
+    
     myPageUtils.setPaging(total, display, page);
     
     Map<String, Object> map = Map.of("keywordNo", keywordNo
                                    , "begin", myPageUtils.getBegin()
-                                   , "end", myPageUtils.getEnd());    
+                                   , "end", myPageUtils.getEnd()
+                                   , "total", total);   
     
     return Map.of("keywordList", blogDetailMapper.getKeywordList(map)
-                , "paging", myPageUtils.getTotalPage());
+                , "totalPage", myPageUtils.getTotalPage());
+    
   }
   
   
@@ -397,5 +400,19 @@ public class BlogServiceImpl implements BlogService {
     return editorImageList;
     
   }
+
   
+  
+
+  
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+        
+    Map<String, Object> map = new HashMap<>();
+    List<BlogDetailDto> blogList = blogDetailMapper.getBlogList(map);
+    map.put("blogList", blogList);   
+        
+    return new ResponseEntity<>(map, HttpStatus.OK);
+  }
 }
