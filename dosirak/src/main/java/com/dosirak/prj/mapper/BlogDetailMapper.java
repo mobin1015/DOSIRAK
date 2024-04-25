@@ -48,4 +48,10 @@ public interface BlogDetailMapper {
  int deleteBlogImageList(int blogListNo);
  int updateCommentCount(Map<String, Object> map);
   
+ 
+ 
+  // 메인 슬라이드 블로그
+ int getListCount();
+ List<BlogDetailDto> getBlogList(Map<String, Object> map);
+ 
 }
