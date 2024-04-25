@@ -27,5 +27,9 @@ public interface UserMapper {
 	int insertAccessHistory(Map<String, Object> map);
 	int updateAccessHistory(String sessionId);
 
-
+	//산들Profile영역
+	UserDto loadUserByNo(int userNo);
+  int updateProfile(UserDto user);
+  String getImgPathByUserNo(int userNo);
+ // UserDto getUserByNo(int userNo);
 }

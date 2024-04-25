@@ -15,3 +15,4 @@ public class UserDto {
   private String email, pw, name, gender, mobile, blogContents, blogImgPath, nickname;
   private Date pwModifyDt, signupDt;
 }
+
