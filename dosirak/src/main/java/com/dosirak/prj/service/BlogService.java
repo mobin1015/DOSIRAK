@@ -14,7 +14,7 @@ public interface BlogService {
   ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile);
   boolean registerBlog(HttpServletRequest request);
   ResponseEntity<Map<String, Object>> getSearchBlogList(HttpServletRequest request);
-  
+
   List<BlogDetailDto> getKeywordNo(int keywordNo);
   Map<String, Object> getKeywordList(HttpServletRequest request);
 
@@ -28,4 +28,6 @@ public interface BlogService {
   int deleteLike(HttpServletRequest request);
   int removeBlog(int blogListNo);
   int modifyBlog(HttpServletRequest request);
+  
+  ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request);
 }

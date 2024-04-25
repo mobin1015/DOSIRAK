@@ -17,11 +17,10 @@ public interface BlogDetailMapper {
   int insertBlogDetail(BlogDetailDto blog);
   // 블로그글 안에 이미지를 image 테이블에 작성
   int insertImages(ImageDto image);
-//  int getBlogCount();
-//  List<BlogDetailDto> getBlogList(Map<String, Object> map); 
-//  BlogDetailDto getBlogByNo(int blogNo);
-//  int removeBlog(int blogNo);
-  
+//int getBlogCount();
+//List<BlogDetailDto> getBlogList(Map<String, Object> map); 
+//BlogDetailDto getBlogByNo(int blogNo);
+//int removeBlog(int blogNo); 
   
   List<BlogDetailDto> getKeywordNo(int keywordNo);
   int getKeywordCount(int keywordNo);
@@ -49,4 +48,10 @@ public interface BlogDetailMapper {
  int deleteBlogImageList(int blogListNo);
  int updateCommentCount(Map<String, Object> map);
   
+ 
+ 
+  // 메인 슬라이드 블로그
+ int getListCount();
+ List<BlogDetailDto> getBlogList(Map<String, Object> map);
+ 
 }

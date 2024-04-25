@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +19,14 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.UserMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyJavaMailUtils;
+import com.dosirak.prj.utils.MyPageUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,52 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
+  private final MyPageUtils myPageUtils;
+  private final MyFileUtils myFileUtils;
+  
+  @Override
+  public UserDto getUserByNo(int userNo) {
+    System.out.println(userMapper.getUserByNo(userNo));
+    return userMapper.getUserByNo(userNo);
+  }
+  
+  @Override
+  public int getblogCount(int userNo) {
+    return userMapper.getBlogCount(userNo);
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+    
+    // 전체 블로그 개수 + 스크롤 이벤트마다 가져갈 목록의 개수 + 현재 페이지 번호
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    int total = userMapper.getBlogCount(userNo);
+    int display = 10;
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(opt.orElse("1"));
+
+    // 페이징 처리 
+    myPageUtils.setPaging(total, display, page);
+
+    // 목록 가져올 때 전달 할 Map 생성
+    Map<String, Object> map = Map.of("userNo", userNo
+                                    , "begin", myPageUtils.getBegin()
+                                    , "end", myPageUtils.getEnd()
+                                    , "total", total);
+    
+    // 목록 화면으로 반환할 값 (목록 + 전체 페이지 수)
+    return new ResponseEntity<>(Map.of("blogList", userMapper.getBlogList(map)
+        , "totalPage", myPageUtils.getTotalPage())
+        , HttpStatus.OK);
+    
+ }
+  
+  @Override
+  public BlogDetailDto getBlogByNo(int blogListNo) {
+    return userMapper.getBlogByNo(blogListNo);
+  }
+  
   private final MyJavaMailUtils myJavaMailUtils;
   
 
@@ -435,9 +483,61 @@ public class UserServiceImpl implements UserService {
     Map<String, Object> map = Map.of("email", naverUser.getEmail(),
                                      "ip", request.getRemoteAddr());
 
+		UserDto user = userMapper.getUserByMap(map);
+		request.getSession().setAttribute("user", user);
+
+	}
   
-    UserDto user = userMapper.getUserByMap(map);
-    request.getSession().setAttribute("user", user);
-    
-  }				
+  //산들Profile영역
+//★★★ 수정하기
+
+@Override
+public UserDto loadUserByNo(int userNo) {
+  UserDto user = userMapper.loadUserByNo(userNo);
+  return user;
+}  
+  
+@Override
+public int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath) {
+  // 이전 이미지 경로 가져오기
+  String originalImgPath = userMapper.getImgPathByUserNo(userNo); 
+  // 새로운 이미지가 있는지 확인
+  String newImgPath = null;
+  if (blogImgPath != null && !blogImgPath.isEmpty()) {
+      // 파일이 전달된 경우에 대한 처리
+      // 이미지 업로드 및 사용자 정보 업데이트
+      String uploadPath = myFileUtils.getUploadPath();
+      
+      File dir = new File(uploadPath);
+      if (!dir.exists()) {
+          dir.mkdirs();
+      }
+      String filesystemName = myFileUtils.getFilesystemName(blogImgPath.getOriginalFilename());
+      File file = new File(dir, filesystemName);
+      try {
+          blogImgPath.transferTo(file);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+
+      // 파일 경로 설정
+      newImgPath = uploadPath + "/" + filesystemName;
+      } else {
+          // 새로운 이미지가 없는 경우에는 이전 이미지 경로 사용
+          newImgPath = originalImgPath;
+      }
+
+  // UserDto 객체 생성
+  UserDto profile = UserDto.builder()
+          .userNo(userNo)
+          .blogContents(blogContents)
+          .nickname(nickname)
+          .blogImgPath(newImgPath)
+          .build();
+
+  // 사용자 정보 업데이트
+  int modifyResult = userMapper.updateProfile(profile);
+  return modifyResult;
+
+  } 
 }
