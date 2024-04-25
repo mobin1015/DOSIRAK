@@ -41,7 +41,7 @@ public class BlogController {
     redirectAttributes.addFlashAttribute("insertCount", blogService.registerBlog(request));
     return "redirect:/main.page";
   }
-    
+
   @GetMapping("/keyword.do")
   public String keyword(@RequestParam int keywordNo, Model model) {
     model.addAttribute("blog", blogService.getKeywordNo(keywordNo));
