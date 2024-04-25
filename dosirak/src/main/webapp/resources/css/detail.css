@@ -1,6 +1,7 @@
 @charset "UTF-8";
 
 
+hr{visibility:visible; }
 
 
 .container {display: flex; justify-content: center;}
@@ -10,19 +11,129 @@
 .blog-detail-writer {max-width: 960px; letter-spacing: -.05em; text-align: center;  }
 .blog-detail-writer a {color: #000000; font-size: 12px; font-family:'Noto Sans KR','Malgun Gothic', sans-serif; !important; }
 
-.container2{background-color: #FBFBFB; display: flex; justify-content: center; bottom: 0;}  
+.container2{    height: 200px; background-color: #FBFBFB; display: flex; justify-content: center; bottom: 0;}  
 .comment-btn {float: right;}
 
 .utils-wrap {border-top: 1px solid #eee;padding: 32px 0;}
 
-.writerinfo-wrap {width: 700px; padding: 20px; padding: 20px;}       
+.writerinfo-wrap {width: 700px;  padding: 20px; margin-top: 10px;}       
 
-.writer-iamge{float: right;}
+.writer-iamge{float: right;    position: relative;
+    top: -52px;}
 
 .blog-detail-writer{ text-align: center; }
-.blog-detail-writer a{ color: #666666; font-size: 12px; font-family:'Noto Sans DemiLight','Malgun Gothic', sans-serif;
+.blog-detail-writer a{ color: #666666; font-size: 12px; font-family:'Noto Sans DemiLight','Malgun Gothic', sans-serif;}
 
-                      
+#like-btn {
+  
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    border-radius: 42px;
+    color: #666;
+    display: inline-flex;
+    font-family: "SF Pro Light", sans-serif;
+    font-size: 13px;
+    padding: 1px 23px;
+       }
+    
+    #like-btn-icon { 
+    width: 21px;
+      height: 17px;
+      background-color: white;
+      background-image: url(../images/header_icon.png);
 
+  }
 
+#comment-btn{
+  float: right;
+      align-items: center;
+    background-color: #fff;
+    border: 1px solid #bbb;
+    border-radius: 42px;
+    color: #333;
+    display: inline-flex;
+    font-family: "Noto Sans Light", "Malgun Gothic", sans-serif;
+    font-size: 13px;
+    padding: 1px 23px;
+}
+.blog-detail-contents{
+    font-size: 11pt;
+    letter-spacing: .8px;
+    line-height: 22pt;}
 
+#comments-register{
+  background-color: #fff;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    position: relative;
+    width: 700px;
+      margin-top: 30px;
+    margin-bottom: 80px;
+    padding:15px;
+}   
+
+.frm-reply  {
+  background-color: #fff;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    position: relative;
+    width: 668px;
+      margin-top: 30px;
+    margin-bottom: 80px;
+    padding:15px;
+}    
+ 
+
+ #comment-btn-icon { 
+ width: 21px;
+      height: 17px;
+      background-color: white;
+      background-image: url(../images/header_icon.png);
+      
+      background-position:-0px -121px
+ }
+ 
+ #comment-Box {
+    align-items: start;
+    display: flex;
+    justify-content: space-between;
+    margin: 36px 0;
+    width: 100%;
+}
+
+#userImg {
+    background-color: #fff;
+    margin-right: 10px;
+    position: relative;
+    top: 4px;
+}
+    
+    #userImg > img {
+    border-radius: 42px;
+    
+   }
+   
+   #date {
+    font-size: 11px; /* 폰트 크기를 16px로 설정 */
+}
+
+#by{
+    color: #000000;
+    font-family: Georgia, sans-serif;
+    font-size: 12px;
+    font-style: italic;
+    height: 14px;
+    margin: 0 4px 0 0;
+    opacity: .5;
+    width: 15px;}
+    
+ #dot{
+    background-color: #000000;
+    display: inline-block;
+    height: 2px;
+    margin: 0px 6px 0;
+    opacity: .5;
+    vertical-align: middle;
+    width: 2px;}
+    
