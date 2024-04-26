@@ -4,6 +4,7 @@
 
 /* 프로필 */
 .bloger-thumb {margin-left: 750px;}
+.bloger-thumb img {width: 100px; height: 100px; border-radius: 100px; margin-left: 65px;}
 .profile-user-image {width: 100px; height: 100px; border-radius: 100px;}
 .nickname {display:block; box-sizing: border-box; width: 700px; height: 39px; padding-right: 170px; font-size: 28px; font-weight: 400;}
 .blog-contents {display: block; padding-top: 5px; font-size: 13px; line-height: 20px; color: #959595;}

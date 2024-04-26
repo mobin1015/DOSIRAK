@@ -93,7 +93,7 @@
                 <p class="profile-id georgian">${sessionScope.user.email}</p>
                 <div class="profile-top">
                   <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
-                  <div class="nav-btn noto"><a href="${contextPath}/user/mypage.do?userNo=${user.userNo}">마이페이지</a></div>
+                  <div class="nav-btn noto"><a href="${contextPath}/user/mypage.do?userNo=${sessionScope.user.userNo}">마이페이지</a></div>
                 </div> 
             </div>
           </div>
