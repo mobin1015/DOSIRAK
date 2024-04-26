@@ -85,7 +85,11 @@
   	        str += plainContents;
   	        str += '</div>';
   	        str += '<span class="slide-by">by </span><span class="slide-user">';
-  	        str += blog.user.nickname;
+  	        if(blog.user.nickname === null) {
+  	        	str += blog.user.email;
+  	        } else {
+    	        str += blog.user.nickname;  	        	
+  	        }
   	        str += '</span>  ';
   	        str += '</div>'; 
   	        str += '<div class="mask"></div>'

@@ -64,7 +64,11 @@
             str += '<div class="list-info">';
             str += '<span>댓글 ' + blog.commentCount + '</span>';
             str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
-            str += '<span>by ' + blog.user.nickname + '</span>';
+            if(blog.user.nickname === null) {
+            		str += '<span>by ' + blog.user.email + '</span>';
+            } else {
+              str += '<span>by ' + blog.user.nickname + '</span>';
+            }
             str += '</div>';
             str += '</div>';
             str += '<div class="list-item">';
