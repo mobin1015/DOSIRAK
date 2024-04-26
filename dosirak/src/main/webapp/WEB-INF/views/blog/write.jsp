@@ -23,7 +23,7 @@
       <option value="1">지구한바퀴 세계여행</option>
       <option value="2">그림·웹툰</option>
       <option value="3">IT 트렌드</option>
-      <option value="4">사진·촬용</option>
+      <option value="4">사진·촬영</option>
       <option value="5">취향저격 영화 리뷰</option>
       <option value="6">오늘은 이런 책</option>
 

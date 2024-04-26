@@ -34,27 +34,40 @@
       success: (resData)=>{
     	  totalPage = resData.totalPage;
         $.each(resData.blogList, (i, blog) => { 
-          let plainContents = stripHtml(blog.contents);
           let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
           str += '<div class="list-wrap">';
           str += '<div class="contents-wrap">';
           str += '<div class="list-item">';
           str += '<h4 class="list-title">' + blog.title + '</h4>';
-          str += '<div class="list-content">' + plainContents + '</div>'; 
-          str += '<div class="list-info">';
-          str += '<span>by ' + blog.user.nickname + ' · </span>';
-          str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
-          str += '</div>';
-          str += '</div>';
-          str += '<div class="list-item">';
           
           // 썸네일 이미지 처리
-          if(blog.contents.includes('<img')) {
+          if (blog.contents.includes('<img')) {
             let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
             str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
           } else {
-            str += '<div class="list-thumbnail"></div>';
+            str += '<div class="list-thumbnail" style="display: none;"></div>';
           }
+          
+          str += '<div class="list-content' + (blog.contents.includes('<img') ? ' list_has_image' : '') + '">' + stripHtml(blog.contents) + '</div>';
+          str += '<div class="list-info">';
+          if(blog.user.nickname === null){
+              str += '<span>by ' + blog.user.email + '</span>';
+          }else{
+              str += '<span>by ' + blog.user.nickname + '</span>';
+          }
+          
+          str += '<span class="ico-dot">' + '&#8729;' + '</span>';
+          // 블로그 게재시간 표시
+          const publishTime = moment(blog.createDt);
+          const now = moment();
+          const diffHours = now.diff(publishTime, 'hours');
+          if (diffHours <= 12) {
+            str += '<span class="publish-time">' + publishTime.locale('ko').fromNow() + '</span>';
+          } else {
+            str += '<span class="publish-time">' + publishTime.format('MMM DD.YYYY') + '</span>';
+          }
+          
+          str += '</div>';
           str += '</div>';
           str += '</div>';
           str += '</div>';
