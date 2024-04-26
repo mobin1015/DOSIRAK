@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,13 +19,14 @@ import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.mapper.UserMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyJavaMailUtils;
+import com.dosirak.prj.utils.MyPageUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,51 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
   private final UserMapper userMapper;
+  private final MyPageUtils myPageUtils;
+  private final MyFileUtils myFileUtils;
+  
+  @Override
+  public UserDto getUserByNo(int userNo) {
+    return userMapper.getUserByNo(userNo);
+  }
+  
+  @Override
+  public int getblogCount(int userNo) {
+    return userMapper.getBlogCount(userNo);
+  }
+  
+  @Override
+  public ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request) {
+    
+    // 전체 블로그 개수 + 스크롤 이벤트마다 가져갈 목록의 개수 + 현재 페이지 번호
+    int userNo = Integer.parseInt(request.getParameter("userNo"));
+    int total = userMapper.getBlogCount(userNo);
+    int display = 10;
+    
+    Optional<String> opt = Optional.ofNullable(request.getParameter("page"));
+    int page = Integer.parseInt(opt.orElse("1"));
+
+    // 페이징 처리 
+    myPageUtils.setPaging(total, display, page);
+
+    // 목록 가져올 때 전달 할 Map 생성
+    Map<String, Object> map = Map.of("userNo", userNo
+                                    , "begin", myPageUtils.getBegin()
+                                    , "end", myPageUtils.getEnd()
+                                    , "total", total);
+    
+    // 목록 화면으로 반환할 값 (목록 + 전체 페이지 수)
+    return new ResponseEntity<>(Map.of("blogList", userMapper.getBlogList(map)
+        , "totalPage", myPageUtils.getTotalPage())
+        , HttpStatus.OK);
+    
+ }
+  
+  @Override
+  public BlogDetailDto getBlogByNo(int blogListNo) {
+    return userMapper.getBlogByNo(blogListNo);
+  }
+  
   private final MyJavaMailUtils myJavaMailUtils;
   
 
@@ -70,6 +117,7 @@ public class UserServiceImpl implements UserService {
 		String gender = request.getParameter("gender");
 		String mobile = request.getParameter("mobile");
 		int signupKind = Integer.parseInt(request.getParameter("singupKind"));
+		
 
 		// Mapper 로 보낼 UserDto 객체 생성
 		UserDto user = UserDto.builder()
@@ -172,7 +220,6 @@ public class UserServiceImpl implements UserService {
 		
 		// Log In 페이지 이전의 주소가 저장되어 있는 Request Header 의 referer 값 확인
 		String referer = request.getHeader("referer");
-		
 		// referer 로 돌아가면 안 되는 예외 상황 (아이디/비밀번호 찿기 화면, 가입 화면 등)
 		String[] excludeURLs = {"/findId.page", "/findPw.page", "/signup.page", "/upload/edit.do"};
 		
@@ -188,7 +235,7 @@ public class UserServiceImpl implements UserService {
 		} else {
 			url = request.getContextPath() + "/main.page";
 		}
-		
+
 		return url;
 	}
 
@@ -222,19 +269,23 @@ public class UserServiceImpl implements UserService {
 		// 일치하는 회원 있음 (LogIn 성공)
 		if(user != null) {
 			
-			
-			
+		  // 프로필이미지 불러와야함
+		  String blogImgPath = user.getBlogImgPath();
+		  String name = user.getName();
+
 			// 접속 기록 ACCESS_HISTORY_T 에 남기기
 		  // userMapper.insertAccessHistory(params);
 			
 			// 회원 정보를 세션(브라우저 닫기 전까지 정보가 유지되는 공간, 기본 30분 정보 유지)에 보관하기
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
-			session.setMaxInactiveInterval(60 * 60);		// 세션 유지 시간 60분 설정
+			//프로필이미지
+			session.setAttribute("blogImgPath", blogImgPath);
+			session.setAttribute("name", name);
 			
+			session.setMaxInactiveInterval(60 * 60);		// 세션 유지 시간 60분 설정
 			// Sign In 후 페이지 이동
 			response.sendRedirect(request.getParameter("url"));
-		
 		} else {
 			// 일치하는 회원 없음 (Login In 실패)
 			response.setContentType("text/html; charset=UTF-8");
@@ -401,6 +452,7 @@ public class UserServiceImpl implements UserService {
       // 응답 데이터를 JSON 객체로 변환하기
       JSONObject obj = new JSONObject(responseBody.toString());
       
+      //프로필
       JSONObject response = obj.getJSONObject("response");
       user = UserDto.builder()
                 .email(response.getString("email"))
@@ -409,7 +461,6 @@ public class UserServiceImpl implements UserService {
                 .mobile(response.has("mobile") ? response.getString("mobile") : null)
               .build();
       
-      System.out.println(user);
       
       // 응답 스트림 닫기
       reader.close();
@@ -433,11 +484,75 @@ public class UserServiceImpl implements UserService {
   public void naverSignin(HttpServletRequest request, UserDto naverUser) {
     
     Map<String, Object> map = Map.of("email", naverUser.getEmail(),
+                                      "name", naverUser.getName(), //추가
                                      "ip", request.getRemoteAddr());
 
+		UserDto user = userMapper.getUserByMap(map);
+		
+		//프로필이미지
+    String blogImgPath = user.getBlogImgPath();
+		request.getSession().setAttribute("user", user);
+		//프로필이미지
+		request.getSession().setAttribute("blogImgPath", blogImgPath);
+
+	}
   
-    UserDto user = userMapper.getUserByMap(map);
-    request.getSession().setAttribute("user", user);
-    
-  }				
+  //산들Profile영역
+//★★★ 수정하기
+
+@Override
+public UserDto loadUserByNo(int userNo) {
+  UserDto user = userMapper.loadUserByNo(userNo);
+  return user;
+}  
+  
+@Override
+public int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath) {
+  // 이전 이미지 경로 가져오기
+  String originalImgPath = userMapper.getImgPathByUserNo(userNo); 
+  // 새로운 이미지가 있는지 확인
+  String newImgPath = null;
+  if (blogImgPath != null && !blogImgPath.isEmpty()) {
+      // 파일이 전달된 경우에 대한 처리
+      // 이미지 업로드 및 사용자 정보 업데이트
+      String uploadPath = myFileUtils.getUploadPath();
+      
+      File dir = new File(uploadPath);
+      if (!dir.exists()) {
+          dir.mkdirs();
+      }
+      String filesystemName = myFileUtils.getFilesystemName(blogImgPath.getOriginalFilename());
+      File file = new File(dir, filesystemName);
+      try {
+          blogImgPath.transferTo(file);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+
+      // 파일 경로 설정
+      newImgPath = uploadPath + "/" + filesystemName;
+      } else {
+          // 새로운 이미지가 없는 경우에는 이전 이미지 경로 사용
+          newImgPath = originalImgPath;
+      }
+
+  // UserDto 객체 생성
+  UserDto profile = UserDto.builder()
+          .userNo(userNo)
+          .blogContents(blogContents)
+          .nickname(nickname)
+          .blogImgPath(newImgPath)
+          .build();
+
+  // 사용자 정보 업데이트
+  int modifyResult = userMapper.updateProfile(profile);
+  return modifyResult;
+
+  } 
+
+  @Override
+  public String getImgPathByUserNo(int userNo) {
+    String imgPath = userMapper.getImgPathByUserNo(userNo);
+    return imgPath;
+  }
 }
