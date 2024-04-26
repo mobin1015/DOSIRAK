@@ -8,32 +8,6 @@
 <jsp:include page="../layout/header.jsp" />
 
 <link rel="stylesheet" href="../resources/css/search.css"/>
-<style>
-.search-btn{
-    display: inline-block;
-    height: 22px;
-    margin-left:16px;
-    margin-right: 0;
-    margin-top: 0;
-    width: 22px;
-    background:url('../resources/images/header_icon.png');
-    background-position: -30px 0;
-    cursor:pointer;
-}
-.register-btn{
-    padding:0 10px;
-    height:28px;
-    line-height:28px;
-    text-align:center;
-    border:1px solid #959595;
-    border-radius: 16px;
-}
-button {
-    background: none;
-    border: none;
-
-
-</style>
 <div class="search-write-wrap">
   <form name="frm-search" id ="frm-search" onsubmit="return false;">
     <select name="type" class="search-type">
@@ -61,9 +35,11 @@ button {
   
   // 검색 ajax
   const fnSearchBlogList = (evt)=>{
-    moment.locale('ko');
+    moment.locale('ko');  // moment.js 한글 적용
     searchType = $("select[name=type]").val();
-    searchQuery = $("#query").val().trim();
+    searchQuery = $("#query").val().trim(); // 검색 쿼리 앞뒤 공백 제거
+    
+    // 검색어 조건
     if(searchType === '' || searchType === undefined){
       alert('검색 타입을 선택해주세요');
       return false;
@@ -81,7 +57,7 @@ button {
       success: (resData)=>{
         totalPage = resData.totalPage;
         let result='';
-        // 검색 결과 출력
+        // 검색 결과 출력 - 검색 결과 없을때
         if(document.getElementById('div-result') === null){
         	if(resData.totalBlog === 0){
         		result = '<div id="none-result"><span class="highlight">' + searchQuery +'</span>'+' 에 대한 검색 결과가 없습니다.</div>';
@@ -89,7 +65,7 @@ button {
         		result += '<div><span>두 단어 이상을 검색하신 경우, 정확하게 띄어쓰기를 한 후 검색해보세요.</span><div>';
         		result += '<div><span>키워드에 있는 특수문자를 뺀 후에 검색해보세요.</span><div>';
         		
-        	}else{ 		
+        	}else{   // 검색 결과 출력 - 검색 결과 있을 때 		
             if(searchType === 'contents'){
               result = '<div id="div-result">내용/제목 검색 결과 '+ resData.totalBlog + '건</div>';                    
             } else if(searchType === 'writer'){
@@ -99,7 +75,7 @@ button {
         searchList.append(result);
         }
         
-        // 블로그 리스트 출력
+        // 검색 결과 블로그 리스트 출력
         $.each(resData.blogList, (i, blog) => { 
           let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
           let plainContents = stripHtml(blog.contents);
@@ -114,7 +90,7 @@ button {
             let titleWithHighlight = blog.title.replace(searchQuery, '<span class="highlight">' + searchQuery + '</span>');
             str += '<h4 class="list-title">' + titleWithHighlight + '</h4>';
             
-            // 컨텐츠 하이라이트
+            // 컨텐츠 하이라이트 (검색어 기준 앞 뒤 50글자 출력)
             let queryIndex = plainContents.indexOf(searchQuery);
             let start = queryIndex - 50 < 0 ? 0 : queryIndex - 50;
             let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 50;
@@ -131,10 +107,9 @@ button {
               str += '<h4 class="list-title">' + blog.title + '</h4>';
               str += '<div class="list-content">' + plainContents + '</div>';
             }
-
             str += '<div class="list-info">';
-            str += '<span>댓글 ' + blog.commentCount + ' • </span>';
-            str += '<span>' + moment(blog.createDt).fromNow() + ' • </span>';
+            str += '<span>댓글 ' + blog.commentCount + ' · </span>';
+            str += '<span>' + moment(blog.createDt).fromNow() + ' · </span>';
             str += '<span>by ' + blog.user.nickname + '</span>';
             str += '</div>';
             str += '</div>';
@@ -166,32 +141,24 @@ button {
 	    return doc.body.textContent || "";
 	}
   
-  // query 특수문자 확인시
+  // query 특수문자 확인 함수
   const hasSpecialCharacters = (input)=>{
     // 특수문자를 포함하는지 여부를 확인하는 정규식
     var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
     return regex.test(input);
   }
   
-  
-  
   // 무한스크롤
-  const fnScrollHandler = () => {
-    
-    var timerId; 
-    
+  const fnScrollHandler = () => { 
+    var timerId;    
     $(window).on('scroll', (evt) => {
- 
       if(timerId) { 
         clearTimeout(timerId);
       }
-      
-      timerId = setTimeout(() => {
-        
+      timerId = setTimeout(() => { 
         let scrollTop = window.scrollY;
         let windowHeight = window.innerHeight;
         let documentHeight =  $(document).height();
-        
         
         if( (scrollTop + windowHeight + 50) >= documentHeight ) {
           if(page > totalPage) {
@@ -199,10 +166,8 @@ button {
           }
           page++;
           fnSearchBlogList();
-        }
-        
-      }, 500);
-      
+        } 
+      }, 500);    
     })
     
   }

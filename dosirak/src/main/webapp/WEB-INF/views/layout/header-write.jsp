@@ -52,7 +52,9 @@
 button {
     background: none;
     border: none;
-
+    }
+p a {color: #333; border: 0; text-decoration:none;}
+p a:hover {color: #333; border: 0; text-decoration:none;}
 
 </style>
 
@@ -95,24 +97,28 @@ button {
         <c:if test="${sessionScope.user != null}">
           <div class="nav-profile nav-profile-login">
             <div class="profile-default">
-                <img class="profile-login-image" src="">
-                <p class="profile-name noto">이름</p>
-                <p class="profile-id georgian">user-email@email.com</p>
+                <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}">
+                <p class="profile-name noto">${sessionScope.user.name}</p>
+                <p class="profile-id georgian">${sessionScope.user.email}</p>
                 <div class="profile-top">
                   <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
-                  <div class="nav-btn noto"><a href="">마이페이지</a></div>
+                  <div class="nav-btn noto"><a href="${contextPath}/user/mypage.do?userNo=${user.userNo}">마이페이지</a></div>
                 </div> 
             </div>
           </div>
+          <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
+          
           <div class="nav-bottom">
             <div class="nav-btn noto"><a href="">탈퇴하기</a></div>
-            <div class="nav-btn noto"><a href="">로그아웃</a></div>
+            <div class="nav-btn noto"><a href="${contextPath}/user/logout.do">로그아웃</a></div>
           </div>
         </c:if>
     </div>
       
     <div class="wrap">
-    
+    <style>
+    .menu1{text-align:center;margin-top:30px;font-weight:300}
+    </style>
     
     
     <script>
