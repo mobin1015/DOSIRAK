@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.UserDto;
+import com.dosirak.prj.mapper.UserMapper;
 import com.dosirak.prj.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
   private final UserService userService;
+  //추가
+  
   
   //헤더 마이페이지
    @GetMapping("/mypage.do")
@@ -176,8 +180,16 @@ public class UserController {
                               @RequestParam("userNo") int userNo,
                               @RequestParam("nickname") String nickname,
                               @RequestParam("blogContents") String blogContents,
+                              HttpSession session,
                               Model model) {
        int modifyCount = userService.modifyProfile(userNo, nickname, blogContents, blogImgPath);
+       
+       if (modifyCount == 1) {
+         // 수정된 사용자 정보 세션에 업데이트
+         UserDto updatedUser = userService.loadUserByNo(userNo);
+         session.setAttribute("user", updatedUser);
+       }
+       
       // 수정 성공 시 메시지
       model.addAttribute("msg", "프로필이 수정되었습니다.");
       // 되돌아갈 주소
