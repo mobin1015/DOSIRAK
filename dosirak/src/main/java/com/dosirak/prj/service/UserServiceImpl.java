@@ -271,7 +271,9 @@ public class UserServiceImpl implements UserService {
 		// 일치하는 회원 있음 (LogIn 성공)
 		if(user != null) {
 			
-			
+		  // 프로필이미지 불러와야함
+		  String blogImgPath = user.getBlogImgPath();
+		  String name = user.getName();
 			
 			// 접속 기록 ACCESS_HISTORY_T 에 남기기
 		  // userMapper.insertAccessHistory(params);
@@ -279,6 +281,10 @@ public class UserServiceImpl implements UserService {
 			// 회원 정보를 세션(브라우저 닫기 전까지 정보가 유지되는 공간, 기본 30분 정보 유지)에 보관하기
 			HttpSession session = request.getSession();
 			session.setAttribute("user", user);
+			//프로필이미지
+			session.setAttribute("blogImgPath", blogImgPath);
+			session.setAttribute("name", name);
+			
 			session.setMaxInactiveInterval(60 * 60);		// 세션 유지 시간 60분 설정
 			
 			// Sign In 후 페이지 이동
@@ -450,6 +456,7 @@ public class UserServiceImpl implements UserService {
       // 응답 데이터를 JSON 객체로 변환하기
       JSONObject obj = new JSONObject(responseBody.toString());
       
+      //프로필
       JSONObject response = obj.getJSONObject("response");
       user = UserDto.builder()
                 .email(response.getString("email"))
@@ -482,10 +489,16 @@ public class UserServiceImpl implements UserService {
   public void naverSignin(HttpServletRequest request, UserDto naverUser) {
     
     Map<String, Object> map = Map.of("email", naverUser.getEmail(),
+                                      "name", naverUser.getName(), //추가
                                      "ip", request.getRemoteAddr());
 
 		UserDto user = userMapper.getUserByMap(map);
+		
+		//프로필이미지
+    String blogImgPath = user.getBlogImgPath();
 		request.getSession().setAttribute("user", user);
+		//프로필이미지
+		request.getSession().setAttribute("blogImgPath", blogImgPath);
 
 	}
   
@@ -541,4 +554,10 @@ public int modifyProfile(int userNo, String nickname, String blogContents, Multi
   return modifyResult;
 
   } 
+
+  @Override
+  public String getImgPathByUserNo(int userNo) {
+    String imgPath = userMapper.getImgPathByUserNo(userNo);
+    return imgPath;
+  }
 }
