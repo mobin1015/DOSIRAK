@@ -18,12 +18,12 @@
      <id   property="userNo"  column="USER_NO"/>
    </association>
  </resultMap>
- <!-- BLOG_IMG_PATH,NICKNAME 추가햇음 -->
+ <!-- BLOG_IMG_PATH 추가햇음 -->
   <select id="getUserByMap" 
           parameterType="Map"
           resultType="UserDto">
-    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT, BLOG_IMG_PATH, NICKNAME
-      FROM USER_T
+    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT, NICKNAME, BLOG_IMG_PATH
+    FROM USER_T
     <where>
       <if test="email!=null">EMAIL = #{email}</if>
       <if test="pw!=null">AND PW = #{pw}</if>
