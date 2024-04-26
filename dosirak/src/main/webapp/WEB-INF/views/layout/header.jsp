@@ -88,6 +88,8 @@
         <c:if test="${sessionScope.user != null}">
           <div class="nav-profile nav-profile-login">
             <div class="profile-default">
+             <!-- a링크 추가 -->
+                <a href="${contextPath}/user/mypage.do?userNo=${user.userNo}" class="profile-go">
                 <div>
                   <c:if test="${empty sessionScope.user.blogImgPath}">
                    <img class="profile-login-image" src="${contextPath}/resources/images/profile_default.png" >
@@ -98,6 +100,7 @@
                 </div>
                 <p class="profile-name noto">${sessionScope.user.name}</p>
                 <p class="profile-id georgian">${sessionScope.user.email}</p>
+                </a>
                 <div class="profile-top">
                   <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
                   <div class="nav-btn noto"><a href="${contextPath}/user/mypage.do?userNo=${user.userNo}">마이페이지</a></div>
