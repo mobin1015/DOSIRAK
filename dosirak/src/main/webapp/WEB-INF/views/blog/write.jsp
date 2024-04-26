@@ -6,7 +6,7 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
 <jsp:include page="../layout/header-write.jsp">
-  <jsp:param value="블로그 작성" name="title"/>
+  <jsp:param value="글작성" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="../resources/css/write.css"/>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">

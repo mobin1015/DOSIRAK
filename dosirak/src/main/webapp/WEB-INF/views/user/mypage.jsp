@@ -5,9 +5,19 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
-<jsp:include page="../layout/header.jsp">
-  <jsp:param value="${user.nickname}의 브런치스토리" name="title"/>
-</jsp:include>
+<c:choose>
+  <c:when test="${empty user.nickname}">
+    <jsp:include page="../layout/header.jsp">
+      <jsp:param value="${user.name}의 브런치스토리" name="title"/>
+    </jsp:include>
+  </c:when>
+  <c:otherwise>
+    <jsp:include page="../layout/header.jsp">
+      <jsp:param value="${user.nickname}의 브런치스토리" name="title"/>
+    </jsp:include>
+  </c:otherwise>
+</c:choose>
+
 
 <!-- include custom css/js -->
 <link rel="stylesheet" href="${contextPath}/resources/css/mypage.css?dt=${dt}">
@@ -26,9 +36,16 @@
          </c:if>
        </div>
        <div class="blog-wrap">
-         <strong class="nickname">${user.nickname}</strong>
-         <span class="blog-contents">${user.blogContents}</span>
-       </div>
+        <c:choose>
+          <c:when test="${empty user.nickname}">
+            <strong class="nickname">${user.name}</strong>
+          </c:when>
+          <c:otherwise>
+            <strong class="nickname">${user.nickname}</strong>
+          </c:otherwise>
+        </c:choose>
+        <span class="blog-contents">${user.blogContents}</span>
+      </div>
        <div class="profile-btn-wrap">
          <c:if test="${sessionScope.user.userNo == user.userNo}"> 
            <button class="btn-profile nav-btn noto" type="button">프로필편집</button>

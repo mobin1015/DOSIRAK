@@ -169,7 +169,9 @@ public class BlogServiceImpl implements BlogService {
       map.put("query", query);
       result = new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByWriter(map)
                                          , "totalPage", myPageUtils.getTotalPage()
-                                         , "totalBlog", totalBlog)
+                                         , "totalBlog", totalBlog
+                                         , "type", type
+                                         , "query", query)
           , HttpStatus.OK);
     } else if(type.equals("contents")){
       totalBlog = blogDetailMapper.getBlogListCountByContents(query);
@@ -179,7 +181,9 @@ public class BlogServiceImpl implements BlogService {
       map.put("query", query);
       result =  new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByContents(map)
                                           , "totalPage", myPageUtils.getTotalPage()
-                                          , "totalBlog", totalBlog)
+                                          , "totalBlog", totalBlog
+                                          , "type", type
+                                          , "query", query)
           , HttpStatus.OK);
     }
    
