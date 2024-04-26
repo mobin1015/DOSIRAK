@@ -78,7 +78,6 @@
 <body>
 <form method="POST"
       action="${contextPath}/user/login.do">
-     
   <div class="cantainer">  
   
 <h1 class="title">LogIn</h1>
@@ -104,6 +103,7 @@
       
   <div class="buttons">
     <div class="button login">
+       <input type="hidden" name="url" value="${url}">
        <button type="submit" id="btn-signup" class="button-signup">로그인</button>
     </div>
     <div class="button signup">
