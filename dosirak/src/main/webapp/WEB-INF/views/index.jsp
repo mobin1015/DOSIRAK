@@ -86,7 +86,7 @@
   	        str += '</div>';
   	        str += '<span class="slide-by">by </span><span class="slide-user">';
   	        if(blog.user.nickname === null) {
-  	        	str += blog.user.email;
+  	        	str += blog.user.name;
   	        } else {
     	        str += blog.user.nickname;  	        	
   	        }

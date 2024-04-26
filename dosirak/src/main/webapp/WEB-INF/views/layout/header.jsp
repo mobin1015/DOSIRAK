@@ -15,7 +15,7 @@
 <!-- 페이지마다 다른 제목 -->
 <title>
   <c:choose>
-    <c:when test="${empty param.title}">Welcome</c:when>
+    <c:when test="${empty param.title}">브런치스토리</c:when>
     <c:otherwise>${param.title}</c:otherwise>
   </c:choose>
 </title>
