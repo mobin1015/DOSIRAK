@@ -121,7 +121,7 @@
           <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
           
           <div class="nav-bottom">
-            <div class="nav-btn noto"><a href="${contextPath}/user/leave.do">탈퇴하기</a></div>
+            <div class="nav-btn noto" id="leave-btn"><a href="${contextPath}/user/leave.do">탈퇴하기</a></div>
             <div class="nav-btn noto"><a href="${contextPath}/user/logout.do">로그아웃</a></div>
           </div>
         </c:if>
@@ -158,6 +158,19 @@
     $(".header-nav").on("click", function(event) {
         event.stopPropagation();
     });
-
+  
+  
+  //탈퇴버튼 눌렀을시 
+  /*
+     const fnLeaveBtn = () => {
+     document.getElementById('leave-btn').addEventListener('click', (e) => {
+       if (confirm('탈퇴하시겠습니까?')) {
+         location.href = '${contextPath}/user/leave.do';
+       }
+     });
+   }
+     fnLeaveBtn();
+     
+     */
     </script>
     
