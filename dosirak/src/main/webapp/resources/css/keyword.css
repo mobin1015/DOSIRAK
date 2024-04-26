@@ -7,15 +7,14 @@
 
 /* 키워드 리스트 */
 #keyword-list a {width: 100%;}
-.list-wrap {border-bottom: 1px solid #eee; padding: 30px 20px;}
+.list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px; cursor:pointer;}
+.list-title:hover { color: #666; text-decoration: underline; }
 .contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
-.contents-wrap .list-title:hover { color: #666; text-decoration: underline; }
 .contents-wrap {display: flex; flex-wrap: nowrap; align-items: center;  margin-top: 6px; justify-content: space-between; text-align: left;}
-.contents-wrap .list-item:nth-child(1) {margin-right: 15px; max-width: 750px;}
+.contents-wrap .list-item:nth-child(1) {margin-right: 15px;}
 .contents-wrap .list-item p img {display: none;}
-.contents-wrap .list-item .list-content {overflow: hidden; max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px; height: 44px; line-height: 20px; overflow: hidden; text-overflow: ellipsis;}
-/* .contents-wrap .list-item .list-content * {font-size: 15px!important; font-weight: 400!important; color: #333!important;} */
-.list-thumbnail {width:120px; height: 120px; overflow: hidden;}
+.contents-wrap .list-item .list-content {overflow: hidden; max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px; height: 44px; line-height: 20px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
+.list-item {width: 100%;}
+.list-thumbnail {float: right; margin-left: 20px;}
+.list-thumbnail img {width: 120px; height: 120px; object-fit: cover;} 
 .list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}
-
-
