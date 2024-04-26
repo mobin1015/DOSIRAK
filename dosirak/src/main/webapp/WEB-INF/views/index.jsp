@@ -42,6 +42,7 @@
   
   <script>
   
+  /* 메인 슬라이드 리스트 불러오기 */
 	const contextPath = '<%= request.getContextPath() %>';
 
 	const fnMainList = () => {
@@ -84,7 +85,11 @@
   	        str += plainContents;
   	        str += '</div>';
   	        str += '<span class="slide-by">by </span><span class="slide-user">';
-  	        str += blog.user.nickname;
+  	        if(blog.user.nickname === null) {
+  	        	str += blog.user.name;
+  	        } else {
+    	        str += blog.user.nickname;  	        	
+  	        }
   	        str += '</span>  ';
   	        str += '</div>'; 
   	        str += '<div class="mask"></div>'
@@ -95,6 +100,7 @@
         }
 
 	      // 슬라이드를 초기화하고 새로 추가된 슬라이드를 반영합니다.
+	      // 슬라이드를 먼저 불러오면 리스트 로딩하는데 약간의 오류들이 생길 수 있음
 	      $('.main-slide').slick({
 	        dots: true,
 	        dotsClass: 'bn-controller',
@@ -115,6 +121,7 @@
 	  });
 	}
 
+	/* 키워드 클릭시 해당 페이지로 이동 */
 	const fnKeywordList = () => {
 	  $('.keyword-list').on('click', (evt)=>{
 	    const keywordNo = evt.target.dataset.keywordNo;

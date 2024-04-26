@@ -5,7 +5,9 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
         
-<jsp:include page="../layout/header.jsp" />
+<jsp:include page="../layout/header.jsp">
+    <jsp:param value="브런치스토리 검색" name="title"/>
+</jsp:include>
 
 <link rel="stylesheet" href="../resources/css/search.css"/>
 <div class="search-write-wrap">
@@ -55,8 +57,10 @@
       url: '${contextPath}/blog/searchBlog.do?type='+searchType+'&query='+searchQuery+'&page='+page,
       dataType: 'json',
       success: (resData)=>{
+    	  console.log(resData);
         totalPage = resData.totalPage;
         let result='';
+        
         // 검색 결과 출력 - 검색 결과 없을때
         if(document.getElementById('div-result') === null){
         	if(resData.totalBlog === 0){
@@ -89,11 +93,16 @@
         	  // 타이틀 하이라이트
             let titleWithHighlight = blog.title.replace(searchQuery, '<span class="highlight">' + searchQuery + '</span>');
             str += '<h4 class="list-title">' + titleWithHighlight + '</h4>';
-            
-            // 컨텐츠 하이라이트 (검색어 기준 앞 뒤 50글자 출력)
+            if(blog.contents.includes('<img')) {
+                let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+                str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+              } else {
+                str += '<div class="list-thumbnail"></div>';
+              }
+            // 컨텐츠 하이라이트 (검색어 기준 앞 뒤 100글자 출력)
             let queryIndex = plainContents.indexOf(searchQuery);
-            let start = queryIndex - 50 < 0 ? 0 : queryIndex - 50;
-            let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 50;
+            let start = queryIndex - 100 < 0 ? 0 : queryIndex - 100;
+            let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 100;
             let shortContents = plainContents.substring(start, end);
             if (start > 0) {
                 shortContents = '…' + shortContents;
@@ -102,26 +111,39 @@
                 shortContents += '…';
             }
             shortContents = shortContents.replace(new RegExp(searchQuery, 'gi'), '<span class="highlight">' + searchQuery + '</span>');
-            str += '<div class="list-content">' + shortContents + '</div>';
+            str += '<div class="list-content' + (blog.contents.includes('<img') ? ' list_has_image' : '') + '">' + shortContents + '</div>';
             } else {
               str += '<h4 class="list-title">' + blog.title + '</h4>';
-              str += '<div class="list-content">' + plainContents + '</div>';
+              if(blog.contents.includes('<img')) {
+                  let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+                  str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+                } else {
+                  str += '<div class="list-thumbnail"></div>';
+                }
+              str += '<div class="list-content' + (blog.contents.includes('<img') ? ' list_has_image' : '') + '">' + stripHtml(blog.contents) + '</div>';
             }
             str += '<div class="list-info">';
-            str += '<span>댓글 ' + blog.commentCount + ' · </span>';
-            str += '<span>' + moment(blog.createDt).fromNow() + ' · </span>';
-            str += '<span>by ' + blog.user.nickname + '</span>';
-            str += '</div>';
-            str += '</div>';
-            str += '<div class="list-item">';
-            
-            // 썸네일 이미지 처리
-            if(blog.contents.includes('<img')) {
-              let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
-              str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+            str += '<span>댓글 ' + blog.commentCount + '</span>';
+            str += '<span class="ico-dot">' + '&#8729;' + '</span>';
+            // 블로그 게재시간 표시
+            const publishTime = moment(blog.createDt);
+            const now = moment();
+            const diffHours = now.diff(publishTime, 'hours');
+            if (diffHours <= 12) {
+              str += '<span class="publish-time">' + publishTime.locale('ko').fromNow() + '</span>';
+              str += '<span class="ico-dot">' + '&#8729;' + '</span>';
             } else {
-              str += '<div class="list-thumbnail"></div>';
+              str += '<span class="publish-time">' + publishTime.format('MMM DD.YYYY') + '</span>';
+              str += '<span class="ico-dot">' + '&#8729;' + '</span>';
             }
+            
+            if(blog.user.nickname === null){
+              str += '<span>by ' + blog.user.name + '</span>';
+            }else{
+              str += '<span>by ' + blog.user.nickname + '</span>';
+            }
+            
+            str += '</div>';
             str += '</div>';
             str += '</div>';
             str += '</div>';
@@ -133,6 +155,12 @@
         alert(jqXHR.statusText + '(' + jqXHR.status + ')');
       }         
     });
+  }
+  // img 처리 함수
+  const fnImage = () => {
+      // 썸네일 이미지 처리
+
+	  
   }
   
   // contents 태그 제거 함수
@@ -160,7 +188,7 @@
         let windowHeight = window.innerHeight;
         let documentHeight =  $(document).height();
         
-        if( (scrollTop + windowHeight + 50) >= documentHeight ) {
+        if( (scrollTop + windowHeight + 100) >= documentHeight ) {
           if(page > totalPage) {
             return;
           }

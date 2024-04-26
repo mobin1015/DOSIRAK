@@ -5,9 +5,38 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
     
-<jsp:include page="../layout/header.jsp">
-  <jsp:param value="키워드 리스트" name="title"/>
-</jsp:include>
+  <c:choose>
+    <c:when test="${blog[0].keywordNo == 1}">
+      <jsp:include page="../layout/header.jsp">
+        <jsp:param value="브런치 키워드: 지구한바퀴 세계여행" name="title"/>
+      </jsp:include>
+    </c:when>
+    <c:when test="${blog[0].keywordNo == 2}">
+      <jsp:include page="../layout/header.jsp">
+        <jsp:param value="브런치 키워드: 그림·웹툰" name="title"/>
+      </jsp:include>
+    </c:when>
+    <c:when test="${blog[0].keywordNo == 3}">
+      <jsp:include page="../layout/header.jsp">
+        <jsp:param value="브런치 키워드: IT 트렌드" name="title"/>
+      </jsp:include>
+    </c:when>
+    <c:when test="${blog[0].keywordNo == 4}">
+      <jsp:include page="../layout/header.jsp">
+        <jsp:param value="브런치 키워드: 사진·촬영" name="title"/>
+      </jsp:include>
+    </c:when>
+    <c:when test="${blog[0].keywordNo == 5}">
+      <jsp:include page="../layout/header.jsp">
+        <jsp:param value="브런치 키워드: 취향저격 영화 리뷰" name="title"/>
+      </jsp:include>
+    </c:when>
+    <c:when test="${blog[0].keywordNo == 6}">
+      <jsp:include page="../layout/header.jsp">
+        <jsp:param value="브런치 키워드: 오늘은 이런 책" name="title"/>
+      </jsp:include>
+    </c:when>
+  </c:choose> 
 
 <link rel="stylesheet" href="../resources/css/keyword.css"/>
 
@@ -34,6 +63,7 @@
   var totalPage = 0;
   var loading = false;
   
+  /* 키워드 리스트 불러오는 함수 */
   const fnKeywordList = () => {
     const keywordList = $('#keyword-list');
     moment.locale('ko');
@@ -59,20 +89,33 @@
             str += '<div class="contents-wrap">';
             str += '<div class="list-item">';
             str += '<h4 class="list-title">' + blog.title + '</h4>';
-            str += '<div class="list-content">' + plainContents + '</div>';
+            
+            // 썸네일 이미지 처리
+            if (blog.contents.includes('<img')) {
+              let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+              str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+            } else {
+              str += '<div class="list-thumbnail" style="display: none;"></div>';
+            }
+            
+            str += '<div class="list-content' + (blog.contents.includes('<img') ? ' list_has_image' : '') + '">' + plainContents + '</div>';
             str += '<div class="list-info">';
             str += '<span>댓글 ' + blog.commentCount + '</span>';
-            str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
-            str += '<span>by ' + blog.user.nickname + '</span>';
-            str += '</div>';
-            str += '</div>';
-            str += '<div class="list-item">';
-            if (blog.contents.includes('<img')) {
-                let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
-                str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+            // 블로그 게재시간 표시
+            const publishTime = moment(blog.createDt);
+            const now = moment();
+            const diffHours = now.diff(publishTime, 'hours');
+            if (diffHours <= 12) {
+              str += '<span class="publish-time">' + publishTime.locale('ko').fromNow() + '</span>';
             } else {
-                str += '<div class="list-thumbnail"><img src="${contextPath}/resources/images/wh-image.png"></div>';
+              str += '<span class="publish-time">' + publishTime.format('MMM DD.YYYY') + '</span>';
             }
+            if(blog.user.nickname === null) {
+            		str += '<span>by ' + blog.user.name + '</span>';
+            } else {
+              str += '<span>by ' + blog.user.nickname + '</span>';
+            }
+            str += '</div>';
             str += '</div>';
             str += '</div>';
             str += '</div>';
@@ -90,6 +133,7 @@
     });
 	}
 	
+  /* 무한 스크롤 함수 */
 	const fnScrollHandler = () => {
     let loading = false;
     let lastScrollTop = 0;

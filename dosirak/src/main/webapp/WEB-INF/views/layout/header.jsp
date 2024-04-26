@@ -15,7 +15,7 @@
 <!-- 페이지마다 다른 제목 -->
 <title>
   <c:choose>
-    <c:when test="${empty param.title}">Welcome</c:when>
+    <c:when test="${empty param.title}">브런치스토리</c:when>
     <c:otherwise>${param.title}</c:otherwise>
   </c:choose>
 </title>
@@ -90,16 +90,27 @@
             <div class="profile-default">
              <!-- a링크 추가 -->
                 <a href="${contextPath}/user/mypage.do?userNo=${user.userNo}" class="profile-go">
-                <div>
-                  <c:if test="${empty sessionScope.user.blogImgPath}">
-                   <img class="profile-login-image" src="${contextPath}/resources/images/profile_default.png" >
-                  </c:if>
-                  <c:if test="${not empty sessionScope.user.blogImgPath}">
-                   <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}" >
-                  </c:if>
-                </div>
-                <p class="profile-name noto">${sessionScope.user.name}</p>
-                <p class="profile-id georgian">${sessionScope.user.email}</p>
+                  <div>
+                    <c:if test="${empty sessionScope.user.blogImgPath}">
+                     <img class="profile-login-image" src="${contextPath}/resources/images/profile_default.png" >
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user.blogImgPath}">
+                     <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}" >
+                    </c:if>
+                  </div>
+                  <p class="profile-name noto">
+                    <c:if test="${empty sessionScope.user.nickname}">
+                      ${sessionScope.user.name}
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user.nickname}">
+                      ${sessionScope.user.nickname}
+                    </c:if>
+                    <c:if test="${empty sessionScope.user.nickname and empty sessionScope.user.name}">
+                    닉네임을 입력해주세요.
+                    </c:if>
+                    
+                  </p>
+                  <p class="profile-id georgian">${sessionScope.user.email}</p>
                 </a>
                 <div class="profile-top">
                   <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
@@ -110,7 +121,7 @@
           <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
           
           <div class="nav-bottom">
-            <div class="nav-btn noto"><a href="">탈퇴하기</a></div>
+            <div class="nav-btn noto" id="leave-btn">탈퇴하기</div>
             <div class="nav-btn noto"><a href="${contextPath}/user/logout.do">로그아웃</a></div>
           </div>
         </c:if>
@@ -147,6 +158,19 @@
     $(".header-nav").on("click", function(event) {
         event.stopPropagation();
     });
-
+  
+  
+  //탈퇴버튼 눌렀을시 
+  
+     const fnLeaveBtn = () => {
+     document.getElementById('leave-btn').addEventListener('click', (e) => {
+       if (confirm('탈퇴하시겠습니까?')) {
+         location.href = '${contextPath}/user/leave.do';
+       }
+     });
+   }
+     fnLeaveBtn();
+     
+     
     </script>
     
