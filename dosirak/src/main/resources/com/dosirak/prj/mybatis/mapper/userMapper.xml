@@ -32,7 +32,7 @@
 
   <select id="getUserByNo"
           resultType="UserDto">
-   SELECT USER_NO, EMAIL, NICKNAME, BLOG_CONTENTS, BLOG_IMG_PATH
+   SELECT USER_NO, EMAIL, NAME, NICKNAME, BLOG_CONTENTS, BLOG_IMG_PATH
      FROM USER_T
     WHERE USER_NO = #{userNo}
   </select>
