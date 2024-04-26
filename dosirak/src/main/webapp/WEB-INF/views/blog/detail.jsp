@@ -66,19 +66,20 @@
        
        
 <form id="frm-comment">
-    <a id="userImg"><img height="32px" width="32px"src="/prj${blog.user.blogImgPath}"></a>
-    <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px;">${blog.user.userNo}</span></c:if>
-    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px;">${blog.user.nickname}</span></c:if> 
+    <a id="userImg"><img height="32px" width="32px" src="/prj${blog.user.blogImgPath}"></a>
+    <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${blog.user.userNo}</span></c:if>
+    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px;vertical-align: sub;">${blog.user.nickname}</span></c:if> 
   <textarea id="contents" name="contents" placeholder="댓글을 입력하세요." style="    width: 100%;
     height: 6.25em;
+    padding-top: 20px;
     border: none;
     resize: none;"></textarea>
   <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
   <c:if test="${not empty sessionScope.user.userNo}">  
     <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
   </c:if>
-  <div style="     border-top: 1px solid #eee; width:100%" >
-  <button type="button" id="btn-comment-register">댓글등록</button></div>
+  <div style="  padding-top: 10px;    border-top: 1px solid #eee; width:100%" >
+  <button type="button" id="btn-comment-register">등록</button></div>
  </form>
        </div>
        
@@ -280,15 +281,15 @@ const fnSwitchingReplyInput = () => {
          
            let str = '<div class="div-frm-reply blind" style="padding-left: 32px">';
              str += '  <form class="frm-reply">';
-             str += '    <a id="userImg"><img height="32px" width="32px" src="/prj${blog.user.blogImgPath}"></a>';
-             str += '   <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px;">${blog.user.userNo}</span></c:if>';
-             str += '    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px;">${blog.user.nickname}</span></c:if> ';
-             str += '      <textarea id="contents" name="contents" placeholder="답글을 입력하세요." style="    width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
+             str += '   <div> <a id="userImg"><img height="32px" width="32px" src="/prj${blog.user.blogImgPath}"></a>';
+             str += '   <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px; vertical-align: sub;">${blog.user.userNo}</span></div></c:if>';
+             str += '    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px; vertical-align: sub;">${blog.user.nickname}</span></div></c:if> ';
+             str += '      <textarea id="contents" name="contents" placeholder="답글을 입력하세요." style="  padding-top:20px;  width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
              str += '  <input type="hidden" name="blogListNo" value="${blog.blogListNo}">';
                str += ' <input type="hidden" name="groupNo" value="'+ classNo+'">';
                str += ' <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
-               str += ' <div style="     border-top: 1px solid #eee; width:100%" >';
-             str += '       <button type="button" class="btn-register-reply">답글등록</button></div>';
+               str += ' <div style=" padding-top: 10px;     border-top: 1px solid #eee; width:100%" >';
+             str += '       <button type="button" class="btn-register-reply">등록</button></div>';
              str += '  </form>';
              str += '</div>';
              newDiv.innerHTML= str;
