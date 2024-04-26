@@ -8,32 +8,6 @@
 <jsp:include page="../layout/header.jsp" />
 
 <link rel="stylesheet" href="../resources/css/search.css"/>
-<style>
-.search-btn{
-    display: inline-block;
-    height: 22px;
-    margin-left:16px;
-    margin-right: 0;
-    margin-top: 0;
-    width: 22px;
-    background:url('../resources/images/header_icon.png');
-    background-position: -30px 0;
-    cursor:pointer;
-}
-.register-btn{
-    padding:0 10px;
-    height:28px;
-    line-height:28px;
-    text-align:center;
-    border:1px solid #959595;
-    border-radius: 16px;
-}
-button {
-    background: none;
-    border: none;
-
-
-</style>
 <div class="search-write-wrap">
   <form name="frm-search" id ="frm-search" onsubmit="return false;">
     <select name="type" class="search-type">
@@ -133,8 +107,8 @@ button {
             }
 
             str += '<div class="list-info">';
-            str += '<span>댓글 ' + blog.commentCount + ' • </span>';
-            str += '<span>' + moment(blog.createDt).fromNow() + ' • </span>';
+            str += '<span>댓글 ' + blog.commentCount + ' · </span>';
+            str += '<span>' + moment(blog.createDt).fromNow() + ' · </span>';
             str += '<span>by ' + blog.user.nickname + '</span>';
             str += '</div>';
             str += '</div>';

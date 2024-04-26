@@ -97,7 +97,7 @@
                 </div> 
             </div>
           </div>
-          <p class="menu1 noto"><a href="">브런치스토리 나우</a></p>
+          <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
           
           <div class="nav-bottom">
             <div class="nav-btn noto"><a href="">탈퇴하기</a></div>

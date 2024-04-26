@@ -14,15 +14,18 @@
     cursor:pointer;
 }
 #query{
-  width: 780px;
+  width: 740px;
+  font-size: 20px;
 }
 .search-type{
   margin-right: 30px;
+  margin-left: 20px;
+  font-size: 20px;
 }
 
 
 /* 검색 리스트 */
-#none-result{font-size: 20px};
+#none-result{font-size: 20px; margin-top: 150px;}
 #div-result{overflow: left; border-bottom: 1px solid #eee; padding: 20px; margin: 0 auto;}
 .search-result-wrap {max-width: 940px; margin: 0 auto; color: #959595; font-size: 13px;}
 #search-result-list a {width: 100%;}

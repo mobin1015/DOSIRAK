@@ -42,9 +42,8 @@
           str += '<h4 class="list-title">' + blog.title + '</h4>';
           str += '<div class="list-content">' + plainContents + '</div>'; 
           str += '<div class="list-info">';
-          str += '<span>댓글 ' + blog.commentCount + ' • </span>';
-          str += '<span>' + moment(blog.createDt).fromNow() + ' • </span>';
-          str += '<span>by ' + blog.user.nickname + '</span>';
+          str += '<span>by ' + blog.user.nickname + ' · </span>';
+          str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
           str += '</div>';
           str += '</div>';
           str += '<div class="list-item">';
