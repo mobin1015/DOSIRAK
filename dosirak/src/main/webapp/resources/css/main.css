@@ -9,14 +9,13 @@
 .main-title span {color: #dedede;}
 
 /* main-slide */
-.main-slide .blog-item {position: relative; max-height: 520px; overflow: hidden;}
 .main-slide .slick-slide {width: 400px; overflow-y: hidden;}
-.main--slide .slick-slide a {max-height: 520px; overflow: hidden;}
+.main-slide .slick-slide a {max-height: 520px; overflow: hidden; width: 100%;}
+.main-slide .blog-item {position: relative; max-height: 520px; overflow: hidden;}
 .main-slide .list-thumbnail {width: 400px; min-height: 520px; background-size: cover!important;}
 .main-slide .text-wrap {color: #fff; position: relative; bottom: 150px; padding: 0 10px; overflow: hidden; z-index: 5;}
 .main-slide .text-wrap .slide-title {font-size: 30px;}
-.main-slide .text-wrap .slide-contents {margin: 5px 0; max-height: 50px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;}
-.main-slide .text-wrap .slide-contents p {color: #fff!important;}
+.main-slide .text-wrap .slide-contents {margin: 5px 0; height: 30px; overflow: hidden; text-overflow: ellipsis;}
 .main-slide .text-wrap img {display: none;}
 .main-slide .text-wrap .slide-by {margin-right: 5px;}
 
