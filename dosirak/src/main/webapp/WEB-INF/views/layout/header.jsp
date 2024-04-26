@@ -98,7 +98,14 @@
                      <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}" >
                     </c:if>
                   </div>
-                  <p class="profile-name noto">${sessionScope.user.name}</p>
+                  <p class="profile-name noto">
+                    <c:if test="${empty sessionScope.user.nickname}">
+                      ${sessionScope.user.name}
+                    </c:if>
+                    <c:if test="${not empty sessionScope.user.nickname}">
+                      ${sessionScope.user.nickname}
+                    </c:if>
+                  </p>
                   <p class="profile-id georgian">${sessionScope.user.email}</p>
                 </a>
                 <div class="profile-top">

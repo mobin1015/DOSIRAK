@@ -274,6 +274,7 @@ public class UserServiceImpl implements UserService {
 		  // 프로필이미지 불러와야함
 		  String blogImgPath = user.getBlogImgPath();
 		  String name = user.getName();
+		  String nickname = user.getNickname();
 			
 			// 접속 기록 ACCESS_HISTORY_T 에 남기기
 		  // userMapper.insertAccessHistory(params);
@@ -284,6 +285,7 @@ public class UserServiceImpl implements UserService {
 			//프로필이미지
 			session.setAttribute("blogImgPath", blogImgPath);
 			session.setAttribute("name", name);
+			session.setAttribute("nickname", nickname);
 			
 			session.setMaxInactiveInterval(60 * 60);		// 세션 유지 시간 60분 설정
 			
@@ -496,9 +498,11 @@ public class UserServiceImpl implements UserService {
 		
 		//프로필이미지
     String blogImgPath = user.getBlogImgPath();
+    String nickname = user.getNickname();
 		request.getSession().setAttribute("user", user);
 		//프로필이미지
 		request.getSession().setAttribute("blogImgPath", blogImgPath);
+		request.getSession().setAttribute("nickname", nickname);
 
 	}
   
