@@ -5,7 +5,9 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
         
-<jsp:include page="../layout/header.jsp" />
+<jsp:include page="../layout/header.jsp">
+    <jsp:param value="브런치스토리 검색" name="title"/>
+</jsp:include>
 
 <link rel="stylesheet" href="../resources/css/search.css"/>
 <div class="search-write-wrap">
@@ -55,8 +57,10 @@
       url: '${contextPath}/blog/searchBlog.do?type='+searchType+'&query='+searchQuery+'&page='+page,
       dataType: 'json',
       success: (resData)=>{
+    	  console.log(resData);
         totalPage = resData.totalPage;
         let result='';
+        
         // 검색 결과 출력 - 검색 결과 없을때
         if(document.getElementById('div-result') === null){
         	if(resData.totalBlog === 0){
@@ -134,7 +138,7 @@
             }
             
             if(blog.user.nickname === null){
-              str += '<span>by ' + blog.user.email + '</span>';
+              str += '<span>by ' + blog.user.name + '</span>';
             }else{
               str += '<span>by ' + blog.user.nickname + '</span>';
             }
