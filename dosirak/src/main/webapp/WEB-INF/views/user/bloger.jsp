@@ -68,66 +68,65 @@ $(document).ready(function() {
 const fnGetBlogerList = () => {
   
   $.ajax({
-    // 요청
-    type: 'GET',
-    url: '${contextPath}/user/getBlogList.do',
-    data: 'userNo=${user.userNo}&page=' + page,
-    // 응답
-    dataType: 'json',
-    success: (resData) => {
-      totalPage = resData.totalPage;
-      const blogList = $('#blog-list');
-      if (page === 1) {
+      // 요청
+      type: 'GET',
+      url: '${contextPath}/user/getBlogList.do',
+      data: 'userNo=${user.userNo}&page=' + page,
+      // 응답
+      dataType: 'json',
+      success: (resData) => {
+        totalPage = resData.totalPage;
+        const blogList = $('#blog-list');
+        if (page === 1) {
           blogList.empty();
-       }
-      if (resData.blogList.length === 0) {
+        }
+        if (resData.blogList.length === 0) {
           blogList.append('<p class="none-blog">등록된 게시물이 없습니다.</p>');
         } else {
-      $.each(resData.blogList, (i, blog) => {
-    	  let plainContents = stripHtml(blog.contents);
-        let str = '<a class="blog" data-user-no="'+ blog.user.userNo +'"  data-blog-list-no="' + blog.blogListNo + '">';
-           str += '<div class="list-wrap">';
-             str += '<div class="contents-wrap">';
-              str += '<div class="list-item">';
-               str += '<h4 class="list-title">' + blog.title + '</h4>';
-               
-               // 썸네일 이미지 처리
-               if(plainContents.includes('<img')) {
-                 let thumbnailUrl = $(plainContents).find('img').first().attr('src');
-                 str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
-               } else {
-            	   str += '<div class="list-thumbnail" style="display: none;"></div>';
-               }
-               
-               // 이미지를 포함한 게시글인 경우만 썸네일을 표시, 그렇지 않은 경우에는 숨김 (class명으로 조정)
-               str += '<div class="list-content' + (plainContents.includes('<img') ? ' list_has_image' : '') + '">' + plainContents + '</div>';
-               str += '<div class="list-info">';
-                str += '<span>댓글</span>';
-                str += '<span class="num-comment">'+ blog.commentCount +'</span>';
-                str += '<span class="ico-dot">'+ '&#8729;' +'</span>';
-                
-                // 블로그 게재시간 표시
-                const publishTime = moment(blog.createDt);
-                const now = moment();
-                const diffHours = now.diff(publishTime, 'hours');
-                if (diffHours <= 12) {
-                  str += '<span class="publish-time">'+ publishTime.locale('ko').fromNow() +'</span>';
-                } else {
-                  str += '<span class="publish-time">'+ publishTime.format('MMM DD.YYYY') +'</span>';
-                } 
-               str += '</div>';
-              str += '</div>';
-              str += '<div class="list-item"></div>';
-            str += '</div>';   
-          str += '</div>';   
-          str += '</a>'  
-       
-         blogList.append(str);
-        });
-      }
-    },
-    error: (jqXHR) => {
-    	  alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+          $.each(resData.blogList, (i, blog) => {
+            let str = '<a class="blog" data-user-no="' + blog.user.userNo + '"  data-blog-list-no="' + blog.blogListNo + '">';
+            str += '<div class="list-wrap">';
+            str += '<div class="contents-wrap">';
+            str += '<div class="list-item">';
+            str += '<h4 class="list-title">' + blog.title + '</h4>';
+  
+            // 썸네일 이미지 처리
+            if (blog.contents.includes('<img')) {
+              let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+              str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+            } else {
+              str += '<div class="list-thumbnail" style="display: none;"></div>';
+            }
+  
+            // 이미지를 포함한 게시글인 경우만 썸네일을 표시, 그렇지 않은 경우에는 숨김 (list_has_image class명으로 조정)
+            str += '<div class="list-content' + (blog.contents.includes('<img') ? ' list_has_image' : '') + '">' + stripHtml(blog.contents) + '</div>';
+            str += '<div class="list-info">';
+            str += '<span>댓글</span>';
+            str += '<span class="num-comment">' + blog.commentCount + '</span>';
+            str += '<span class="ico-dot">' + '&#8729;' + '</span>';
+  
+            // 블로그 게재시간 표시
+            const publishTime = moment(blog.createDt);
+            const now = moment();
+            const diffHours = now.diff(publishTime, 'hours');
+            if (diffHours <= 12) {
+              str += '<span class="publish-time">' + publishTime.locale('ko').fromNow() + '</span>';
+            } else {
+              str += '<span class="publish-time">' + publishTime.format('MMM DD.YYYY') + '</span>';
+            }
+            str += '</div>';
+            str += '</div>';
+            str += '<div class="list-item"></div>';
+            str += '</div>';
+            str += '</div>';
+            str += '</a>';
+  
+            blogList.append(str);
+          });
+        }
+      },
+      error: (jqXHR) => {
+        alert(jqXHR.statusText + '(' + jqXHR.status + ')');
     }
   });
 }

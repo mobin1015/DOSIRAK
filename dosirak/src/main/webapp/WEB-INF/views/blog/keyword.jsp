@@ -50,11 +50,9 @@
         loading = true;
       },
       success: (resData) => {
-        console.log(resData);
         if(resData.totalPage > 0) {
         	totalPage = resData.totalPage;
           $.each(resData.keywordList, (i, blog) => {
-        	  
         	  let plainContents = stripHtml(blog.contents);
             let str = '<a href="${contextPath}/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
             str += '<div class="list-wrap">';
@@ -87,7 +85,7 @@
       error: (jqXHR) => {
         alert('해당 키워드에 등록된 글이 없습니다.');
         loading = false; // AJAX 요청이 완료되면 loading 상태를 해제합니다.
-        window.history.back();
+        location.href = '${contextPath}/main.page';
       }
     });
 	}

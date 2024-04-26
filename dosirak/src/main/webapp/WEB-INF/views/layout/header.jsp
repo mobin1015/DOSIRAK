@@ -80,7 +80,7 @@
               <div class="btn-request noto"><a href="${contextPath}/user/login.page"">브런치스토리 시작하기</a></div>
             </div>
            </div>
-           <p class="menu1 noto"><a href="">브런치스토리 나우</a></p>
+           <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
         </c:if>
         
         

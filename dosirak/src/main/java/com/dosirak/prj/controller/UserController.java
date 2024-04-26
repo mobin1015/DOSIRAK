@@ -31,13 +31,13 @@ public class UserController {
   //추가
   
   
-  // 헤더 마이페이지
-  @GetMapping("/mypage.do")
-  public String mypage(@RequestParam int userNo, Model model) {
-    model.addAttribute("user", userService.getUserByNo(userNo));
-    //model.addAttribute("blogCount", userService.getblogCount());
-    return "user/mypage";
-  }
+  //헤더 마이페이지
+   @GetMapping("/mypage.do")
+   public String mypage(@RequestParam int userNo, Model model) {
+     model.addAttribute("user", userService.getUserByNo(userNo));
+     //model.addAttribute("blogCount", userService.getblogCount());
+     return "user/mypage";
+   }
   
   // 블로거페이지
   @GetMapping("/bloger.do")
