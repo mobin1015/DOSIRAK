@@ -34,6 +34,7 @@
   var totalPage = 0;
   var loading = false;
   
+  /* 키워드 리스트 불러오는 함수 */
   const fnKeywordList = () => {
     const keywordList = $('#keyword-list');
     moment.locale('ko');
@@ -59,20 +60,33 @@
             str += '<div class="contents-wrap">';
             str += '<div class="list-item">';
             str += '<h4 class="list-title">' + blog.title + '</h4>';
-            str += '<div class="list-content">' + plainContents + '</div>';
+            
+            // 썸네일 이미지 처리
+            if (blog.contents.includes('<img')) {
+              let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+              str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+            } else {
+              str += '<div class="list-thumbnail" style="display: none;"></div>';
+            }
+            
+            str += '<div class="list-content' + (blog.contents.includes('<img') ? ' list_has_image' : '') + '">' + plainContents + '</div>';
             str += '<div class="list-info">';
             str += '<span>댓글 ' + blog.commentCount + '</span>';
-            str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
-            str += '<span>by ' + blog.user.nickname + '</span>';
-            str += '</div>';
-            str += '</div>';
-            str += '<div class="list-item">';
-            if (blog.contents.includes('<img')) {
-                let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
-                str += '<div class="list-thumbnail"><img src="' + thumbnailUrl + '"></div>';
+            // 블로그 게재시간 표시
+            const publishTime = moment(blog.createDt);
+            const now = moment();
+            const diffHours = now.diff(publishTime, 'hours');
+            if (diffHours <= 12) {
+              str += '<span class="publish-time">' + publishTime.locale('ko').fromNow() + '</span>';
             } else {
-                str += '<div class="list-thumbnail"><img src="${contextPath}/resources/images/wh-image.png"></div>';
+              str += '<span class="publish-time">' + publishTime.format('MMM DD.YYYY') + '</span>';
             }
+            if(blog.user.nickname === null) {
+            		str += '<span>by ' + blog.user.email + '</span>';
+            } else {
+              str += '<span>by ' + blog.user.nickname + '</span>';
+            }
+            str += '</div>';
             str += '</div>';
             str += '</div>';
             str += '</div>';
@@ -90,6 +104,7 @@
     });
 	}
 	
+  /* 무한 스크롤 함수 */
 	const fnScrollHandler = () => {
     let loading = false;
     let lastScrollTop = 0;
