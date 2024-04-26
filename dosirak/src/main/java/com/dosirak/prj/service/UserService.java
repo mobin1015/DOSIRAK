@@ -4,14 +4,21 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dosirak.prj.dto.BlogDetailDto;
 import com.dosirak.prj.dto.UserDto;
 
 public interface UserService {
+  
+  // 블로그 리스트 
+  ResponseEntity<Map<String, Object>> getBlogList(HttpServletRequest request);
+  UserDto getUserByNo(int userNo);
+  int getblogCount(int userNo);
+  BlogDetailDto getBlogByNo(int blogListNo);
 
 	//가입
 	void signup(HttpServletRequest request, HttpServletResponse response);
@@ -28,4 +35,11 @@ public interface UserService {
   UserDto getNaverLoginProfile(String accessToken);
   boolean hasUser(UserDto user);
   void naverSignin(HttpServletRequest request, UserDto naverUser);
+
+  
+  // 산들Profile영역
+  UserDto loadUserByNo(int userNo);
+  int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath);
+  String getImgPathByUserNo(int userNo);
+  
 }

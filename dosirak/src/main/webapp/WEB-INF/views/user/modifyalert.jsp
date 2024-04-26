@@ -3,4 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
-<c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
+<script>
+  alert('${msg}')
+  location.href="${contextPath}"+"${url}"+"?userNo="+"${no}";
+</script>

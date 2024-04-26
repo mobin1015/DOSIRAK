@@ -51,15 +51,12 @@
     font-weight: bold;
     background-color: #fff;
     }
-   .input input code{
-    background-color: #E2E2E2;
-    } 
    .btn{
     width:110px;
     padding:0;
     }
    .btn button{
-    background-color: #fff;
+    background-color: #;
     width:100%;
     height:100%;
     display:block;

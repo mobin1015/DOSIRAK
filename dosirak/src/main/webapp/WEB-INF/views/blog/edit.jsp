@@ -5,8 +5,9 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
+
 <jsp:include page="../layout/header-write.jsp">
-  <jsp:param value="블로그 작성" name="title"/>
+  <jsp:param value="블로그 편집" name="title" />
 </jsp:include>
 <link rel="stylesheet" href="../resources/css/write.css"/>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -15,41 +16,34 @@
 
 <form id="frm-blog-register"
       method="POST"
-      action="${contextPath}/blog/register.do">
-  
-  <div class="editor">
-    <select name="keyword" class="keyword">
-      <option value="0" selected>키워드</option>
-      <option value="1">지구한바퀴 세계여행</option>
-      <option value="2">그림·웹툰</option>
-      <option value="3">IT 트렌드</option>
-      <option value="4">사진·촬용</option>
-      <option value="5">취향저격 영화 리뷰</option>
-      <option value="6">오늘은 이런 책</option>
+      action="${contextPath}/blog/modifyBlog.do">
 
-    </select>
-    <input type="text" name="title" id="title" placeholder="제목을 입력하세요">
+  <div class="editor">
+  <div>
+        <input type="text" name="title" id="title"  value="${blog.title}">
+  </div>
   </div>
   
   <div class="summernote">
-    <textarea id="contents" name="contents" placeholder="내용을 입력하세요"></textarea>
+    <textarea id="contents" name="contents" >${blog.contents}</textarea>
   </div>
   
+  
   <div class="editor" id="btn-wrap">
-    <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
+    <input type="hidden" name="userNo" value="${sessionScope.userNo}">
+   <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
   </div>
       
 </form>
 
 <script>
 
-// Summernote Editor
-  const fnSummernoteEditor = () => {
+const fnSummernoteEditor = () => {
 
     $('#contents').summernote({
-    	width: 700,
-    	height: 700,
-    	toolbar: [
+      width: 700,
+      height: 700,
+      toolbar: [
             // [groupName, [list of button]]
             ['fontname', ['fontname']],
             ['fontsize', ['fontsize']],
@@ -71,6 +65,11 @@
             fetch('${contextPath}/blog/summernote/imageUpload.do', {
               method: 'POST',
               body: formData
+              /*  submit 상황에서는 <form enctype="multipart/form-data"> 필요하지만 fetch 에서는 사용하면 안 된다. 
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+              */
             })
             .then(response=>response.json())
             .then(resData=>{
@@ -81,30 +80,29 @@
       }
     })
   }
-
-  // 공백 검사 함수
-  const fnRegisterBlog = () => {
+const fnRegisterBlog = (evt) => {
     if(document.getElementById('title').value === '') {
       alert('제목을 입력해주세요');
       evt.preventDefault();
       return;
-    } else if($("select[name=keyword]").val() === '0') {
-    	alert('키워드를 선택해주세요.');
-    	evt.preventDefault();
-    	return;
     } else if(document.getElementById('contents').value === ''){
-    	alert('내용을 입력해주세요');
-    	evt.preventDefault();
-    	return;
+      alert('내용을 입력해주세요');
+      evt.preventDefault();
+      return;
     }
   }
-  
-  // button click event
-  document.getElementById('btn-register').addEventListener('click', (evt) => {
-    fnRegisterBlog();
-	  document.getElementById('frm-blog-register').submit();
-  })  
+// submit event
+document.getElementById('frm-blog-register').addEventListener('submit', (evt) => {
+    fnRegisterBlog(evt);
+  })
 
+// button click event
+document.getElementById('btn-register').addEventListener('click', (evt) => {
+  document.getElementById('frm-blog-register').submit();
+
+})  
+
+  
   fnSummernoteEditor();
 
 </script>

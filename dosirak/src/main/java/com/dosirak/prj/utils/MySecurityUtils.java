@@ -5,9 +5,13 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dosirak.prj.mapper.UserMapper;
+import com.dosirak.prj.service.UserService;
+import com.dosirak.prj.service.UserServiceImpl;
+
 public class MySecurityUtils {
 
-  /*
+	/*
    * SHA-256
    * 1. 어떤 값을 256비트(32바이트)로 암호화하는 해시 알고리즘이다.
    * 2. 암호화는 가능하고 복호화는 불가능하다. (단방향 알고리즘)

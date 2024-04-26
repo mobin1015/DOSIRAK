@@ -1,5 +1,6 @@
+<%@page import="com.dosirak.prj.dto.UserDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>   
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
@@ -24,7 +25,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 
 <!-- include moment.js -->
-<script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script>
+<script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script> 
 
 <!-- include summernote css/js -->
 <link rel="stylesheet" href="${contextPath}/resources/summernote-0.8.18-dist/summernote.min.css">
@@ -39,10 +40,10 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/default.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/header.css?dt=${dt}">
 <link rel="stylesheet" href="${contextPath}/resources/css/main.css?dt=${dt}">
+<link rel="stylesheet" href="${contextPath}/resources/css/detail.css?dt=${dt}">
 
 </head>
 <body>
-
 
   <div class="header-wrap">
     <div class="header-in">
@@ -67,7 +68,7 @@
     <!-- 슬라이드 영역 -->
     <div class="header-nav">
        <!-- Sign In 안 된 경우 -->
-       <c:if test="${sessionScope.user == null}">  
+        <c:if test="${sessionScope.user == null}">  
           <div class="nav-profile">
             <div class="profile-default">
               <div class="profile-default-image "></div>
@@ -77,43 +78,52 @@
               </p>
               <p class="slogan-writer georgian">C.S.Lewis</p>
               <div class="btn-request noto"><a href="${contextPath}/user/login.page"">브런치스토리 시작하기</a></div>
-              <!-- div type="button" class="nav-btn" id="btn-write" >글쓰기이따지워</div>-->
             </div>
            </div>
+           <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
         </c:if>
+        
         
         <!-- Sign In 된 경우 -->
         <c:if test="${sessionScope.user != null}">
           <div class="nav-profile nav-profile-login">
             <div class="profile-default">
-                <img class="profile-login-image" src="">
-                <p class="profile-name noto">이름</p>
-                <p class="profile-id georgian">user-email@email.com</p>
+                <div>
+                  <c:if test="${empty sessionScope.user.blogImgPath}">
+                   <img class="profile-login-image" src="${contextPath}/resources/images/profile_default.png" >
+                  </c:if>
+                  <c:if test="${not empty sessionScope.user.blogImgPath}">
+                   <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}" >
+                  </c:if>
+                </div>
+                <p class="profile-name noto">${sessionScope.user.name}</p>
+                <p class="profile-id georgian">${sessionScope.user.email}</p>
                 <div class="profile-top">
-                  <div class="nav-btn noto"><a href="">글쓰기</a></div>
-                  <div class="nav-btn noto"><a href="">마이페이지</a></div>
+                  <div class="nav-btn noto"><a href="${contextPath}/blog/write.page">글쓰기</a></div>
+                  <div class="nav-btn noto"><a href="${contextPath}/user/mypage.do?userNo=${user.userNo}">마이페이지</a></div>
                 </div> 
             </div>
           </div>
+          <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
+          
           <div class="nav-bottom">
             <div class="nav-btn noto"><a href="">탈퇴하기</a></div>
-            <div class="nav-btn noto"><a href="">로그아웃</a></div>
+            <div class="nav-btn noto"><a href="${contextPath}/user/logout.do">로그아웃</a></div>
           </div>
         </c:if>
     </div>
       
     <div class="wrap">
-    
-    
+
     
     <script>
-    const fnBlogWrite = ()=>{
-    	$('#btn-write').on('click', (evt)=>{
-    		location.href = "${contextPath}/blog/write.page";
+    const fnSearchBlog = ()=>{
+    	$('.search-btn').on('click', (evt)=>{
+    		location.href = "${contextPath}/blog/search.page";
     	})
     }
-    fnBlogWrite();
-    
+    fnSearchBlog();
+
     var aa=true;
     $(".menu-btn").click(function(){
       if(aa){
@@ -125,7 +135,7 @@
     
     $(document).on("click", function(event) {
         if (!$(event.target).closest('.header-wrap').length) {
-            $(".header-nav").animate({'left': '-100%'});
+            $(".header-nav").animate({'left':'-100%'});
             aa = true;
         }
     });
@@ -134,6 +144,6 @@
     $(".header-nav").on("click", function(event) {
         event.stopPropagation();
     });
-    
+
     </script>
     

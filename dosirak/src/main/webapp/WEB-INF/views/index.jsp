@@ -17,46 +17,7 @@
       
     <div class="section">
       <div class="main-slide">
-        <div>
-          <div class="img-wrap"></div>
-          <div class="text-wrap">
-            <h4 class="slide-title nanum">불편한 마음, 진전할 기회</h4>
-            <p class="slide-contents">불편한 마음, 진전할 기회 내용입력</p>
-            <span class="slide-by">by</span><span class="slide-user">현안 XianAn 스님</span>  
-          </div>
-        </div>
-        <div>
-          <div class="img-wrap"></div>
-          <div class="text-wrap">
-            <h4 class="slide-title nanum">불편한 마음, 진전할 기회</h4>
-            <p class="slide-contents">불편한 마음, 진전할 기회 내용입력</p>
-            <span class="slide-by">by</span><span class="slide-user">현안 XianAn 스님</span>  
-          </div>
-        </div>
-        <div>
-          <div class="img-wrap"></div>
-          <div class="text-wrap">
-            <h4 class="slide-title nanum">불편한 마음, 진전할 기회dddddd</h4>
-            <p class="slide-contents">불편한 마음, 진전할 기회 내용입력</p>
-            <span class="slide-by">by</span><span class="slide-user">현안 XianAn 스님</span>  
-          </div>
-        </div>
-        <div>
-          <div class="img-wrap"></div>
-          <div class="text-wrap">
-            <h4 class="slide-title nanum">불편한 마음, 진전할 기회</h4>
-            <p class="slide-contents">불편한 마음, 진전할 기회 내용입력</p>
-            <span class="slide-by">by</span><span class="slide-user">현안 XianAn 스님</span>  
-          </div>
-        </div>
-        <div>
-          <div class="img-wrap"></div>
-          <div class="text-wrap">
-            <h4 class="slide-title nanum">불편한 마음, 진전할 기회</h4>
-            <p class="slide-contents">불편한 마음, 진전할 기회 내용입력</p>
-            <span class="slide-by">by</span><span class="slide-user">현안 XianAn 스님</span>  
-          </div>
-        </div>
+        
       </div>
     </div>
     
@@ -77,33 +38,91 @@
       </div>
     </div>
     
+    
   
   <script>
   
-  $(document).ready(function(){
-	  $('.main-slide').slick({
-		  dots: true,
-		  dotsClass:'bn-controller',
-		  customPaging: function(slide, i) {
-        return (i + 1).toString().padStart(2, "0")
-      },
-		  infinite: false,
-		  speed: 300,
-		  slidesToShow: 1,
-		  slidesToScroll: 1,
-		  centerMode: true,
-		  variableWidth: true
+	const contextPath = '<%= request.getContextPath() %>';
+
+	const fnMainList = () => {
+	  const mainList = $('.main-slide');
+	  $.ajax({
+	    type: 'get',
+	    url: contextPath + '/blog/mainList.do',
+	    dataType: 'json',
+	    success: (resData) => {
+	      mainList.empty();
+	      const stripHtml = (html)=>{
+          let doc = new DOMParser().parseFromString(html, 'text/html');
+          return doc.body.textContent || "";
+        }
+	      let blogList = resData.blogList;
+        if(blogList.length > 10) {
+          blogList = blogList.slice(0, 10);           
+        } 
+        if(blogList.length === 0) {
+            let str = '<div class="no-data nanum"><p>We are waiting for your story!</p></div>';
+            mainList.append(str);
+        } else {
+  	      $.each(blogList, (i, blog) => {
+  	    	  let plainContents = stripHtml(blog.contents);
+  	        let str = '<div class="blog-item">'; 
+  	        str += '<a href="' + contextPath + '/blog/detail.do?blogListNo=' + blog.blogListNo + '">';
+  	        str += '<div class="img-wrap">';
+  	        if (blog.contents.includes('<img')) {
+  	          let thumbnailUrl = $(blog.contents).find('img').first().attr('src');
+  	          str += '<div class="list-thumbnail" style="background: url(' + thumbnailUrl + ')"></div>';
+  	        } else {
+  	          str += '<div class="list-thumbnail"><img src="' + contextPath + '/resources/images/wh-image.png"></div>';
+  	        }
+  	        str += '</div>'; // img-wrap 종료
+  	        str += '<div class="text-wrap">';
+  	        str += '<h4 class="slide-title nanum">';
+  	        str += blog.title;
+  	        str += '</h4>';
+  	        str += '<div class="slide-contents">';
+  	        str += plainContents;
+  	        str += '</div>';
+  	        str += '<span class="slide-by">by </span><span class="slide-user">';
+  	        str += blog.user.nickname;
+  	        str += '</span>  ';
+  	        str += '</div>'; 
+  	        str += '<div class="mask"></div>'
+  	        str += '</a>'; 
+  	        str += '</div>'; 
+  	        mainList.append(str);
+  	      });
+        }
+
+	      // 슬라이드를 초기화하고 새로 추가된 슬라이드를 반영합니다.
+	      $('.main-slide').slick({
+	        dots: true,
+	        dotsClass: 'bn-controller',
+	        customPaging: function(slide, i) {
+	          return (i + 1).toString().padStart(2, "0")
+	        },
+	        infinite: false,
+	        speed: 300,
+	        slidesToShow: 1,
+	        slidesToScroll: 1,
+	        centerMode: true,
+	        variableWidth: true
+	      });
+	    },
+	    error: (jqXHR) => {
+	      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
+	    }
 	  });
-	});
-  
-  const fnKeywordList = () => {
-      
-  	$('.keyword-list').on('click', (evt)=>{
-  		const keywordNo = evt.target.dataset.keywordNo;
-      location.href = '${contextPath}/blog/keyword.do?keywordNo=' + keywordNo;
-    })
-  }
+	}
+
+	const fnKeywordList = () => {
+	  $('.keyword-list').on('click', (evt)=>{
+	    const keywordNo = evt.target.dataset.keywordNo;
+	    location.href = '${contextPath}/blog/keyword.do?keywordNo=' + keywordNo;
+	  })
+	}
 	  
+	fnMainList();
 	fnKeywordList();
   </script>
 
