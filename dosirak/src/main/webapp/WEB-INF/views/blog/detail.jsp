@@ -68,7 +68,7 @@
 <form id="frm-comment">
     <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>
     <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.email}</span></c:if>
-    <c:if test="${!(empty sessionScope.user.nickname)}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.nickname}</span></c:if> 
+    <c:if test="${not empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.nickname}</span></c:if> 
   <textarea id="contents" name="contents" placeholder="댓글을 입력하세요." style="    width: 100%;
     height: 6.25em;
     padding-top: 20px;
@@ -182,9 +182,9 @@ const fnCommentList = () => {
                    } else {
                       if(comment.user.nickname === null) {
                          if(Number('${sessionScope.user.userNo}') === comment.user.userNo) {
-                         str += '<a id="userImg"><img height="32px" width="32px"src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%; "><span  style="font-size:13px;">' +comment.user.userNo+ '</span><button type="button"  class="btn-remove-comment" style="display: inline;  background-color: white; float: right;" data-comment-no="' + comment.commentNo + '">삭제</button>';
+                         str += '<a id="userImg"><img height="32px" width="32px"src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%; "><span  style="font-size:13px;">' +comment.user.email+ '</span><button type="button"  class="btn-remove-comment" style="display: inline;  background-color: white; float: right;" data-comment-no="' + comment.commentNo + '">삭제</button>';
                          }else{
-                            str += '<a id="userImg"><img height="32px" width="32px" src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.userNo+ '</span>';
+                            str += '<a id="userImg"><img height="32px" width="32px" src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.email+ '</span>';
                          }
                          
                       }
@@ -221,15 +221,21 @@ const fnCommentList = () => {
 }
 
 const fnRegisterComment = () => {
-    $('#btn-comment-register').on('click', (evt) => {
-          
+   
         if('${sessionScope.user.userNo}' === '') {
-            if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
+            if(confirm('로그인이 필요한 기능입니다. 로그인 할까요?')) {
               location.href = '${contextPath}/user/login.page';
               return;
             } 
             return;
           }
+        
+        $('#btn-comment-register').on('click', (evt) => {
+            if($(contents).text() === ""){
+            	alert("내용을 입력해주세요");
+              return;
+            }
+                
       $.ajax({
         // 요청
         type: 'POST',
@@ -281,10 +287,10 @@ const fnSwitchingReplyInput = () => {
            ${empty sessionScope.user.nickname}
            let str = '<div class="div-frm-reply blind" style="padding-left: 32px">';
              str += '  <form class="frm-reply">';
-             str += '   <div> <a id="userImg"><img height="32px" width="32px" src="/prj${blog.user.blogImgPath}"></a>';
+             str += '   <div> <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>';
              str += '   <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px; vertical-align: sub;">${sessionScope.user.email}</span></div></c:if>';
              str += '    <c:if test="${!(empty sessionScope.user.nickname)}"><span  style="font-size:13px; vertical-align: sub;">${sessionScope.user.nickname}</span></div></c:if> ';
-             str += '      <textarea id="contents" name="contents" placeholder="답글을 입력하세요." style="  padding-top:20px;  width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
+             str += '      <textarea id="rcontents" name="contents" placeholder="답글을 입력하세요." style="  padding-top:20px;  width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
              str += '  <input type="hidden" name="blogListNo" value="${blog.blogListNo}">';
                str += ' <input type="hidden" name="groupNo" value="'+ classNo+'">';
                str += ' <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
@@ -301,12 +307,18 @@ const fnSwitchingReplyInput = () => {
 const fnRegisterReply = () => {
      $(document).on('click', '.btn-register-reply', (evt) => {
          if('${sessionScope.user.userNo}' === '') {
-             if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
+             if(confirm('로그인이 필요한 기능입니다. 로그인 할까요?')) {
                location.href = '${contextPath}/user/login.page';
                return;
              } 
              return;
            }
+         
+   
+             if($(rcontents).text() === ""){
+               alert("내용을 입력해주세요");
+               return;
+             }
        $.ajax({
          type: 'POST',
          url: '${contextPath}/blog/registerReply.do',
@@ -353,7 +365,7 @@ const fnRemoveComment = () => {
 const fnClickLike = () => {
        $(likeBtn).click(function() {
          if('${sessionScope.user.userNo}' === '') {
-               if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')) {
+               if(confirm('로그인이 필요한 기능입니다.로그인 할까요?')) {
                  location.href = '${contextPath}/user/login.page';
                  return;
                } 
