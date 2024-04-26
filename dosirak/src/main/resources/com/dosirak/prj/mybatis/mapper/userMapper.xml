@@ -22,8 +22,8 @@
   <select id="getUserByMap" 
           parameterType="Map"
           resultType="UserDto">
-    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT, BLOG_IMG_PATH
-      FROM USER_T
+    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT, NICKNAME, BLOG_IMG_PATH
+    FROM USER_T
     <where>
       <if test="email!=null">EMAIL = #{email}</if>
       <if test="pw!=null">AND PW = #{pw}</if>
