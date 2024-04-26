@@ -8,7 +8,7 @@
   <select id="getUserByMap" 
           parameterType="Map"
           resultType="UserDto">
-    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT 
+    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT, NICKNAME, BLOGIMGPATH
       FROM USER_T
     <where>
       <if test="email!=null">EMAIL = #{email}</if>

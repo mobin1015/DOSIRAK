@@ -9,79 +9,245 @@
   <jsp:param value="Sign Up" name="title"/>
 </jsp:include>
 
-<h1 class="title">Sign Up</h1>
+<style type="text/css">
+   .cantainer {
+    width:700px;
+    margin:0 auto;
+   }
+   .cantainer input{
+    padding:0 8px;}
+   .title{
+    font-weight: bold;
+    margin-bottom : 40px;
+   }
+   .form{
+    }
+   .emailArea{
+    border:1px solid #333;
+    border-top:none;
+    border-radius: 4px;
+    display:flex;
+    height:40px;
+    }
+   .emailArea:first-child{
+    border-top:1px solid #333;}
+   .emailArea p{
+    height:100%;
+    }
+   .lable{
+    text-align: center;
+    width:110px;
+    min-width:110px;
+    border-right:1px solid #333;
+    line-height:40px;
+    }
+   .input{
+    flex:1; 
+    }
+   .input input{
+    width:100%;
+    height:100%;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #fff;
+    }
+   .input input code{
+    background-color: #E2E2E2;
+    } 
+   .btn{
+    width:110px;
+    padding:0;
+    }
+   .btn button{
+    background-color: #fff;
+    width:100%;
+    height:100%;
+    display:block;
+    color: #666;
+    transition:all 0.3s;
+    border_radius: 1px solid #333;
+    }
+    .btn button:hover{
+    background-color: #eee;
+    color: #666;
+    }
+   .jb-division-line {
+    border-top: 1px solid #808080;
+    margin: 30px auto;
+    width:700px; 
+    }
+   .button{
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 6px 0;
+    border: 1px solid #c6c6c6;
+    background-color: rgba(153, 255, 153, 0.2);
+    }
+   .button button{
+    display: block;
+    font-size: 20px;
+    line-height: 18px;
+    color: #929294;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0,0,0,0);
+    }
+    .btn:active {
+    box-shadow: inset -.3rem -.1rem 1.4rem  #FBFBFB, inset .3rem .4rem .8rem #BEC5D0; 
+    cursor: pointer;
+    }
+   .form_radio_btn {
+    padding: 15px 10px;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 6px 0;
+    border: 1px solid #c6c6c6;
+    background-color: #32D0CA;
+    }
+   .form_radio_btn input[type=radio]{
+    display: none;
+    }
+   .form_radio_btn input[type=radio]+label{
+    display: block;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    line-height: 24px;
+    text-align: center;
+    font-size: 20px;
+    }
+   .form_radio_btn input[type=radio]+label{
+    background-color: #00C6BE;
+    color: #fff;
+    }
+   .form_radio_btn input[type=radio]:checked+label{
+    background-color: #00C6BE;
+    font-weight: bold;
+    font-size: 20px;
+    }
+    .jb-division-line {
+      position: relative;
+    }
+    .button-signup{
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 50px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #fff;
+    background-color: #00C6BE;
+    }
+</style>
 
+
+
+<div class="cantainer">
+<h1 class="title">SignUp</h1>
+
+<body>
 <form method="POST"
       action="${contextPath}/user/signup.do"
       id="frm-signup">
-
-<div class="row">
-    <label for="inp-email" class="col-sm-2 col-form-label">아이디</label>
-    <div class="col-sm-4"><input type="text" id="inp-email" name="email" class="form-control" placeholder="example@example.com"></div>
-    <div class="col-sm-3"><button type="button" id="btn-code" class="btn btn-primary">인증코드받기</button></div>
-    <div class="col-sm-2"></div>
-    <div class="col-sm-3"id="msg-email"></div>
-  </div>
-  <div class="row">
-    <label for="inp-code" class="col-sm-2 col-form-label">인증코드</label>
-    <div class="col-sm-4"><input type="text" id="inp-code" class="form-control" placeholder="인증코드입력" disabled></div>
-    <div class="col-sm-3"><button type="button" id="btn-verify-code" class="btn btn-primary" disabled>인증하기</button></div>
-  </div>
-  
-  <hr class="my-3">
-
-  <div class="row mb-3">
-    <label for="inp-pw" class="col-sm-2 col-form-label">비밀번호</label>
-    <div class="col-sm-4"><input type="password" id="inp-pw" name="pw" class="form-control"></div>
-    <div class="col-sm-6"></div>
-    <div class="col-sm-2"></div>
-    <div class="col-sm-4" id="msg-pw"></div>
-  </div>
-  <div class="row mb-3">
-    <label for="inp-pw2" class="col-sm-3 col-form-label">비밀번호 확인</label>
-    <div class="col-sm-6"><input type="password" id="inp-pw2" class="form-control"></div>
-    <div class="col-sm-3"></div>
-    <div class="col-sm-9" id="msg-pw2"></div>
-  </div>
-  
-  <hr class="my-3">
-  
-  <div class="row mb-3">
-    <label for="inp-name" class="col-sm-3 col-form-label">이름</label>
-    <div class="col-sm-9"><input type="text" name="name" id="inp-name" class="form-control"></div>
-    <div class="col-sm-3"></div>
-    <div class="col-sm-9" id="msg-name"></div>
-  </div>
-
-  <div class="row mb-3">
-    <label for="inp-mobile" class="col-sm-3 col-form-label">휴대전화번호</label>
-    <div class="col-sm-9"><input type="text" name="mobile" id="inp-mobile" class="form-control"></div>
-    <div class="col-sm-3"></div>
-    <div class="col-sm-9" id="msg-mobile"></div>
-  </div>
-
-  <div class="row mb-3">
-    <label class="col-sm-3 form-label">성별</label>
-    <div class="col-sm-1">
-      <input type="radio" name="gender" value="none" id="rdo-none" class="form-check-input" checked>
-      <label class="form-check-label" for="rdo-none">선택안함</label>
-    </div>
-    <div class="col-sm-1">
-      <input type="radio" name="gender" value="M" id="rdo-man" class="form-check-input">
-      <label class="form-check-label" for="rdo-man">남자</label>
-    </div>
-    <div class="col-sm-1">
-      <input type="radio" name="gender" value="F" id="rdo-woman" class="form-check-input">
-      <label class="form-check-label" for="rdo-woman">여자</label>
-    </div>
-  </div>
-  <hr class="my-3">
-   <input type="text" name="singupKind" class="form-control"  style= 'display: none'; value=0>
-  <div class="m-3">
-    <button type="submit" id="btn-signup" class="btn btn-primary">가입하기</button>
-  </div>
-  
-</form>
+     
+    <div class="form">
+        <div class="emailArea">
+            <p class="lable">
+                이메일
+            </p>
+            <p class="input" >
+                <input type="text" id="inp-email" name="email"  placeholder="example@example.com"/>
+            </p>
+            <p class="btn">
+                <button type="button" id="btn-code">인증코드받기</button>
+            </p>
+        </div>
+         <div class="emailArea">
+            <p class="lable">
+                인증코드
+            </p>
+            <p class="input code">
+                <input type="text" id="inp-code"  placeholder="인증코드입력" disabled/>
+            </p>
+            <p class="btn">
+                <button type="button" id="btn-verify-code"  disabled>인증하기</button>
+            </p>
+        </div>
+         <div class="emailArea">
+            <p class="lable">
+                비밀번호
+            </p>
+            <p class="input">
+                <input type="password" id="inp-pw" name="pw"/>
+            </p>
+        </div>
+         <div class="emailArea">
+            <p class="lable">
+                비밀번호확인
+            </p>
+            <p class="input">
+                <input type="password" id="inp-pw2"/>
+            </p>
+        </div>     
+    <div id="msg-email"></div>
+    <div id="msg-pw"></div>
+    <div id="msg-pw2"></div>
+    </div>   
+   
+    <div class="jb-division-line"></div>    
+    
+      <div class="form"> 
+        <div class="emailArea">
+            <p class="lable">
+                이름
+            </p>
+            <p class="input">
+                <input type="text" name="name" id="inp-name"/>
+            </p>
+        </div>
+         <div class="emailArea">
+            <p class="lable">
+                휴대전화번호
+            </p>
+            <p class="input">
+                <input type="text" name="mobile" id="inp-mobile"/>
+            </p>
+        </div>
+         <div class="emailArea">
+            <p class="lable">
+                성별
+            </p>
+            <p class="form_radio_btn">
+                 <input type="radio" name="gender" value="none" id="rdo-none" class="btn-raido" checked>
+                 <label for="rdo-none">선택안함</label>
+            </p>
+            <p class="form_radio_btn">
+                 <input type="radio" name="gender" value="M" id="rdo-man" class="btn-raido">
+                 <label for="rdo-man">남자</label>
+            </p>
+            <p class="form_radio_btn">
+                 <input type="radio" name="gender" value="F" id="rdo-woman" class="btn-raido">
+                 <label for="rdo-woman">여자</label> 
+            </p>
+        </div>
+        <div id="msg-name"></div>
+        <div id="msg-mobile"></div>
+       </div>
+        
+       <div class="jb-division-line"></div>
+         
+       <input type="text" name="singupKind" class="form-control"  style= 'display: none'; value=0>
+       
+       <div class="signup">
+       <button type="submit" id="btn-signup" class="button-signup">가입하기</button>
+       </div>
+  </form>
+</div>
+</body>
 
 <script>
 
@@ -90,7 +256,6 @@
     var passwordConfirm = false;
     var nameCheck = false;
     var mobileCheck = false;
-    var agreeCheck = false;
     
     const fnGetContextPath = ()=>{
       const host = location.host;  /* localhost:8080 */
@@ -151,8 +316,11 @@
             })
           })
         } else {
-          document.getElementById('msg-email').innerHTML = '이미 사용 중인 이메일입니다.';
-          emailCheck = false;
+        	var msgElement = document.getElementById('msg-email');
+        	msgElement.innerHTML = '⚫ 이미 사용 중인 이메일입니다.';
+        	msgElement.style.fontSize = '15px'; 
+        	msgElement.style.fontWeight = 'bold'; 
+        	msgElement.style.color = 'red'; 
           return;
         }
       })
@@ -170,9 +338,15 @@
                    && validCount >= 2
       let msgPw = document.getElementById('msg-pw');
       if(passwordCheck){
-        msgPw.innerHTML = '사용 가능한 비밀번호입니다.';
+        msgPw.innerHTML = '⚫ 사용 가능한 비밀번호입니다.';
+        msgPw.style.fontSize = '15px'; 
+        msgPw.style.fontWeight = 'bold';
+        msgPw.style.color = 'green'; 
       } else {
-        msgPw.innerHTML = '비밀번호 4~12자, 영문/숫자/특수문자 중 2개 이상 포함';
+        msgPw.innerHTML = '⚫ 비밀번호 4~12자, 영문/숫자/특수문자 중 2개 이상 포함';
+        msgPw.style.fontSize = '15px'; 
+        msgPw.style.fontWeight = 'bold'; 
+        msgPw.style.color = 'red'; 
       }
     }
     
@@ -185,7 +359,10 @@
       if(passwordConfirm) {
         msgPw2.innerHTML = '';
       } else {
-        msgPw2.innerHTML = '비밀번호 입력을 확인하세요.';
+        msgPw2.innerHTML = '⚫ 비밀번호 입력을 확인하세요.';
+        msgPw2.style.fontSize = '15px'; 
+        msgPw2.style.fontWeight = 'bold';
+        msgPw2.style.color = 'red';
       }
     }
     
@@ -203,7 +380,10 @@
       nameCheck = (totalByte <= 100);
       let msgName = document.getElementById('msg-name');
       if(!nameCheck){
-        msgName.innerHTML = '이름은 100 바이트를 초과할 수 없습니다.';
+        msgName.innerHTML = '⚫ 이름은 100 바이트를 초과할 수 없습니다.';
+        msgName.style.fontSize = '15px'; 
+        msgName.style.fontWeight = 'bold';
+        msgName.style.color = 'red';
       } else {
         msgName.innerHTML = '';
       }
@@ -218,18 +398,17 @@
       if(mobileCheck) {
         msgMobile.innerHTML = '';
       } else {
-        msgMobile.innerHTML = '휴대전화를 확인하세요.';
+        msgMobile.innerHTML = '⚫ 휴대전화를 확인하세요.';
+        msgMobile.style.fontSize = '15px'; 
+        msgMobile.style.fontWeight = 'bold';
+        msgMobile.style.color = 'red';
       }
     }
     
-    const fnCheckAgree = () => {
-      let chkService = document.getElementById('chk-service');
-      agreeCheck = chkService.checked;
-    }
+    
     
     const fnSignup = () => {
       document.getElementById('frm-signup').addEventListener('submit', (evt) => {
-        fnCheckAgree();
         if(!emailCheck) {
           alert('이메일을 확인하세요.');
           evt.preventDefault();
@@ -246,21 +425,17 @@
           alert('휴대전화를 확인하세요.');
           evt.preventDefault();
           return;
-        } else if(!agreeCheck) {
-          alert('서비스 약관에 동의해야 서비스를 이용할 수 있습니다.');
-          evt.preventDefault();
-          return;
-        }
+        } 
       })
     }
     
     
-    document.getElementById('btn-code').addEventListener('click', fnCheckEmail);
-    document.getElementById('inp-pw').addEventListener('keyup', fnCheckPassword);
-    document.getElementById('inp-pw2').addEventListener('blur', fnConfirmPassword);
-    document.getElementById('inp-name').addEventListener('blur', fnCheckName);
-    document.getElementById('inp-mobile').addEventListener('blur', fnCheckMobile);
-    fnSignup();
+document.getElementById('btn-code').addEventListener('click', fnCheckEmail);
+document.getElementById('inp-pw').addEventListener('keyup', fnCheckPassword);
+document.getElementById('inp-pw2').addEventListener('blur', fnConfirmPassword);
+document.getElementById('inp-name').addEventListener('blur', fnCheckName);
+document.getElementById('inp-mobile').addEventListener('blur', fnCheckMobile);
+fnSignup();
 </script>
 
 
