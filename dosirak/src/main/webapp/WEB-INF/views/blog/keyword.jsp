@@ -34,6 +34,7 @@
   var totalPage = 0;
   var loading = false;
   
+  /* 키워드 리스트 불러오는 함수 */
   const fnKeywordList = () => {
     const keywordList = $('#keyword-list');
     moment.locale('ko');
@@ -90,6 +91,7 @@
     });
 	}
 	
+  /* 무한 스크롤 함수 */
 	const fnScrollHandler = () => {
     let loading = false;
     let lastScrollTop = 0;
