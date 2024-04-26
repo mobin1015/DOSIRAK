@@ -16,7 +16,7 @@
    <result property="hasThumbnail"   column="HAS_THUMBNAIL"/>
    <association property="user"  javaType="UserDto">
      <id     property="userNo"  column="USER_NO"/>
-     <result property="email"   column="EMAIL"/>
+     <result property="name"   column="NAME"/>
      <result property="nickname"   column="NICKNAME"/>
      <result property="blogImgPath"      column="BLOG_IMG_PATH"/>
      <result property="blogContents"   column="BLOG_CONTENTS"/>
@@ -122,7 +122,7 @@
     SELECT COUNT(*)
       FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
         ON U.USER_NO = D.USER_NO
-     WHERE U.NICKNAME LIKE '%${writer}%' OR U.EMAIL LIKE '%${writer}%'
+     WHERE U.NICKNAME LIKE '%${writer}%' OR U.NAME LIKE '%${writer}%'
   </select>
   
   <select id="getBlogListCountByContents"
@@ -143,21 +143,21 @@
   <select id="getBlogDetailListByWriter"
           parameterType="Map"
           resultMap="BlogDetailMap">
-  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO, EMAIL
+  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO, NAME
     FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
-               , U.NICKNAME, U.USER_NO, U.EMAIL, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
+               , U.NICKNAME, U.USER_NO, U.NAME, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
             FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
               ON U.USER_NO = D.USER_NO
-           WHERE U.NICKNAME LIKE '%${query}%' OR U.EMAIL LIKE '%${query}%')
+           WHERE U.NICKNAME LIKE '%${query}%' OR U.NAME LIKE '%${query}%')
    WHERE RN BETWEEN #{begin} AND #{end}    
   </select>
   
   <select id="getBlogDetailListByContents"
           parameterType="Map"
           resultMap="BlogDetailMap">
-  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO, EMAIL
+  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO, NAME
     FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
-               , U.NICKNAME, U.USER_NO, U.EMAIL, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
+               , U.NICKNAME, U.USER_NO, U.NAME, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
             FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
               ON U.USER_NO = D.USER_NO
            WHERE DBMS_LOB.INSTR(D.CONTENTS, #{query}) > 0 OR TITLE LIKE '%${query}%')
@@ -327,9 +327,9 @@
   <select id="getBlogDetailListByDesc"
           parameterType="Map"
           resultMap="BlogDetailMap">
-  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO, EMAIL
+  SELECT BLOG_LIST_NO, CREATE_DT, CONTENTS, TITLE, NICKNAME, HAS_THUMBNAIL, USER_NO, NAME
     FROM (SELECT ROW_NUMBER() OVER(ORDER BY D.BLOG_LIST_NO DESC) AS RN
-               , U.NICKNAME, U.USER_NO, U.EMAIL, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
+               , U.NICKNAME, U.USER_NO, U.NAME, D.TITLE, D.CONTENTS, D.CREATE_DT, D.BLOG_LIST_NO, D.HAS_THUMBNAIL
             FROM USER_T U INNER JOIN  BLOG_DETAIL_T D 
               ON U.USER_NO = D.USER_NO
             ORDER BY CREATE_DT ${order})
