@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
   
   @Override
   public UserDto getUserByNo(int userNo) {
-    System.out.println(userMapper.getUserByNo(userNo));
     return userMapper.getUserByNo(userNo);
   }
   
@@ -221,7 +220,6 @@ public class UserServiceImpl implements UserService {
 		
 		// Log In 페이지 이전의 주소가 저장되어 있는 Request Header 의 referer 값 확인
 		String referer = request.getHeader("referer");
-		
 		// referer 로 돌아가면 안 되는 예외 상황 (아이디/비밀번호 찿기 화면, 가입 화면 등)
 		String[] excludeURLs = {"/findId.page", "/findPw.page", "/signup.page", "/upload/edit.do"};
 		
@@ -237,7 +235,7 @@ public class UserServiceImpl implements UserService {
 		} else {
 			url = request.getContextPath() + "/main.page";
 		}
-		
+
 		return url;
 	}
 
@@ -274,7 +272,7 @@ public class UserServiceImpl implements UserService {
 		  // 프로필이미지 불러와야함
 		  String blogImgPath = user.getBlogImgPath();
 		  String name = user.getName();
-			
+
 			// 접속 기록 ACCESS_HISTORY_T 에 남기기
 		  // userMapper.insertAccessHistory(params);
 			
@@ -286,10 +284,8 @@ public class UserServiceImpl implements UserService {
 			session.setAttribute("name", name);
 			
 			session.setMaxInactiveInterval(60 * 60);		// 세션 유지 시간 60분 설정
-			
 			// Sign In 후 페이지 이동
 			response.sendRedirect(request.getParameter("url"));
-		
 		} else {
 			// 일치하는 회원 없음 (Login In 실패)
 			response.setContentType("text/html; charset=UTF-8");
@@ -465,7 +461,6 @@ public class UserServiceImpl implements UserService {
                 .mobile(response.has("mobile") ? response.getString("mobile") : null)
               .build();
       
-      System.out.println(user);
       
       // 응답 스트림 닫기
       reader.close();
