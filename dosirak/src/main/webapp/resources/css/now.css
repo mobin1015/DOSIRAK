@@ -9,6 +9,7 @@
 .now-result-wrap {max-width: 940px; margin: 0 auto; color: #959595; font-size: 13px;}
 #now-result-list a {width: 100%;}
 .list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px;}
+.list-title:hover { color: #666; text-decoration: underline; }
 .contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
 .contents-wrap {display: flex; flex-wrap: nowrap; align-items: center;  margin-top: 6px; justify-content: space-between; text-align: left;}
 .contents-wrap .list-item:nth-child(1) {margin-right: 15px; max-width:750px;}
