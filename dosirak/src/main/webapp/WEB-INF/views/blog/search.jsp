@@ -90,10 +90,10 @@
             let titleWithHighlight = blog.title.replace(searchQuery, '<span class="highlight">' + searchQuery + '</span>');
             str += '<h4 class="list-title">' + titleWithHighlight + '</h4>';
             
-            // 컨텐츠 하이라이트 (검색어 기준 앞 뒤 50글자 출력)
+            // 컨텐츠 하이라이트 (검색어 기준 앞 뒤 100글자 출력)
             let queryIndex = plainContents.indexOf(searchQuery);
-            let start = queryIndex - 50 < 0 ? 0 : queryIndex - 50;
-            let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 50;
+            let start = queryIndex - 100 < 0 ? 0 : queryIndex - 100;
+            let end = plainContents.indexOf('\n', queryIndex) !== -1 ? plainContents.indexOf('\n', queryIndex) : queryIndex + 100;
             let shortContents = plainContents.substring(start, end);
             if (start > 0) {
                 shortContents = '…' + shortContents;
@@ -160,7 +160,7 @@
         let windowHeight = window.innerHeight;
         let documentHeight =  $(document).height();
         
-        if( (scrollTop + windowHeight + 50) >= documentHeight ) {
+        if( (scrollTop + windowHeight + 100) >= documentHeight ) {
           if(page > totalPage) {
             return;
           }
