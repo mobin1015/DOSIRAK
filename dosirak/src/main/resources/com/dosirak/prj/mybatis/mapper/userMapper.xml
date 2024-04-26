@@ -18,11 +18,11 @@
      <id   property="userNo"  column="USER_NO"/>
    </association>
  </resultMap>
- 
+ <!-- BLOG_IMG_PATH 추가햇음 -->
   <select id="getUserByMap" 
           parameterType="Map"
           resultType="UserDto">
-    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT
+    SELECT USER_NO, EMAIL, PW, NAME, GENDER, MOBILE, SIGNUP_KIND, PW_MODIFY_DT, SIGNUP_DT, BLOG_IMG_PATH
       FROM USER_T
     <where>
       <if test="email!=null">EMAIL = #{email}</if>
@@ -138,6 +138,7 @@
      <!--   ★★★ 불러오기 -->
   <resultMap type="UserDto" id="profileUserDto">
     <id     property="userNo"             column="USER_NO" />
+    <result property="name"               column="NAME"/>
     <result property="email"              column="EMAIL"/>
     <result property="blogContents"       column="BLOG_CONTENTS"/>
     <result property="nickname"           column="NICKNAME"/>
@@ -146,7 +147,7 @@
 
   <select id="loadUserByNo"
           resultMap="profileUserDto">
-    SELECT USER_NO, BLOG_CONTENTS, BLOG_IMG_PATH, NICKNAME
+    SELECT USER_NO, BLOG_CONTENTS, BLOG_IMG_PATH, NICKNAME, NAME, EMAIL
       FROM USER_T
      WHERE USER_NO = #{userNo}
   </select>

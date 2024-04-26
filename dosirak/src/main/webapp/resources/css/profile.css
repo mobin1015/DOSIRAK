@@ -5,7 +5,7 @@
     #mArticle{}
     .edit-coverimg{background-color: #f8f8f8;height: 160px;}
     .edit-cover-in{position: relative;width:700px;height:100%;margin:0 auto;}
-    .bloger-thumb{position: absolute;bottom: -35%;right: 0%;z-index: 5;
+    .bloger-thumb{position: absolute;bottom: -30%;right: 0%;z-index: 5;
     width: 100px;height: 100px;margin-left: 250px;}
 
     .img-thumb{display: block;width: 100px;height: 100px;border-radius: 100px;}

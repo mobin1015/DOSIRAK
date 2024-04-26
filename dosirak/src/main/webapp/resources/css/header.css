@@ -52,3 +52,6 @@ color: #00c6be;font-size: 13px;text-align:center;}
 
 .nav-bottom{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
 display:flex;width:180px;justify-content: space-around;}
+
+
+.menu1{text-align:center;margin-top:30px;font-weight:300}
