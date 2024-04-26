@@ -42,7 +42,11 @@
           str += '<h4 class="list-title">' + blog.title + '</h4>';
           str += '<div class="list-content">' + plainContents + '</div>'; 
           str += '<div class="list-info">';
-          str += '<span>by ' + blog.user.nickname + ' · </span>';
+          if(blog.user.nickname === null){
+              str += '<span>by ' + blog.user.email + '</span>';
+          }else{
+              str += '<span>by ' + blog.user.nickname + '</span>';
+          }
           str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
           str += '</div>';
           str += '</div>';
