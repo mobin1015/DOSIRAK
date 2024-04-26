@@ -24,7 +24,7 @@
   var nowWrap = $('#now-result-wrap');
   var nowList = $('#now-result-list');
   
-  // 검색 ajax
+  // 현재 저장되어 있는 총 글 가져오기 (최신글부터)
   const fnNowBlogList = (evt)=>{
     moment.locale('ko');
     $.ajax({
@@ -42,9 +42,8 @@
           str += '<h4 class="list-title">' + blog.title + '</h4>';
           str += '<div class="list-content">' + plainContents + '</div>'; 
           str += '<div class="list-info">';
-          str += '<span>댓글 ' + blog.commentCount + ' • </span>';
-          str += '<span>' + moment(blog.createDt).fromNow() + ' • </span>';
-          str += '<span>by ' + blog.user.nickname + '</span>';
+          str += '<span>by ' + blog.user.nickname + ' · </span>';
+          str += '<span>' + moment(blog.createDt).fromNow() + '</span>';
           str += '</div>';
           str += '</div>';
           str += '<div class="list-item">';
@@ -69,6 +68,7 @@
     });
   }
   
+  // contents 태그 제거 함수
   const stripHtml = (html)=>{
 	    let doc = new DOMParser().parseFromString(html, 'text/html');
 	    return doc.body.textContent || "";
@@ -77,22 +77,15 @@
   
   // 무한스크롤
   const fnScrollHandler = () => {
-    
     var timerId; 
-    
     $(window).on('scroll', (evt) => {
- 
       if(timerId) { 
         clearTimeout(timerId);
       }
-      
       timerId = setTimeout(() => {
-        
         let scrollTop = window.scrollY;
         let windowHeight = window.innerHeight;
         let documentHeight =  $(document).height();
-        
-        
         if( (scrollTop + windowHeight + 50) >= documentHeight ) {
           if(page > totalPage) {
             return;
@@ -100,11 +93,8 @@
           page++;
           fnNowBlogList();
         }
-        
       }, 500);
-      
     })
-    
   }
   
   fnNowBlogList();
