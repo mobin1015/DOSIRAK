@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 
 .profile-wrap {max-width: 940px; height: 167px; margin: 10px auto;}
@@ -27,4 +28,36 @@
 .contents-wrap .list-item .list-content {font-size: 14px; color: #666; line-height: 1.5; font-weight: normal; margin-bottom: 10px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; font-size: 15px!important; font-weight: 400!important; color: #333!important;}
 .list-thumbnail {float: right; margin-left: 20px;}
 .list-thumbnail img {width: 120px; height: 120px; object-fit: cover;}  
+=======
+@charset "UTF-8";
+
+.profile-wrap {max-width: 940px; height: 167px; margin: 10px auto;}
+
+/* 프로필 */
+.bloger-thumb {margin-left: 750px;}
+.bloger-thumb img {width: 100px; height: 100px; border-radius: 100px; margin-left: 65px;}
+.profile-user-image {width: 100px; height: 100px; border-radius: 100px;}
+.nickname {display:block; box-sizing: border-box; width: 700px; height: 39px; padding-right: 170px; font-size: 28px; font-weight: 400;}
+.blog-contents {display: block; padding-top: 5px; font-size: 13px; line-height: 20px; color: #959595;}
+
+/* 게시글 total tab */
+.tab-contents {max-width: 940px; height: 24px; margin: 100px auto 30px; padding: 16px 0 17px; display: flex; justify-content: center; align-items: center; border-top: 1px solid #eee;}
+.tab-contents span {margin: 30px 5px 0 0;}
+
+/* 블로그 리스트 */
+.blog-list-wrap {max-width: 940px; margin: 0 auto;}
+.none-blog {text-align: center; margin-top: 30px;}
+
+#blog-list a {width: 100%;}
+.list-wrap {overflow: left; border-bottom: 1px solid #eee; padding: 30px 20px; cursor:pointer;}
+.list-title:hover { color: #666; text-decoration: underline; }
+.contents-wrap .list-title {font-size: 20px; text-align: left; letter-spacing: -1px;}
+.contents-wrap {display: flex; flex-wrap: nowrap; align-items: center;  margin-top: 6px; justify-content: space-between; text-align: left;}
+.contents-wrap .list-item:nth-child(1) {margin-right: 15px;}
+.contents-wrap .list-item p img {display: none;}
+.contents-wrap .list-item .list-content {overflow: hidden; max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px;}
+.contents-wrap .list-item .list-content {overflow: hidden; max-height: 45px; text-align: left; color: #666; font-size: 14px; line-height: 21px; height: 44px; line-height: 20px; overflow: hidden; text-overflow: ellipsis;}
+.list-thumbnail {float: right; margin-left: 20px;}
+.list-thumbnail img {width: 120px; height: 120px; object-fit: cover;}  
+>>>>>>> 8d213d809ff6567c1e4b942e29da1cd775071592
 .list-info span {color: #959595; font-size: 12px; padding-top: 20px; margin-right: 10px;}
