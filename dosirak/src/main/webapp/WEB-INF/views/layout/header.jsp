@@ -88,7 +88,14 @@
         <c:if test="${sessionScope.user != null}">
           <div class="nav-profile nav-profile-login">
             <div class="profile-default">
-                <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}">
+                <div>
+                  <c:if test="${empty sessionScope.user.blogImgPath}">
+                   <img class="profile-login-image" src="${contextPath}/resources/images/profile_default.png" >
+                  </c:if>
+                  <c:if test="${not empty sessionScope.user.blogImgPath}">
+                   <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}" >
+                  </c:if>
+                </div>
                 <p class="profile-name noto">${sessionScope.user.name}</p>
                 <p class="profile-id georgian">${sessionScope.user.email}</p>
                 <div class="profile-top">
@@ -97,7 +104,7 @@
                 </div> 
             </div>
           </div>
-          <p class="menu1 noto"><a href="">브런치스토리 나우</a></p>
+          <p class="menu1 noto"><a href="${contextPath}/blog/now.page">브런치스토리 나우</a></p>
           
           <div class="nav-bottom">
             <div class="nav-btn noto"><a href="">탈퇴하기</a></div>
@@ -107,9 +114,7 @@
     </div>
       
     <div class="wrap">
-    <style>
-    .menu1{text-align:center;margin-top:30px;font-weight:300}
-    </style>
+
     
     <script>
     const fnSearchBlog = ()=>{
