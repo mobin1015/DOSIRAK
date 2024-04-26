@@ -66,9 +66,9 @@
        
        
 <form id="frm-comment">
-    <a id="userImg"><img height="32px" width="32px" src="/prj${blog.user.blogImgPath}"></a>
-    <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${blog.user.userNo}</span></c:if>
-    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px;vertical-align: sub;">${blog.user.nickname}</span></c:if> 
+    <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>
+    <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.email}</span></c:if>
+    <c:if test="${!(empty sessionScope.user.nickname)}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.nickname}</span></c:if> 
   <textarea id="contents" name="contents" placeholder="댓글을 입력하세요." style="    width: 100%;
     height: 6.25em;
     padding-top: 20px;
@@ -278,12 +278,12 @@ const fnSwitchingReplyInput = () => {
               usertag = '';
            }
            
-         
+           ${empty sessionScope.user.nickname}
            let str = '<div class="div-frm-reply blind" style="padding-left: 32px">';
              str += '  <form class="frm-reply">';
              str += '   <div> <a id="userImg"><img height="32px" width="32px" src="/prj${blog.user.blogImgPath}"></a>';
-             str += '   <c:if test="${empty blog.user.nickname}"><span  style="font-size:13px; vertical-align: sub;">${blog.user.userNo}</span></div></c:if>';
-             str += '    <c:if test="${!(empty blog.user.nickname)}"><span  style="font-size:13px; vertical-align: sub;">${blog.user.nickname}</span></div></c:if> ';
+             str += '   <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px; vertical-align: sub;">${sessionScope.user.email}</span></div></c:if>';
+             str += '    <c:if test="${!(empty sessionScope.user.nickname)}"><span  style="font-size:13px; vertical-align: sub;">${sessionScope.user.nickname}</span></div></c:if> ';
              str += '      <textarea id="contents" name="contents" placeholder="답글을 입력하세요." style="  padding-top:20px;  width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
              str += '  <input type="hidden" name="blogListNo" value="${blog.blogListNo}">';
                str += ' <input type="hidden" name="groupNo" value="'+ classNo+'">';
