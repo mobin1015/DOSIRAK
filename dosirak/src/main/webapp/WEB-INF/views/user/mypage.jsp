@@ -22,7 +22,7 @@
          </c:if>
          <!-- 프로필 이미지 없을 때 (기본이미지 첨부 됨) -->
          <c:if test="${empty user.blogImgPath}">
-          <img class="profile-user-image" src="${contextPath}/resources/images/check1.png" alt="프로필 이미지">
+          <img class="profile-user-image" src="${contextPath}/resources/images/profile_default.png" alt="프로필 이미지">
          </c:if>
        </div>
        <div class="blog-wrap">
@@ -170,7 +170,6 @@ const fnGetMypageBlogList = () => {
           }
           str += '</div>';
           str += '</div>';
-          str += '<div class="list-item"></div>';
           str += '</div>';
           str += '</div>';
           str += '</a>';
