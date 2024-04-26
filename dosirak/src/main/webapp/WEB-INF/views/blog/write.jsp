@@ -43,6 +43,7 @@
 
 <script>
 
+// Summernote Editor
   const fnSummernoteEditor = () => {
 
     $('#contents').summernote({
@@ -98,14 +99,11 @@
     }
   }
   
-  
   // button click event
   document.getElementById('btn-register').addEventListener('click', (evt) => {
     fnRegisterBlog();
 	  document.getElementById('frm-blog-register').submit();
-
   })  
-
 
   fnSummernoteEditor();
 

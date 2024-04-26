@@ -52,7 +52,9 @@
 button {
     background: none;
     border: none;
-
+    }
+p a {color: #333; border: 0; text-decoration:none;}
+p a:hover {color: #333; border: 0; text-decoration:none;}
 
 </style>
 
