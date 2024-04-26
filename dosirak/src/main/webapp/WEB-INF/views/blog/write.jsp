@@ -43,6 +43,7 @@
 
 <script>
 
+// Summernote Editor
   const fnSummernoteEditor = () => {
 
     $('#contents').summernote({
@@ -70,11 +71,6 @@
             fetch('${contextPath}/blog/summernote/imageUpload.do', {
               method: 'POST',
               body: formData
-              /*  submit 상황에서는 <form enctype="multipart/form-data"> 필요하지만 fetch 에서는 사용하면 안 된다. 
-              headers: {
-            	  'Content-Type': 'multipart/form-data'
-              }
-              */
             })
             .then(response=>response.json())
             .then(resData=>{
@@ -86,7 +82,8 @@
     })
   }
 
-  const fnRegisterBlog = (evt) => {
+  // 공백 검사 함수
+  const fnRegisterBlog = () => {
     if(document.getElementById('title').value === '') {
       alert('제목을 입력해주세요');
       evt.preventDefault();
@@ -102,17 +99,11 @@
     }
   }
   
-  // submit event
-  document.getElementById('frm-blog-register').addEventListener('submit', (evt) => {
-      fnRegisterBlog(evt);
-    })
-  
   // button click event
   document.getElementById('btn-register').addEventListener('click', (evt) => {
+    fnRegisterBlog();
 	  document.getElementById('frm-blog-register').submit();
-
   })  
-
 
   fnSummernoteEditor();
 
