@@ -85,9 +85,8 @@ public class UserController {
   }
   
   @PostMapping("/signup.do")
-  public String signup(HttpServletRequest request, HttpServletResponse response) {
+  public void signup(HttpServletRequest request, HttpServletResponse response) {
     userService.signup(request, response);
-    return "redirect:/main.page";
   }
   
   @GetMapping("/leave.do")
@@ -98,7 +97,6 @@ public class UserController {
   @GetMapping("/login.page")
   public String loginPage(HttpServletRequest request
   											, Model model) {
-  	
   	// Log In 페이지로 url 넘겨 주기 (로그인 후 이동할 경로를 의미함)
   	model.addAttribute("url", userService.getRedirectURLAfterLogin(request));
   	  	
