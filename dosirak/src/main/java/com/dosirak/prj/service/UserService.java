@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -39,6 +40,6 @@ public interface UserService {
   // 산들Profile영역
   UserDto loadUserByNo(int userNo);
   int modifyProfile(int userNo, String nickname, String blogContents, MultipartFile blogImgPath);
-
+  String getImgPathByUserNo(int userNo);
   
 }

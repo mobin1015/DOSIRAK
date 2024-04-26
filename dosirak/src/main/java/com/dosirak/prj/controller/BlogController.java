@@ -1,9 +1,11 @@
 package com.dosirak.prj.controller;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.service.BlogService;
-
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/blog")
@@ -62,8 +63,9 @@ public class BlogController {
   }  
   
   @GetMapping("/detail.do")
-  public String detail(@RequestParam int blogListNo, Model model) {
-    model.addAttribute("blog", blogService.getBlogDetailByNo(blogListNo));
+  public String detail(HttpServletRequest request, Model model) {
+    model.addAttribute("blog", blogService.getBlogDetailByNo(Integer.parseInt(request.getParameter("blogListNo"))));
+    model.addAttribute("url", request.getHeader("referer"));
     return "blog/detail";
   }
   
@@ -83,11 +85,11 @@ public class BlogController {
   }
   
   @PostMapping("/removeBlog.do")
-  public String removeBlog(@RequestParam(value="blogListNo", required=false, defaultValue="0") int blogListNo
-                         , RedirectAttributes redirectAttributes) {
-    int removeCount = blogService.removeBlog(blogListNo);
+  public void removeBlog(HttpServletRequest request, HttpServletResponse response
+                         , RedirectAttributes redirectAttributes) throws IOException {
+    int removeCount = blogService.removeBlog(Integer.parseInt(request.getParameter("blogListNo")));
     redirectAttributes.addFlashAttribute("removeResult", removeCount == 1 ? "블로그가 삭제되었습니다." : "블로그가 삭제되지 않았습니다.");
-    return "redirect:/user/mypage.page";
+    response.sendRedirect(request.getParameter("url"));
   }
 
   @GetMapping(value="CommentList.do", produces="application/json")
