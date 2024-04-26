@@ -105,6 +105,10 @@
                     <c:if test="${not empty sessionScope.user.nickname}">
                       ${sessionScope.user.nickname}
                     </c:if>
+                    <c:if test="${empty sessionScope.user.nickname and empty sessionScope.user.name}">
+                    닉네임을 입력해주세요.
+                    </c:if>
+                    
                   </p>
                   <p class="profile-id georgian">${sessionScope.user.email}</p>
                 </a>
