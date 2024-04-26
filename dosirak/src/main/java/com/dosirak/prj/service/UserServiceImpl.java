@@ -185,6 +185,9 @@ public class UserServiceImpl implements UserService {
 		  }
 		  		  
 		  // 탈퇴 처리
+		  
+		  
+		  
 		  int deleteCount = userMapper.deleteUser(user.getUserNo());
 		  
 		  // 탈퇴 이후 응답 만들기

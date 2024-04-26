@@ -31,7 +31,7 @@ public class UserController {
   //추가
   
   
-  //헤더 마이페이지
+  // 헤더 마이페이지
    @GetMapping("/mypage.do")
    public String mypage(@RequestParam int userNo, Model model) {
      model.addAttribute("user", userService.getUserByNo(userNo));

@@ -50,6 +50,12 @@ background-color: #fff;border: 1px solid #00c6be;border-radius: 16px;color: #00c
 background-color: #fff;border: 1px solid #00c6be;border-radius: 16px;
 color: #00c6be;font-size: 13px;text-align:center;}
 
+#leave-btn{
+  width: 80px;height: 32px;line-height:32px;margin-top: 18px;
+background-color: #fff;border: 1px solid #00c6be;border-radius: 16px;
+color: #00c6be;font-size: 13px;text-align:center;cursor:pointer;
+}
+
 .nav-bottom{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);
 display:flex;width:180px;justify-content: space-around;}
 
