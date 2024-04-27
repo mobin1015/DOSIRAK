@@ -232,6 +232,7 @@
             </p>
         </div>
         <div id="msg-name"></div>
+        <div id="msg-name1"></div>
         <div id="msg-mobile"></div>
        </div>
         
@@ -251,6 +252,7 @@
     var emailCheck = false;
     var passwordCheck = false;
     var passwordConfirm = false;
+    var nameNoneCheck = false;
     var nameCheck = false;
     var mobileCheck = false;
     
@@ -313,15 +315,17 @@
             })
           })
         } else {
-        	var msgElement = document.getElementById('msg-email');
-        	msgElement.innerHTML = '⚫ 이미 사용 중인 이메일입니다.';
-        	msgElement.style.fontSize = '15px'; 
-        	msgElement.style.fontWeight = 'bold'; 
-        	msgElement.style.color = 'red'; 
+          var msgElement = document.getElementById('msg-email');
+          msgElement.innerHTML = '⚫ 이미 사용 중인 이메일입니다.';
+          msgElement.style.fontSize = '15px'; 
+          msgElement.style.fontWeight = 'bold'; 
+          msgElement.style.color = 'red'; 
           return;
         }
       })
     }
+    
+   
     
     const fnCheckPassword = () => {
       // 비밀번호 4~12자, 영문/숫자/특수문자 중 2개 이상 포함
@@ -361,6 +365,29 @@
         msgPw2.style.fontWeight = 'bold';
         msgPw2.style.color = 'red';
       }
+    }
+    
+    const fnNameNoneCheck = () => {
+    	let inpName = document.getElementById('inp-name');
+    	let name = inpName.value;
+    	let totalByte = 0;
+        for(let i = 0; i < name.length; i++){
+          if(name.charCodeAt(i) > 127) {  // 코드값이 127 초과이면 한 글자 당 2바이트 처리한다.
+            totalByte += 2;
+          } else {
+            totalByte++;
+          }
+        }
+        nameNoneCheck = (0 == totalByte);
+        let msgName = document.getElementById('msg-name1');
+        if(!nameCheck){
+          msgName.innerHTML = '';
+        } else {
+          msgName.innerHTML = '⚫ 이름을 입력하세요';
+          msgName.style.fontSize = '15px'; 
+          msgName.style.fontWeight = 'bold';
+          msgName.style.color = 'red';
+        }
     }
     
     const fnCheckName = () => {
@@ -426,13 +453,23 @@
       })
     }
     
+    const fnSignup2 = () => {
+    	if(document.getElementById('inp-name').value == '') {
+    		alert('이름을 입력하세요');
+    		evt.preventDefault();
+        return;
+    	}
+    }
+    
     
 document.getElementById('btn-code').addEventListener('click', fnCheckEmail);
 document.getElementById('inp-pw').addEventListener('keyup', fnCheckPassword);
 document.getElementById('inp-pw2').addEventListener('blur', fnConfirmPassword);
+document.getElementById('inp-name').addEventListener('blur', fnNameNoneCheck);
 document.getElementById('inp-name').addEventListener('blur', fnCheckName);
 document.getElementById('inp-mobile').addEventListener('blur', fnCheckMobile);
 fnSignup();
+fnSignup2();
 </script>
 
 
