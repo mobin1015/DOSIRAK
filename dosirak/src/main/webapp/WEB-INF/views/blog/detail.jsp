@@ -24,7 +24,7 @@
         </div>
         <br>
         <div class="blog-detail-wirter">
-         <c:if test="${empty blog.user.nickname}"><span id='by'>by</span><a>${blog.user.userNo}</a><span id='dot'></span><a style='opacity: .6; font-size:12px;'>${blog.createDt}</a></c:if>
+         <c:if test="${empty blog.user.nickname}"><span id='by'>by</span><a>${blog.user.name}</a><span id='dot'></span><a style='opacity: .6; font-size:12px;'>${blog.createDt}</a></c:if>
          <c:if test="${!(empty blog.user.nickname)}"><span id='by'>by</span><a>${blog.user.nickname}</a><span id='dot'></span><a style='opacity: .6; font-size:12px;'>${blog.createDt}</a></c:if>
          
         </div>
@@ -67,7 +67,7 @@
        
 <form id="frm-comment">
     <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>
-    <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.email}</span></c:if>
+    <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.name}</span></c:if>
     <c:if test="${not empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.nickname}</span></c:if> 
   <textarea id="contents" name="contents" placeholder="댓글을 입력하세요." style="    width: 100%;
     height: 6.25em;
@@ -182,9 +182,9 @@ const fnCommentList = () => {
                    } else {
                       if(comment.user.nickname === null) {
                          if(Number('${sessionScope.user.userNo}') === comment.user.userNo) {
-                         str += '<a id="userImg"><img height="32px" width="32px"src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%; "><span  style="font-size:13px;">' +comment.user.email+ '</span><button type="button"  class="btn-remove-comment" style="display: inline;  background-color: white; float: right;" data-comment-no="' + comment.commentNo + '">삭제</button>';
+                         str += '<a id="userImg"><img height="32px" width="32px"src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%; "><span  style="font-size:13px;">' +comment.user.name+ '</span><button type="button"  class="btn-remove-comment" style="display: inline;  background-color: white; float: right;" data-comment-no="' + comment.commentNo + '">삭제</button>';
                          }else{
-                            str += '<a id="userImg"><img height="32px" width="32px" src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.email+ '</span>';
+                            str += '<a id="userImg"><img height="32px" width="32px" src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.name+ '</span>';
                          }
                          
                       }
@@ -222,19 +222,22 @@ const fnCommentList = () => {
 
 const fnRegisterComment = () => {
    
-        if('${sessionScope.user.userNo}' === '') {
-            if(confirm('로그인이 필요한 기능입니다. 로그인 할까요?')) {
-              location.href = '${contextPath}/user/login.page';
-              return;
-            } 
-            return;
-          }
+ 
         
         $('#btn-comment-register').on('click', (evt) => {
-            if($(contents).text() === ""){
+        	
+            if('${sessionScope.user.userNo}' === '') {
+                if(confirm('로그인이 필요한 기능입니다. 로그인 할까요?')) {
+                  location.href = '${contextPath}/user/login.page';
+                  return;
+                } 
+                return;
+              }
+        	
+            if(document.getElementById("contents").value == ""){
             	alert("내용을 입력해주세요");
               return;
-            }
+            } else {
                 
       $.ajax({
         // 요청
@@ -255,7 +258,7 @@ const fnRegisterComment = () => {
         error: (jqXHR) => {
           alert(jqXHR.statusText + '(' + jqXHR.status + ')');
         }
-      })
+      })}
       
     })
   }
@@ -288,12 +291,12 @@ const fnSwitchingReplyInput = () => {
            let str = '<div class="div-frm-reply blind" style="padding-left: 32px">';
              str += '  <form class="frm-reply">';
              str += '   <div> <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>';
-             str += '   <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px; vertical-align: sub;">${sessionScope.user.email}</span></div></c:if>';
+             str += '   <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px; vertical-align: sub;">${sessionScope.user.name}</span></div></c:if>';
              str += '    <c:if test="${!(empty sessionScope.user.nickname)}"><span  style="font-size:13px; vertical-align: sub;">${sessionScope.user.nickname}</span></div></c:if> ';
              str += '      <textarea id="rcontents" name="contents" placeholder="답글을 입력하세요." style="  padding-top:20px;  width: 100%;  height: 6.25em;  border: none; resize: none;">'+usertag+'</textarea>';
              str += '  <input type="hidden" name="blogListNo" value="${blog.blogListNo}">';
-               str += ' <input type="hidden" name="groupNo" value="'+ classNo+'">';
-               str += ' <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
+             str += ' <input type="hidden" name="groupNo" value="'+ classNo+'">';
+              str += ' <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">';
                str += ' <div style=" padding-top: 10px;     border-top: 1px solid #eee; width:100%" >';
              str += '       <button type="button" class="btn-register-reply">등록</button></div>';
              str += '  </form>';
@@ -315,7 +318,7 @@ const fnRegisterReply = () => {
            }
          
    
-             if($(rcontents).text() === ""){
+             if(document.getElementById("rcontents").value == ""){
                alert("내용을 입력해주세요");
                return;
              }
