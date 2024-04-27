@@ -5,7 +5,9 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
         
-<jsp:include page="../layout/header.jsp" />
+<jsp:include page="../layout/header.jsp">
+  <jsp:param value="브런치스토리 나우" name="title"/>
+</jsp:include>
 
 <link rel="stylesheet" href="../resources/css/now.css"/>
 
@@ -51,7 +53,7 @@
           str += '<div class="list-content' + (blog.contents.includes('<img') ? ' list_has_image' : '') + '">' + stripHtml(blog.contents) + '</div>';
           str += '<div class="list-info">';
           if(blog.user.nickname === null){
-              str += '<span>by ' + blog.user.email + '</span>';
+              str += '<span>by ' + blog.user.name + '</span>';
           }else{
               str += '<span>by ' + blog.user.nickname + '</span>';
           }

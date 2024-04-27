@@ -5,9 +5,15 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
+  
 <jsp:include page="../layout/header.jsp">
-  <jsp:param value="프로필편집" name="title"/>
+  <jsp:param value="${user.name}의 프로필편집" name="title"/>
 </jsp:include>
+
+
+
+
+
 
 <link rel="stylesheet" href="../resources/css/profile.css?dt=${dt}"/>
 
@@ -67,8 +73,7 @@
 
       </form>
  </div>
-<!--  profile주소; <a href="${contextPath}/user/profile.do?userNo=${sessionScope.user.userNo}">ggggggggggo</a>
-  -->
+
    <script>
    
    const fileDOM = document.querySelector('#profile-image-input');
