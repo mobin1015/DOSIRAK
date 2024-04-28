@@ -26,6 +26,9 @@ import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyPageUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -220,6 +223,14 @@ public class BlogServiceImpl implements BlogService {
   @Override
   public BlogDetailDto getBlogDetailByNo(int blogListNo) {
     return blogDetailMapper.getBlogDetailByNo(blogListNo);
+  }
+  
+  @Override
+  public String getBlogDetailTime(int blogListNo) throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    BlogDetailDto blog = blogDetailMapper.getBlogDetailByNo(blogListNo);
+    blog.setContents(null);
+    return mapper.writeValueAsString(blog);
   }
 
   @Override
