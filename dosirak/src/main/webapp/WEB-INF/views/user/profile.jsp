@@ -6,9 +6,16 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
   
-<jsp:include page="../layout/header.jsp">
-  <jsp:param value="${user.name}의 프로필편집" name="title"/>
-</jsp:include>
+<c:if test="${not empty user.nickname}">
+  <jsp:include page="../layout/header.jsp">
+    <jsp:param value="${user.nickname}의 프로필편집" name="title"/>
+  </jsp:include>
+</c:if>
+<c:if test="${empty user.nickname}">
+  <jsp:include page="../layout/header.jsp">
+    <jsp:param value="${user.name}의 프로필편집" name="title"/>
+  </jsp:include>
+</c:if>
 
 
 
