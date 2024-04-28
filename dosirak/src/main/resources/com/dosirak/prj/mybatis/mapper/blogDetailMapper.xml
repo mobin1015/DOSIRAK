@@ -34,7 +34,7 @@
     <association property="user" javaType="UserDto">
       <id     property="userNo" column="USER_NO" />
       <result property="nickname"   column="NICKNAME"/>
-      <result property="email"   column="EMAIL"/>
+      <result property="name"   column="NAME"/>
       <result property="blogImgPath"  column="BLOG_IMG_PATH" />
     </association>
 </resultMap>
@@ -201,7 +201,7 @@
   <select id="getBlogDetailByNo"
           resultMap="BlogDetailMap">
     SELECT B.BLOG_LIST_NO, B.TITLE, B.CONTENTS, B.CREATE_DT, B.MODIFY_DT, B.KEYWORD_NAME, B.KEYWORD_NO 
-         , U.USER_NO , U.NICKNAME, U.BLOG_IMG_PATH, U.BLOG_CONTENTS
+         , U.USER_NO , U.NAME, U.NICKNAME, U.BLOG_IMG_PATH, U.BLOG_CONTENTS
       FROM USER_T U INNER JOIN BLOG_DETAIL_T B
         ON U.USER_NO = B.USER_NO
      WHERE B.BLOG_LIST_NO = #{blogListNo}
@@ -239,7 +239,7 @@
    <select id="getCommentList"
           resultMap="BlogCommentMap">
         SELECT  C.COMMENT_NO, C.CONTENTS, C.CREATE_DT, C.STATE, C.DEPTH, C.GROUP_NO, C.BLOG_LIST_NO
-                 , U.USER_NO, U.NICKNAME, U.BLOG_IMG_PATH, U.EMAIL
+                 , U.USER_NO, U.NICKNAME, U.BLOG_IMG_PATH, U.EMAIL, U.NAME
               FROM USER_T U INNER JOIN COMMENT_T C
                 ON U.USER_NO = C.USER_NO
              WHERE BLOG_LIST_NO =  #{blogListNo} 

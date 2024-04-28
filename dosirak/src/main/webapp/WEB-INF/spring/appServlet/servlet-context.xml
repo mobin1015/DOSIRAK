@@ -26,23 +26,26 @@
 	  
 	<context:component-scan base-package="com.dosirak.prj" />
 	
- <!--  
   <interceptors>
   
     <interceptor>
-      <mapping path="/bbs/write.page" />
+     <!-- 악질주의
+      <mapping path="/blog/editBlog.do" />
+      <mapping path="/user/mypage.do" />
+      <mapping path="/user/profile.do" /> -->
       <mapping path="/blog/write.page" />
-      <mapping path="/upload/write.page" />
       <beans:bean class="com.dosirak.prj.interceptor.RequiredSigninInterceptor" />
     </interceptor>
     
     <interceptor>
-      <mapping path="/user/signin.page"/>
+    <!-- 악질주의
+      <mapping path="/user/signout.do" /> -->
+      <mapping path="/user/login.page"/>
       <mapping path="/user/signup.page"/>
       <beans:bean class="com.dosirak.prj.interceptor.RequiredSignoutInterceptor" />
     </interceptor>
     
-  </interceptors> -->
+  </interceptors> 
 
   <!-- @Scheduled 허용 -->
   <task:annotation-driven/>
