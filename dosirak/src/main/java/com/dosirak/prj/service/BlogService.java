@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dosirak.prj.dto.BlogDetailDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface BlogService {
   ResponseEntity<Map<String, Object>> summernoteImageUpload(MultipartFile multipartFile);
@@ -19,6 +20,7 @@ public interface BlogService {
   Map<String, Object> getKeywordList(HttpServletRequest request);
 
   BlogDetailDto  getBlogDetailByNo(int blogListNo);
+  String getBlogDetailTime(int blogListNo) throws JsonProcessingException;
   ResponseEntity<Map<String, Object>> getCommentList(int blogListNo);
   int registerComment(HttpServletRequest request);
   int registerReply(HttpServletRequest request);

@@ -6,7 +6,9 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
 
-<jsp:include page="../layout/header.jsp" />
+<jsp:include page="../layout/header.jsp" >
+<jsp:param value="${blog.title}" name="title"/>
+</jsp:include>
 
 <!-- include moment.js -->
 <script src="${contextPath}/resources/moment/moment-with-locales.min.js"></script>
@@ -24,8 +26,8 @@
         </div>
         <br>
         <div class="blog-detail-wirter">
-         <c:if test="${empty blog.user.nickname}"><span id='by'>by</span><a>${blog.user.name}</a><span id='dot'></span><a style='opacity: .6; font-size:12px;'>${blog.createDt}</a></c:if>
-         <c:if test="${!(empty blog.user.nickname)}"><span id='by'>by</span><a>${blog.user.nickname}</a><span id='dot'></span><a style='opacity: .6; font-size:12px;'>${blog.createDt}</a></c:if>
+         <c:if test="${empty blog.user.nickname}"><span id='by'>by</span><a>${blog.user.name}</a><span id='dot'></span><a id="createdDt" style='opacity: .6; font-size:12px;'></a><a style="float:right;">${blog.keywordName}</a></c:if>
+         <c:if test="${!(empty blog.user.nickname)}"><span id='by'>by</span><a>${blog.user.nickname}</a><span id='dot'></span><a id="createdDt" style='opacity: .6; font-size:12px;'></a><a style="float:right;">${blog.keywordName}</a></c:if>
          
         </div>
         </div></div>
@@ -64,7 +66,7 @@
        
        <div id="comments-register" style="display:none">
        
-       
+ <c:if test="${not empty sessionScope.user}">
 <form id="frm-comment">
     <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>
     <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.name}</span></c:if>
@@ -81,7 +83,14 @@
   <div style="  padding-top: 10px;    border-top: 1px solid #eee; width:100%" >
   <button type="button" id="btn-comment-register">등록</button></div>
  </form>
+ </c:if>
+  <c:if test="${empty sessionScope.user}">
+  <br>
+ <div class="box_area" style="width:100%; height:100px"><a href='${contextPath}/user/login.page'>브런치에 로그인하고 댓글을 입력해보세요!</a></div>
+ </c:if>
        </div>
+       
+       
        
     </div>
     
@@ -89,7 +98,10 @@
     <div class="container2">
       <div class="writerinfo-wrap">
         <span  class="writer-name">
-        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}"><h3>${blog.user.nickname}</h3></a>
+
+           <c:if test="${empty blog.user.nickname}"><a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}"><h3>${blog.user.name}</h3></a></c:if>
+         <c:if test="${!(empty blog.user.nickname)}"><a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}"><h3>${blog.user.nickname}</h3></a></c:if>
+ 
         </span>
         <span class="writer-iamge" >
         <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}" id="userImg"><img height="100px" width="100px"  
@@ -98,11 +110,11 @@
         <br>
         <br>
         <div  class="writer-contents">
-        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}" style="opacity: .8;">${blog.user.blogContents}</a>
+             <c:if test="${ empty blog.user.blogContents}"> <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">소개글이 없습니다</a></c:if>
+         <c:if test="${!( empty blog.user.blogContents)}">  <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogContents}</a></c:if>
         </div>
         </div> 
      </div>
-     
 </body>
 
 <script>
@@ -115,9 +127,23 @@ const likeBtnCount = document.getElementById('like-count');
 const commentBtn = document.getElementById('comment-btn');
 const comments = $('#comments');
 const commentsRegister = document.getElementById('comments-register');
-
 var flag = 0;
 
+
+const fntime= (evt) => {
+	  var time = '';
+	const publishTime = moment(evt);
+	const now = moment();
+	const diffHours = now.diff(publishTime, 'hours');
+	if (diffHours <= 12) {
+	  time +=  publishTime.locale('ko').fromNow() ;
+	} else {
+	  time +=  publishTime.format('MMM DD.YYYY');
+	}
+	return time;
+	}
+const blogtime ='${blogtime}';
+$(createdDt).append(fntime(JSON.parse(blogtime).createDt));
 //로그인 여부 체크
 const fnCheckSignin = () => {
   if('${sessionScope.user.userNo}' === '') {
@@ -194,10 +220,9 @@ const fnCommentList = () => {
                          }else{
                             str += '<a id="userImg"><img height="32px" width="32px" src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.nickname+ '</span>';
                          }}
-                     str +=  '<div><p id="date"  style="opacity: .8; margin-bottom: 8px;">' + moment(comment.createDt).format('YYYY.MM.DD') + '</p></div>' ;
+                     str +=  '<div><p id="date"  style="opacity: .8; margin-bottom: 8px;">' + fntime(comment.createDt) + '</p></div>' ;
                      str += '<div style="margin-bottom: 8px; font-size:15px;">' + comment.contents + '</div>';
                      str += '<button type="button" class="btn-reply" style="background-color: white; font-size:10px; opacity: .8;">답글달기</button></div>';
-                    
                    }
                    /************************ 답글 입력 화면 ************************/
                   const btnReply = $('.btn-reply')
@@ -226,14 +251,7 @@ const fnRegisterComment = () => {
         
         $('#btn-comment-register').on('click', (evt) => {
         	
-            if('${sessionScope.user.userNo}' === '') {
-                if(confirm('로그인이 필요한 기능입니다. 로그인 할까요?')) {
-                  location.href = '${contextPath}/user/login.page';
-                  return;
-                } 
-                return;
-              }
-        	
+
             if(document.getElementById("contents").value == ""){
             	alert("내용을 입력해주세요");
               return;
@@ -266,6 +284,17 @@ const fnRegisterComment = () => {
 
 const fnSwitchingReplyInput = () => {
      $(document).on('click', '.btn-reply', (evt) => {
+         if('${sessionScope.user.userNo}' === '') {
+             if(confirm('로그인이 필요한 기능입니다. 로그인 할까요?')) {
+               location.href = '${contextPath}/user/login.page';
+               return;
+             } 
+             return;
+           }
+       
+    	 
+    	 
+    	 
           const classNo = evt.target.parentElement.parentElement.getAttribute('class');
          var elements = document.getElementsByClassName(classNo);
          var lastElement = elements[elements.length - 1];
@@ -379,7 +408,7 @@ const fnClickLike = () => {
               likeBtnIcon.style.backgroundPosition = '-0px -90px';
                $.ajax({
                    type: 'GET',
-                   url: '${contextPath}/blog/removeLike.do?blogListNo=${blog.blogListNo}' + '&userNo=${blog.user.userNo}',
+                   url: '${contextPath}/blog/removeLike.do?blogListNo=${blog.blogListNo}' + '&userNo=${sessionScope.user.userNo}',
                    dataType: 'json',
                    error: (jqXHR) => {
                      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
@@ -391,7 +420,7 @@ const fnClickLike = () => {
               likeBtnIcon.style.backgroundPosition = '-30px -90px';
                 $.ajax({
                     type: 'GET',
-                    url: '${contextPath}/blog/registerLike.do?blogListNo=${blog.blogListNo}'  + '&userNo=${blog.user.userNo}',
+                    url: '${contextPath}/blog/registerLike.do?blogListNo=${blog.blogListNo}'+ '&userNo=${sessionScope.user.userNo}',
                     dataType: 'json',
                     error: (jqXHR) => {
                       alert(jqXHR.statusText + '(' + jqXHR.status + ')');

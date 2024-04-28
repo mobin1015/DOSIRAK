@@ -20,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dosirak.prj.dto.UserDto;
 import com.dosirak.prj.service.BlogService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/blog")
@@ -63,8 +65,9 @@ public class BlogController {
   }  
   
   @GetMapping("/detail.do")
-  public String detail(HttpServletRequest request, Model model) {
+  public String detail(HttpServletRequest request, Model model) throws JsonProcessingException, NumberFormatException {
     model.addAttribute("blog", blogService.getBlogDetailByNo(Integer.parseInt(request.getParameter("blogListNo"))));
+    model.addAttribute("blogtime", blogService.getBlogDetailTime(Integer.parseInt(request.getParameter("blogListNo"))));
     model.addAttribute("url", request.getHeader("referer"));
     return "blog/detail";
   }
