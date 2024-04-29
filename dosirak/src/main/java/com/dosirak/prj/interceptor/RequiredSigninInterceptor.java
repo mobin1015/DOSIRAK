@@ -19,7 +19,7 @@ public class RequiredSigninInterceptor implements HandlerInterceptor {
       PrintWriter out = response.getWriter();
       out.println("<script>");
       out.println("if(confirm('Sign In 이 필요한 기능입니다. Sign In 할까요?')){");
-      out.println("  location.href='" + request.getContextPath() + "/user/signin.page';");
+      out.println("  location.href='" + request.getContextPath() + "/user/login.page';");
       out.println("} else {");
       out.println("  history.back();");
       out.println("}");
