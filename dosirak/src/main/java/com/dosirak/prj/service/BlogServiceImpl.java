@@ -26,6 +26,9 @@ import com.dosirak.prj.mapper.BlogDetailMapper;
 import com.dosirak.prj.utils.MyFileUtils;
 import com.dosirak.prj.utils.MyPageUtils;
 import com.dosirak.prj.utils.MySecurityUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -169,7 +172,9 @@ public class BlogServiceImpl implements BlogService {
       map.put("query", query);
       result = new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByWriter(map)
                                          , "totalPage", myPageUtils.getTotalPage()
-                                         , "totalBlog", totalBlog)
+                                         , "totalBlog", totalBlog
+                                         , "type", type
+                                         , "query", query)
           , HttpStatus.OK);
     } else if(type.equals("contents")){
       totalBlog = blogDetailMapper.getBlogListCountByContents(query);
@@ -179,7 +184,9 @@ public class BlogServiceImpl implements BlogService {
       map.put("query", query);
       result =  new ResponseEntity<>(Map.of("blogList" , blogDetailMapper.getBlogDetailListByContents(map)
                                           , "totalPage", myPageUtils.getTotalPage()
-                                          , "totalBlog", totalBlog)
+                                          , "totalBlog", totalBlog
+                                          , "type", type
+                                          , "query", query)
           , HttpStatus.OK);
     }
    
@@ -216,6 +223,14 @@ public class BlogServiceImpl implements BlogService {
   @Override
   public BlogDetailDto getBlogDetailByNo(int blogListNo) {
     return blogDetailMapper.getBlogDetailByNo(blogListNo);
+  }
+  
+  @Override
+  public String getBlogDetailTime(int blogListNo) throws JsonProcessingException {
+    ObjectMapper mapper = new ObjectMapper();
+    BlogDetailDto blog = blogDetailMapper.getBlogDetailByNo(blogListNo);
+    blog.setContents(null);
+    return mapper.writeValueAsString(blog);
   }
 
   @Override

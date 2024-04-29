@@ -6,7 +6,7 @@
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
 
 <jsp:include page="../layout/header-write.jsp">
-  <jsp:param value="블로그 작성" name="title"/>
+  <jsp:param value="글작성" name="title"/>
 </jsp:include>
 <link rel="stylesheet" href="../resources/css/write.css"/>
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
@@ -86,23 +86,24 @@
   const fnRegisterBlog = () => {
     if(document.getElementById('title').value === '') {
       alert('제목을 입력해주세요');
-      evt.preventDefault();
-      return;
+      //evt.preventDefault();
+      return false;
     } else if($("select[name=keyword]").val() === '0') {
-    	alert('키워드를 선택해주세요.');
-    	evt.preventDefault();
-    	return;
+      alert('키워드를 선택해주세요.');
+      //evt.preventDefault();
+      return false;
     } else if(document.getElementById('contents').value === ''){
-    	alert('내용을 입력해주세요');
-    	evt.preventDefault();
-    	return;
+      alert('내용을 입력해주세요');
+      //evt.preventDefault();
+      return false;
     }
   }
   
   // button click event
   document.getElementById('btn-register').addEventListener('click', (evt) => {
-    fnRegisterBlog();
-	  document.getElementById('frm-blog-register').submit();
+    if(fnRegisterBlog() !== false){
+      document.getElementById('frm-blog-register').submit();	
+    };
   })  
 
   fnSummernoteEditor();

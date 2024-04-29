@@ -21,6 +21,7 @@
     margin-bottom : 40px;
    }
    .form{
+    color: #666;
     }
    .emailArea{
     border:1px solid #333;
@@ -56,17 +57,17 @@
     padding:0;
     }
    .btn button{
-    background-color: #;
+    background-color: #fff;
     width:100%;
     height:100%;
     display:block;
-    color: #666;
     transition:all 0.3s;
-    border_radius: 1px solid #333;
+    border-left:1px solid #333;
     }
     .btn button:hover{
-    background-color: #eee;
-    color: #666;
+    background-color: #fff;
+    border_radius: 1px;
+    border: 3px solid #32D0CA;
     }
    .jb-division-line {
     border-top: 1px solid #808080;
@@ -79,7 +80,6 @@
     width: 100%;
     padding: 6px 0;
     border: 1px solid #c6c6c6;
-    background-color: rgba(153, 255, 153, 0.2);
     }
    .button button{
     display: block;
@@ -102,7 +102,11 @@
     width: 100%;
     padding: 6px 0;
     border: 1px solid #c6c6c6;
-    background-color: #32D0CA;
+    background-color: #fff;
+    }
+   .form_radio_btn input:checked+label {
+    font-weight: 500;
+    color: #32D0CA;
     }
    .form_radio_btn input[type=radio]{
     display: none;
@@ -117,18 +121,16 @@
     font-size: 20px;
     }
    .form_radio_btn input[type=radio]+label{
-    background-color: #00C6BE;
-    color: #fff;
+    background-color: #fff;
     }
    .form_radio_btn input[type=radio]:checked+label{
-    background-color: #00C6BE;
+    background-color: #fff;
     font-weight: bold;
-    font-size: 20px;
     }
     .jb-division-line {
       position: relative;
     }
-    .button-signup{
+   .button-signup{
     position: absolute; 
     left: 50%;
     transform: translateX(-50%);
@@ -136,8 +138,8 @@
     height: 50px;
     font-weight: bold;
     font-size: 20px;
-    color: #fff;
-    background-color: #00C6BE;
+    background-color: #fff;
+    border: 3px solid #c6c6c6;
     }
 </style>
 
@@ -232,6 +234,7 @@
             </p>
         </div>
         <div id="msg-name"></div>
+        <div id="msg-name1"></div>
         <div id="msg-mobile"></div>
        </div>
         
@@ -251,6 +254,7 @@
     var emailCheck = false;
     var passwordCheck = false;
     var passwordConfirm = false;
+    var nameNoneCheck = false;
     var nameCheck = false;
     var mobileCheck = false;
     
@@ -313,15 +317,17 @@
             })
           })
         } else {
-        	var msgElement = document.getElementById('msg-email');
-        	msgElement.innerHTML = '⚫ 이미 사용 중인 이메일입니다.';
-        	msgElement.style.fontSize = '15px'; 
-        	msgElement.style.fontWeight = 'bold'; 
-        	msgElement.style.color = 'red'; 
+          var msgElement = document.getElementById('msg-email');
+          msgElement.innerHTML = '⚫ 이미 사용 중인 이메일입니다.';
+          msgElement.style.fontSize = '15px'; 
+          msgElement.style.fontWeight = 'bold'; 
+          msgElement.style.color = 'red'; 
           return;
         }
       })
     }
+    
+   
     
     const fnCheckPassword = () => {
       // 비밀번호 4~12자, 영문/숫자/특수문자 중 2개 이상 포함
@@ -361,6 +367,29 @@
         msgPw2.style.fontWeight = 'bold';
         msgPw2.style.color = 'red';
       }
+    }
+    
+    const fnNameNoneCheck = () => {
+    	let inpName = document.getElementById('inp-name');
+    	let name = inpName.value;
+    	let totalByte = 0;
+        for(let i = 0; i < name.length; i++){
+          if(name.charCodeAt(i) > 127) {  // 코드값이 127 초과이면 한 글자 당 2바이트 처리한다.
+            totalByte += 2;
+          } else {
+            totalByte++;
+          }
+        }
+        nameNoneCheck = (0 == totalByte);
+        let msgName = document.getElementById('msg-name1');
+        if(!nameCheck){
+          msgName.innerHTML = '';
+        } else {
+          msgName.innerHTML = '⚫ 이름을 입력하세요';
+          msgName.style.fontSize = '15px'; 
+          msgName.style.fontWeight = 'bold';
+          msgName.style.color = 'red';
+        }
     }
     
     const fnCheckName = () => {
@@ -422,14 +451,21 @@
           alert('휴대전화를 확인하세요.');
           evt.preventDefault();
           return;
+        } else if(document.getElementById('inp-name').value == '') {
+    		alert('이름을 입력하세요');
+    		evt.preventDefault();
+        return;
         } 
       })
     }
+    
+
     
     
 document.getElementById('btn-code').addEventListener('click', fnCheckEmail);
 document.getElementById('inp-pw').addEventListener('keyup', fnCheckPassword);
 document.getElementById('inp-pw2').addEventListener('blur', fnConfirmPassword);
+document.getElementById('inp-name').addEventListener('blur', fnNameNoneCheck);
 document.getElementById('inp-name').addEventListener('blur', fnCheckName);
 document.getElementById('inp-mobile').addEventListener('blur', fnCheckMobile);
 fnSignup();
