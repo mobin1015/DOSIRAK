@@ -65,13 +65,20 @@
     line-height: 38px;
     overflow:hidden;
    }
+   .button:hover{
+    background-color: #fff;
+    border_radius: 1px;
+    border: 3px solid #32D0CA;
+    }
    .a {
    display: block;
    }
    .naver img {
     height:100%;
-     vertical-align:baseline;
-}
+   }
+   .button-signup{
+    background-color: rgba(0, 0, 0, 0);   
+   }
 </style>
 
 
@@ -114,15 +121,6 @@
       <img src="${contextPath}/resources/2021_Login_with_naver_guidelines_Kr/btnW_완성형.png">
       </a>
     </div>
-  </div>
-  <div>
-  <!-- Sign In 된 경우 -->
-        <c:if test="${sessionScope.user != null}">
-        <a href="${contextPath}/user/leave.do" onclick="confirmWithdrawal()">회원탈퇴</a>
-        </c:if>
-        <c:if test="${sessionScope.user != null}">
-        <a href="${contextPath}/user/logout.do">로그아웃</a>
-        </c:if>
   </div>
 </div>  
 </form>
