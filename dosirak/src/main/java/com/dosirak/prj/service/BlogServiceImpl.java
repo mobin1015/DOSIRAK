@@ -83,22 +83,22 @@ public class BlogServiceImpl implements BlogService {
     
     switch(keywordNo) {
     case 1:
-      keywordName = "TRAVEL";
+      keywordName = "지구한바퀴 세계여행";
       break;
     case 2:
-      keywordName = "WEBTOON";
+      keywordName = "그림·웹툰";
       break;
     case 3:
-      keywordName = "IT";
+      keywordName = "IT 트렌드";
       break;
     case 4:
-      keywordName = "PHOTO";
+      keywordName = "사진·촬영";
       break;
     case 5:
-      keywordName = "MOVIE";
+      keywordName = "취향저격 영화 리뷰";
       break;      
     case 6:
-      keywordName = "BOOK";
+      keywordName = "오늘은 이런 책";
       break;      
     }
     
