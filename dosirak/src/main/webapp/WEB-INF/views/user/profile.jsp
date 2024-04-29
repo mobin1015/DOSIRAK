@@ -4,11 +4,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
-
+   
   
-<jsp:include page="../layout/header.jsp">
-  <jsp:param value="${user.name}의 프로필편집" name="title"/>
-</jsp:include>
+<c:if test="${not empty user.nickname}">
+  <jsp:include page="../layout/header.jsp">
+    <jsp:param value="${user.nickname}의 프로필편집" name="title"/>
+  </jsp:include>
+</c:if>
+<c:if test="${empty user.nickname}">
+  <jsp:include page="../layout/header.jsp">
+    <jsp:param value="${user.name}의 프로필편집" name="title"/>
+  </jsp:include>
+</c:if>
 
 
 
@@ -28,7 +35,7 @@
           <div class="edit-cover-in">
             <div class="bloger-thumb">
               <c:if test="${empty blogImgPath}">
-               <img class="preview img-thumb" src="${contextPath}/resources/images/profile_default.png" >
+               <img class="preview img-thumb" src="/prj${user.user.blogImgPath}" >
               </c:if>
               <c:if test="${not empty blogImgPath}">
                <img class="preview img-thumb" src="${contextPath}${blogImgPath}" >
