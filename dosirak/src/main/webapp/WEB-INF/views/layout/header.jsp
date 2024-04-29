@@ -92,7 +92,7 @@
                 <a href="${contextPath}/user/mypage.do?userNo=${user.userNo}" class="profile-go">
                   <div>
                     <c:if test="${empty sessionScope.user.blogImgPath}">
-                     <img class="profile-login-image" src="${contextPath}/resources/images/profile_default.png" >
+                     <img class="profile-login-image" src="/prj${user.user.blogImgPath}" >
                     </c:if>
                     <c:if test="${not empty sessionScope.user.blogImgPath}">
                      <img class="profile-login-image" src="${contextPath}${sessionScope.user.blogImgPath}" >
