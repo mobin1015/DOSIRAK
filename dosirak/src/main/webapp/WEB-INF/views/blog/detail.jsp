@@ -15,8 +15,6 @@
 </head>
 
 <body>
-
-
             <div class="container">
         <div class="contets-wrap">
         
@@ -184,8 +182,6 @@ const fnCommentList = () => {
                       comments.text(" ");
                    }
                    
-
-                   
                    comments.append('<div>댓글<a style="color: #00c6be; padding-left:3px;">  ' + resData.commentList.length +'</a></div><hr>');
                  $.each(resData.commentList, (i, comment) => {
                    let str = '';
@@ -212,7 +208,6 @@ const fnCommentList = () => {
                          }else{
                             str += '<a id="userImg"><img height="32px" width="32px" src="/prj'+comment.user.blogImgPath +'"></a><div style="display: inline; position: relative;  width: 100%;"><span  style="font-size:13px;">' +comment.user.name+ '</span>';
                          }
-                         
                       }
                       else{
                          if(Number('${sessionScope.user.userNo}') === comment.user.userNo) {
@@ -235,7 +230,6 @@ const fnCommentList = () => {
                    // 목록에 댓글 추가
                    comments.append(str);
         })
-                                       
             },
         error: (jqXHR) => {
           alert(jqXHR.statusText + '(' + jqXHR.status + ')');
@@ -246,12 +240,7 @@ const fnCommentList = () => {
 }
 
 const fnRegisterComment = () => {
-   
- 
-        
         $('#btn-comment-register').on('click', (evt) => {
-        	
-
             if(document.getElementById("contents").value == ""){
             	alert("내용을 입력해주세요");
               return;
@@ -478,7 +467,6 @@ const fnRemoveBlog = () => {
     }
   })
 }
-   
    
 
 fnGetBlogList();
