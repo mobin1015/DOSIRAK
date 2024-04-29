@@ -57,7 +57,6 @@
       url: '${contextPath}/blog/searchBlog.do?type='+searchType+'&query='+searchQuery+'&page='+page,
       dataType: 'json',
       success: (resData)=>{
-    	  console.log(resData);
         totalPage = resData.totalPage;
         let result='';
         
