@@ -5,38 +5,9 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"/>
 <c:set var="dt" value="<%=System.currentTimeMillis()%>"/>
     
-  <c:choose>
-    <c:when test="${blog[0].keywordNo == 1}">
-      <jsp:include page="../layout/header.jsp">
-        <jsp:param value="브런치 키워드: 지구한바퀴 세계여행" name="title"/>
-      </jsp:include>
-    </c:when>
-    <c:when test="${blog[0].keywordNo == 2}">
-      <jsp:include page="../layout/header.jsp">
-        <jsp:param value="브런치 키워드: 그림·웹툰" name="title"/>
-      </jsp:include>
-    </c:when>
-    <c:when test="${blog[0].keywordNo == 3}">
-      <jsp:include page="../layout/header.jsp">
-        <jsp:param value="브런치 키워드: IT 트렌드" name="title"/>
-      </jsp:include>
-    </c:when>
-    <c:when test="${blog[0].keywordNo == 4}">
-      <jsp:include page="../layout/header.jsp">
-        <jsp:param value="브런치 키워드: 사진·촬영" name="title"/>
-      </jsp:include>
-    </c:when>
-    <c:when test="${blog[0].keywordNo == 5}">
-      <jsp:include page="../layout/header.jsp">
-        <jsp:param value="브런치 키워드: 취향저격 영화 리뷰" name="title"/>
-      </jsp:include>
-    </c:when>
-    <c:when test="${blog[0].keywordNo == 6}">
-      <jsp:include page="../layout/header.jsp">
-        <jsp:param value="브런치 키워드: 오늘은 이런 책" name="title"/>
-      </jsp:include>
-    </c:when>
-  </c:choose> 
+<jsp:include page="../layout/header.jsp">
+  <jsp:param value="키워드 리스트" name="title"/>
+</jsp:include>
 
 <link rel="stylesheet" href="../resources/css/keyword.css"/>
 

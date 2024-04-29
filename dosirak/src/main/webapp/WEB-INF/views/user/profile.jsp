@@ -35,7 +35,7 @@
           <div class="edit-cover-in">
             <div class="bloger-thumb">
               <c:if test="${empty blogImgPath}">
-               <img class="preview img-thumb" src="/prj${user.user.blogImgPath}" >
+               <img class="preview img-thumb" src="/prj${user.blogImgPath}" >
               </c:if>
               <c:if test="${not empty blogImgPath}">
                <img class="preview img-thumb" src="${contextPath}${blogImgPath}" >
