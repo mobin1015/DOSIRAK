@@ -15,109 +15,103 @@
 </head>
 
 <body>
-            <div class="container">
-        <div class="contets-wrap">
-        
- 
-        <div class="blog-detail-title nanum">
-         <h1>${blog.title}</h1>
-        </div>
-        <br>
-        <div class="blog-detail-wirter">
-         <c:if test="${empty blog.user.nickname}"><span id='by'>by</span><a>${blog.user.name}</a><span id='dot'></span><a id="createdDt" style='opacity: .6; font-size:12px;'></a><a style="float:right;">${blog.keywordName}</a></c:if>
-         <c:if test="${!(empty blog.user.nickname)}"><span id='by'>by</span><a>${blog.user.nickname}</a><span id='dot'></span><a id="createdDt" style='opacity: .6; font-size:12px;'></a><a style="float:right;">${blog.keywordName}</a></c:if>
-         
-        </div>
-        </div></div>
-          <div class="container" style=" border-top: 1px solid #eee;">
-        <div class="contets-wrap">
-        
-      <div id="modify">
+<div class="container">
+  <div class="contets-wrap">
+    <div class="blog-detail-title nanum">
+      <h1>${blog.title}</h1>
+    </div>
+    <br>
+    <div class="blog-detail-wirter">
+      <c:if test="${empty blog.user.nickname}"><span id='by'>by</span><a>${blog.user.name}</a><span id='dot'></span><a id="createdDt" style='opacity: .6; font-size:12px;'></a><a style="float:right;">${blog.keywordName}</a></c:if>
+      <c:if test="${!(empty blog.user.nickname)}"><span id='by'>by</span><a>${blog.user.nickname}</a><span id='dot'></span><a id="createdDt" style='opacity: .6; font-size:12px;'></a><a style="float:right;">${blog.keywordName}</a></c:if>         
+    </div>
+  </div>
+</div>
+
+<div class="container" style=" border-top: 1px solid #eee;">
+  <div class="contets-wrap">
+
+    <div id="modify">
       <c:if test="${sessionScope.user.userNo == blog.user.userNo}">
       <form id="frm-btn" method="POST">  
-      <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
-      <input type="hidden" name="usrNo" value="${blog.user.userNo}">
-      <input type="hidden" name="url" value="${url}">
-      <button type="button" id="btn-edit-blog"></button>
-      <button type="button" id="btn-remove-blog" ></button>
-    </form>
-  </c:if>
-</div>
-        <div class="blog-detail-contents">
-         <p>${blog.contents}</p>
-        </div>
-       <div class="utils-wrap">
-           <button  id="like-btn" type="button">
-                 <div id='like-btn-icon' style='background-position:-0px -90px'></div>
-                 <pre> </pre>
-                 <div id='like-count'></div>
-           </button>
-           <button id="comment-btn" type="button">
-                    <div id='comment-btn-icon'></div>
-                        <pre> </pre>
-                    댓글
-                   <%--  <a style="color: #00c6be; padding-left:3px;">${blog.commentCount}</a> --%>
-           </button>
-       </div> 
-       <div id="comments"></div>
-       
-       
-       <div id="comments-register" style="display:none">
-       
- <c:if test="${not empty sessionScope.user}">
-<form id="frm-comment">
-    <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>
-    <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.name}</span></c:if>
-    <c:if test="${not empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.nickname}</span></c:if> 
-  <textarea id="contents" name="contents" placeholder="댓글을 입력하세요." style="    width: 100%;
-    height: 6.25em;
-    padding-top: 20px;
-    border: none;
-    resize: none;"></textarea>
-  <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
-  <c:if test="${not empty sessionScope.user.userNo}">  
-    <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
-  </c:if>
-  <div style="  padding-top: 10px;    border-top: 1px solid #eee; width:100%" >
-  <button type="button" id="btn-comment-register">등록</button></div>
- </form>
- </c:if>
-  <c:if test="${empty sessionScope.user}">
-  <br>
- <div class="box_area" style="width:100%; height:100px"><a href='${contextPath}/user/login.page'>브런치에 로그인하고 댓글을 입력해보세요!</a></div>
- </c:if>
-       </div>
-       
-       
-       
+        <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
+        <input type="hidden" name="usrNo" value="${blog.user.userNo}">
+        <input type="hidden" name="url" value="${url}">
+        <button type="button" id="btn-edit-blog"></button>
+        <button type="button" id="btn-remove-blog" ></button>
+      </form>
+      </c:if>
     </div>
-    
-    </div>
-    <div class="container2">
-      <div class="writerinfo-wrap">
-        <span  class="writer-name">
 
-           <c:if test="${empty blog.user.nickname}"><a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}"><h3>${blog.user.name}</h3></a></c:if>
-         <c:if test="${!(empty blog.user.nickname)}"><a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}"><h3>${blog.user.nickname}</h3></a></c:if>
- 
-        </span>
-        <span class="writer-iamge" >
-        <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}" id="userImg"><img height="100px" width="100px"  
-        src="/prj${blog.user.blogImgPath}"></a>
-        </span>
+    <div class="blog-detail-contents">
+      <p>${blog.contents}</p>
+    </div>
+
+    <div class="utils-wrap">
+      <button  id="like-btn" type="button">
+        <div id='like-btn-icon' style='background-position:-0px -90px'></div>
+        <pre> </pre>
+        <div id='like-count'></div>
+      </button>
+      <button id="comment-btn" type="button">
+        <div id='comment-btn-icon'></div>
+        <pre> </pre>
+        댓글
+        <%--  <a style="color: #00c6be; padding-left:3px;">${blog.commentCount}</a> --%>
+      </button>
+    </div> 
+
+    <div id="comments"></div>
+
+    <div id="comments-register" style="display:none">
+      <c:if test="${not empty sessionScope.user}">
+        <form id="frm-comment">
+          <a id="userImg"><img height="32px" width="32px" src="/prj${sessionScope.user.blogImgPath}"></a>
+          <c:if test="${empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.name}</span></c:if>
+          <c:if test="${not empty sessionScope.user.nickname}"><span  style="font-size:13px;vertical-align: sub;">${sessionScope.user.nickname}</span></c:if> 
+          <textarea id="contents" name="contents" placeholder="댓글을 입력하세요." style="    width: 100%;
+            height: 6.25em;
+            padding-top: 20px;
+            border: none;
+            resize: none;">
+          </textarea>
+          <input type="hidden" name="blogListNo" value="${blog.blogListNo}">
+          <c:if test="${not empty sessionScope.user.userNo}">  
+           <input type="hidden" name="userNo" value="${sessionScope.user.userNo}">
+          </c:if>
+          <div style="  padding-top: 10px;    border-top: 1px solid #eee; width:100%" >
+          <button type="button" id="btn-comment-register">등록</button></div>
+        </form>
+      </c:if>
+      <c:if test="${empty sessionScope.user}">
         <br>
-        <br>
-        <div  class="writer-contents">
-             <c:if test="${ empty blog.user.blogContents}"> <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">소개글이 없습니다</a></c:if>
-         <c:if test="${!( empty blog.user.blogContents)}">  <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogContents}</a></c:if>
-        </div>
-        </div> 
-     </div>
+        <div class="box_area" style="width:100%; height:100px"><a href='${contextPath}/user/login.page'>브런치에 로그인하고 댓글을 입력해보세요!</a></div>
+      </c:if>
+    </div>
+
+  </div>
+</div>
+
+<div class="container2">
+  <div class="writerinfo-wrap">
+    <span  class="writer-name">
+      <c:if test="${empty blog.user.nickname}"><a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}"><h3>${blog.user.name}</h3></a></c:if>
+      <c:if test="${!(empty blog.user.nickname)}"><a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}"><h3>${blog.user.nickname}</h3></a></c:if>
+    </span>
+    <span class="writer-iamge" >
+      <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}" id="userImg"><img height="100px" width="100px" src="/prj${blog.user.blogImgPath}"></a>
+    </span>
+    <br>
+    <br>
+    <div  class="writer-contents">
+      <c:if test="${ empty blog.user.blogContents}"> <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">소개글이 없습니다</a></c:if>
+      <c:if test="${!( empty blog.user.blogContents)}">  <a href="${contextPath}/user/bloger.do?userNo=${blog.user.userNo}">${blog.user.blogContents}</a></c:if>
+    </div>
+  </div> 
+</div>
 </body>
 
 <script>
-
-
 const url = new URL(window.location);
 const likeBtn = document.getElementById('like-btn');
 const likeBtnIcon = document.getElementById('like-btn-icon');
@@ -126,8 +120,9 @@ const commentBtn = document.getElementById('comment-btn');
 const comments = $('#comments');
 const commentsRegister = document.getElementById('comments-register');
 var flag = 0;
+var frmBtn = $('#frm-btn');  
 
-
+//게시글 등록시간 계산
 const fntime= (evt) => {
 	  var time = '';
 	const publishTime = moment(evt);
@@ -142,6 +137,7 @@ const fntime= (evt) => {
 	}
 const blogtime ='${blogtime}';
 $(createdDt).append(fntime(JSON.parse(blogtime).createDt));
+
 //로그인 여부 체크
 const fnCheckSignin = () => {
   if('${sessionScope.user.userNo}' === '') {
@@ -153,20 +149,20 @@ const fnCheckSignin = () => {
   }
 }
 
-
-
+//댓글창 보이기,숨기기
 $(commentBtn).click(()=>{
     if(flag===0) {
-         flag=1;
-         fnCommentList();
-         commentsRegister.style.display ="";           
-} else {
-    flag =0;           
-    comments.text(" ");
-    commentsRegister.style.display = 'none';
-}
+      flag=1;
+      fnCommentList();
+      commentsRegister.style.display ="";           
+    } else {
+      flag =0;           
+      comments.text(" ");
+      commentsRegister.style.display = 'none';
+    }
 })
 
+//댓글목록 출력
 const fnCommentList = () => {
     $.ajax({
         type: 'GET',
@@ -177,17 +173,13 @@ const fnCommentList = () => {
                       comments.append('<div>첫 번째 댓글의 주인공이 되어 보세요</div>');
                            return;
                          }
-                   
                    if(comments.textContent != " ") {
                       comments.text(" ");
-                   }
-                   
+                   }       
                    comments.append('<div>댓글<a style="color: #00c6be; padding-left:3px;">  ' + resData.commentList.length +'</a></div><hr>');
                  $.each(resData.commentList, (i, comment) => {
                    let str = '';
-                   // 댓글은 들여쓰기 (댓글 여는 <div>)
-         
-                   
+                   // 댓글은 들여쓰기 (댓글 여는 <div>)    
                    if(comment.depth === 0) {
                       if(i != 0 ) {
                      str += '<br><div style=" display: flex;  box-sizing: border-box;  justify-content: space-between;   padding-top: 40px;  border-top: 1px solid #eee; " class="'+ comment.groupNo+'">';
@@ -233,12 +225,12 @@ const fnCommentList = () => {
             },
         error: (jqXHR) => {
           alert(jqXHR.statusText + '(' + jqXHR.status + ')');
-        }
-    
+        }    
   }
   )
 }
 
+// 댓글 등록
 const fnRegisterComment = () => {
         $('#btn-comment-register').on('click', (evt) => {
             if(document.getElementById("contents").value == ""){
@@ -265,12 +257,11 @@ const fnRegisterComment = () => {
         error: (jqXHR) => {
           alert(jqXHR.statusText + '(' + jqXHR.status + ')');
         }
-      })}
-      
+      })}   
     })
   }
 
-
+//답글 입력창 보이기
 const fnSwitchingReplyInput = () => {
      $(document).on('click', '.btn-reply', (evt) => {
          if('${sessionScope.user.userNo}' === '') {
@@ -280,10 +271,6 @@ const fnSwitchingReplyInput = () => {
              } 
              return;
            }
-       
-    	 
-    	 
-    	 
           const classNo = evt.target.parentElement.parentElement.getAttribute('class');
          var elements = document.getElementsByClassName(classNo);
          var lastElement = elements[elements.length - 1];
@@ -292,7 +279,6 @@ const fnSwitchingReplyInput = () => {
             lastElement.nextSibling.children[0].remove();
          }
         // }else{
-        
           if (elements.length > 0) {
            var lastElement = elements[elements.length - 1];
            var newDiv = document.createElement('div');
@@ -304,7 +290,6 @@ const fnSwitchingReplyInput = () => {
            }else{
               usertag = '';
            }
-           
            ${empty sessionScope.user.nickname}
            let str = '<div class="div-frm-reply blind" style="padding-left: 32px">';
              str += '  <form class="frm-reply">';
@@ -324,7 +309,8 @@ const fnSwitchingReplyInput = () => {
      }
    })
 }
-    
+
+//답글 등록
 const fnRegisterReply = () => {
      $(document).on('click', '.btn-register-reply', (evt) => {
          if('${sessionScope.user.userNo}' === '') {
@@ -334,8 +320,6 @@ const fnRegisterReply = () => {
              } 
              return;
            }
-         
-   
              if(document.getElementById("rcontents").value == ""){
                alert("내용을 입력해주세요");
                return;
@@ -360,7 +344,8 @@ const fnRegisterReply = () => {
        })
      })
    }
-   
+
+// 댓글, 답글 지우기
 const fnRemoveComment = () => {
      $(document).on('click', '.btn-remove-comment', (evt) => {
          fnCheckSignin();
@@ -382,7 +367,7 @@ const fnRemoveComment = () => {
      })
    }
    
-
+// 좋아요 누르기, 취소
 const fnClickLike = () => {
        $(likeBtn).click(function() {
          if('${sessionScope.user.userNo}' === '') {
@@ -402,8 +387,7 @@ const fnClickLike = () => {
                    error: (jqXHR) => {
                      alert(jqXHR.statusText + '(' + jqXHR.status + ')');
                    }
-                 })
-             
+                 })      
           } else {
               $('#like-count').text(Number(likeBtnCount.innerText) + 1);
               likeBtnIcon.style.backgroundPosition = '-30px -90px';
@@ -419,6 +403,7 @@ const fnClickLike = () => {
        });
       }
 
+//좋아요 갯수 표시
 const fnGetBlogList = () => {
      $.ajax({
        type: 'GET',
@@ -438,8 +423,6 @@ const fnGetBlogList = () => {
        }
      })
    }
-
-var frmBtn = $('#frm-btn');  
 
 //블로그 편집 화면으로 이동
 const fnEditBlog = () => {
